@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Relaxy! - Technical Breakdown</title>
+    <script>document.documentElement.classList.add('js');
+    try
+    {
+        if (localStorage.getItem('theme') === 'light')
+        {
+            document.documentElement.classList.add('light-mode');
+        }
+    }
+    catch (e)
+    {
+    }</script>
+    <link href="/main.css" rel="stylesheet">
+    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
+    <meta content="#ff69b4" name="theme-color">
+    <meta content="MattFor" name="author">
+    <meta content="A deep technical breakdown of Relaxy!, the multipurpose Discord bot. Architecture, technology stack, file structure and the systems it runs on." name="description">
+    <link href="https://www.relaxy.xyz/subpages/technical" rel="canonical">
+    <meta content="website" property="og:type">
+    <meta content="https://www.relaxy.xyz/subpages/technical" property="og:url">
+    <meta content="Relaxy! - Technical Breakdown" property="og:title">
+    <meta content="A deep technical breakdown of Relaxy! - architecture, tech stack, file structure and hosting." property="og:description">
+    <meta content="https://cdn.relaxy.xyz/relaxy/website/img/social/og-image.jpg" property="og:image">
+    <meta content="summary" name="twitter:card">
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+    <a class="brand" href="/"> <img alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.png" width="56"> <span>Relaxy!</span> </a>
+    <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
+    <div class="topbar-end">
+        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
+        </button>
+        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<div aria-hidden="true" class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-overlay" id="navOverlay"></div>
+    <div class="nav-drawer-panel">
+        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
+        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
+    </div>
+</div>
+
+<section class="hero">
+    <p class="eyebrow">Under the hood</p>
+    <h1>Technical Breakdown</h1>
+    <p class="tagline">Everything technical about Relaxy! How it's built, what it is built with, and where it runs.</p>
+</section>
+
+<main class="wrap" id="main">
+    <section class="card section" id="overview">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">At a quick glance</p>
+            <h2 style="text-align:left">What Relaxy! is, technically</h2>
+        </div>
+        <p class="prose" style="margin:0 0 var(--space-5)">Relaxy! is a multipurpose Discord bot first written by me in 2019. It is a pure <strong>Node.js</strong> program written in modern <strong>JavaScript
+            (ES Modules)</strong> with <strong>JSDoc + TypeScript declaration files</strong> for type-checking. There is <em>no build step</em>, the bot runs directly from source. It is sharded and
+            clustered so it can easily scale horizontally across multiple machines.</p>
+        <div class="tech-stat-grid">
+            <div class="tech-stat"><span class="num">171</span><span class="label">command modules</span></div>
+            <div class="tech-stat"><span class="num">6</span><span class="label">command categories</span></div>
+            <div class="tech-stat"><span class="num">v1.1.0</span><span class="label">current version</span></div>
+            <div class="tech-stat"><span class="num">2019</span><span class="label">first written</span></div>
+            <div class="tech-stat"><span class="num">~80</span><span class="label">npm dependencies</span></div>
+            <div class="tech-stat"><span class="num">10</span><span class="label">database models</span></div>
+        </div>
+    </section>
+
+    <section class="card section" id="live">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">Live from the hardware</p>
+            <h2 style="text-align:left">The Pi, right now</h2>
+            <p style="margin:0" id="system-stats-stamp">Reading live status straight off the Pi…</p>
+        </div>
+        <div class="tech-stat-grid" id="system-stats">
+            <div class="tech-stat"><span class="num">…</span><span class="label">connecting</span></div>
+        </div>
+    </section>
+
+    <section class="card section" id="architecture">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">Architecture</p>
+            <h2 style="text-align:left">A two-process, multi-cluster model</h2>
+            <p style="margin:0">Relaxy! runs as a supervisor that spawns and watches worker processes.</p>
+        </div>
+        <div class="eng-grid">
+            <div class="host-card">
+                <h3>Manager</h3>
+                <p><code>src/Manager/Manager.js</code>. The supervisor. It never connects to Discord itself, instead it spawns <strong>Clusters</strong>, watches their heartbeats, and reclusters or
+                    respawns dead workers. Hosts the cross-process rate limiter and the console command interface.</p>
+            </div>
+            <div class="host-card">
+                <h3>Cluster / Client</h3>
+                <p><code>src/Client/Relaxy.js</code>. Each cluster is a child process running one <code>Relaxy</code> client that owns one or more <strong>shards</strong>. The actual gateway
+                    connections to Discord, where commands and events are handled.</p>
+            </div>
+            <div class="host-card">
+                <h3>IPC &amp; heartbeats</h3>
+                <p>Manager and clusters talk over Node IPC. Spawn hand-off is the <code>CLIENT_PROCESS_SPAWNED</code> message; liveness uses a <strong>push heartbeat</strong> (every 3s, 5 missed beats
+                    = dead) so the manager only watches for silence instead of polling.</p>
+            </div>
+            <div class="host-card">
+                <h3>Self-repair &amp; hot-patch</h3>
+                <p>A <code>SelfRepair</code> module provides hot-reloading of modules/commands and an internet watchdog; the <code>ModuleLoader</code> + <code>HotPatch</code> system loads every module
+                    from a manifest and can swap them at runtime without a restart.</p>
+            </div>
+        </div>
+        <h3 style="color:var(--accent);margin-top:var(--space-5)">Boot sequence</h3>
+        <ul class="feature-list">
+            <li><code>./start</code> sets <code>UV_THREADPOOL_SIZE=64</code> and execs Node with <code>nice -n 20</code>, <code>--stack_size=1000</code>, <code>--trace-uncaught</code> and <code>--max-old-space-size=32768</code>
+                (32&nbsp;GB V8 heap).
+            </li>
+            <li>The Manager parses <code>key.json</code>, empties caches, then <code>spawn()</code>s clusters sequentially (7s apart).
+            </li>
+            <li>Each client loads its modules in parallel, connects to MongoDB, spawns the database workers, loads commands, then logs into the Discord gateway, music extractors load in the
+                background, off the critical path.
+            </li>
+            <li>Before the clusters report <code>clusterReady</code>, they launch <em>Mutes, Reminds, TicketSystems, RelaxyForums, ClearingChannels, and every other feature's intervals</em>.
+            </li>
+        </ul>
+    </section>
+
+    <section class="card section" id="stack">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">Technology stack</p>
+            <h2 style="text-align:left">What's inside?</h2>
+            <p style="margin:0">Grouped by what each set of libraries does.</p>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Runtime &amp; language</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">Node.js</span> <span class="tech-tag">JavaScript (ESM)</span> <span class="tech-tag">TypeScript (.d.ts / jsconfig)</span> <span class="tech-tag">JSDoc</span>
+            </div>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Discord core &amp; sharding</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">discord.js 14</span> <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">discord-api-types</span>
+                <span class="tech-tag">discord-hybrid-sharding</span> <span class="tech-tag">discord-cross-hosting</span> <span class="tech-tag">discord-cross-ratelimit</span> <span class="tech-tag">discord-voip</span>
+            </div>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Database</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">MongoDB</span> <span class="tech-tag">Mongoose 8</span>
+            </div>
+            <p class="prose" style="margin:var(--space-3) 0 0">10 schema "blueprints": Server, Member, Profile, Warning, Reminder, TicketSystem, ForumChannel, HeartBoard, HeartBoardPost and Limits,
+                all persisted through a dedicated database worker with a local cache as well.</p>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Music &amp; voice</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">discord-player 7</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-youtubei (SABR)</span> <span
+                    class="tech-tag">discord-player-soundcloud</span> <span class="tech-tag">ytdl-core</span> <span class="tech-tag">youtube-sr</span> <span class="tech-tag">prism-media</span> <span
+                    class="tech-tag">ffmpeg-static</span> <span class="tech-tag">fluent-ffmpeg</span> <span class="tech-tag">genius-lyrics</span> <span class="tech-tag">LrcLib (synced lyrics)</span>
+            </div>
+            <p class="prose" style="margin:var(--space-3) 0 0">Built around a heavily customised player with its own stream interceptor, a biquad/DSP equalizer, and a voice recorder.</p>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Images &amp; canvas</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">canvas</span> <span class="tech-tag">canvacord</span> <span class="tech-tag">sharp</span> <span class="tech-tag">discord-image-generation</span> <span
+                    class="tech-tag">gifencoder</span> <span class="tech-tag">gif-frames</span> <span class="tech-tag">emoji-mixer</span> <span class="tech-tag">google-img-scrap</span>
+            </div>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Text &amp; search</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">natural (NLP)</span> <span class="tech-tag">fuse.js (fuzzy search)</span> <span class="tech-tag">stopword</span> <span class="tech-tag">normalize-text</span>
+                <span class="tech-tag">weird-to-normal-chars</span> <span class="tech-tag">@iamtraction/google-translate</span>
+            </div>
+        </div>
+
+        <div class="tech-stack-group">
+            <h3>Web, networking &amp; utilities</h3>
+            <div class="chip-grid">
+                <span class="tech-tag">express</span> <span class="tech-tag">body-parser</span> <span class="tech-tag">axios</span> <span class="tech-tag">node-fetch</span> <span class="tech-tag">lodash</span>
+                <span class="tech-tag">fs-extra</span> <span class="tech-tag">archiver</span> <span class="tech-tag">chalk</span> <span class="tech-tag">asciiart-logo</span> <span class="tech-tag">systeminformation</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="card section" id="commands-breakdown">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">Commands</p>
+            <h2 style="text-align:left">171 modules across 6 categories</h2>
+            <p style="margin:0">Default prefix <code>=</code>, plus slash-command support.</p>
+        </div>
+        <ul class="request-list">
+            <li><code>miscellaneous</code> <span>38 commands</span></li>
+            <li><code>moderation</code> <span>33 commands</span></li>
+            <li><code>image</code> <span>30 commands</span></li>
+            <li><code>administrator</code> <span>25 commands</span></li>
+            <li><code>music</code> <span>24 commands</span></li>
+            <li><code>fun</code> <span>21 commands</span></li>
+        </ul>
+    </section>
+
+    <section class="card section" id="structure">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">File structure</p>
+            <h2 style="text-align:left">How the source is organised</h2>
+        </div>
+        <pre class="tech-tree"><span class="dir">relaxy-private/</span>
+├── start                     <span class="cmt"># launcher: ./start [--client], sets Node flags</span>
+├── index.js                  <span class="cmt"># root entry -> boots the manager</span>
+├── detect_os.js              <span class="cmt"># host detection (void / raspberry-pi / windows / linux)</span>
+├── package.json              <span class="cmt"># ESM, ~80 dependencies, no build step</span>
+├── tsconfig.json / jsconfig.json
+├── <span class="dir">bot/</span>                      <span class="cmt"># process entry points + handlers</span>
+│   ├── Manager.js            <span class="cmt"># supervisor process entry</span>
+│   ├── Client.js             <span class="cmt"># cluster/client process entry</span>
+│   ├── <span class="dir">commands/</span>             <span class="cmt"># 171 commands in 6 categories</span>
+│   │   ├── administrator/  fun/  image/
+│   │   └── miscellaneous/  moderation/  music/
+│   └── <span class="dir">events/</span>               <span class="cmt"># discord/ + music/ event handlers</span>
+├── <span class="dir">src/</span>                      <span class="cmt"># the engine</span>
+│   ├── ModuleLoader.js  HotPatch.js  MainFrame.js  DataTable.js
+│   ├── <span class="dir">Manager/</span>
+│   │   ├── Manager.js
+│   │   ├── Core/             <span class="cmt"># SelfRepair, HeartBeatManager</span>
+│   │   └── Modules/          <span class="cmt"># ClusterSpawnProcessor, ConsoleInputProcessor</span>
+│   └── <span class="dir">Client/</span>
+│       ├── Relaxy.js         <span class="cmt"># the bot client</span>
+│       └── Modules/
+│           ├── Database/     <span class="cmt"># Mongoose models (Blueprints) + Database</span>
+│           ├── MusicPlayer/  <span class="cmt"># custom player, equalizer, extractors</span>
+│           ├── VoiceRecorder/  Handlers/  Workers/
+│           └── ADSR/         <span class="cmt"># active diagnosis + rate limiter</span>
+├── <span class="dir">types/</span>                    <span class="cmt"># 14 .d.ts type declarations</span>
+├── <span class="dir">assets/</span>                   <span class="cmt"># config, images, fonts, sounds, text, scripts</span>
+├── <span class="dir">storage/</span>                  <span class="cmt"># runtime caches (users / guilds)</span>
+└── <span class="dir">docs/</span>                     <span class="cmt"># STARTUP.md and other internals</span></pre>
+    </section>
+
+    <section class="card section" id="hosting">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">Deployment</p>
+            <h2 style="text-align:left">Where it runs</h2>
+            <p style="margin:0">Relaxy! detects its host at startup (<code>detect_os.js</code>) and adapts. Thanks to <code>discord-cross-hosting</code> the shards can be spread across these machines
+                at once.</p>
+        </div>
+        <div class="host-grid">
+            <div class="host-card">
+                <h3>Void PC <span class="host-tag">HOST_TYPE = void</span></h3>
+                <p>The primary host is a Void Linux desktop. Detected by reading <code>ID=void</code> from <code>/etc/os-release</code>. Carries the bulk of the clusters and shards.</p>
+            </div>
+            <div class="host-card">
+                <h3>Raspberry Pi <span class="host-tag">HOST_TYPE = raspberry-pi</span></h3>
+                <p>An always-on ARM board, detected via <code>arm</code>/<code>arm64</code> architecture. Acts as a low-power node that keeps a slice of the fleet alive around the clock.</p>
+            </div>
+            <div class="host-card">
+                <h3>Laptop <span class="host-tag">HOST_TYPE = windows / linux</span></h3>
+                <p>A secondary / development host. Used for debugging single shards (<code>./start --client</code>) and to add capacity when needed.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div id="subpages-bar"></div>
+
+<aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
+    <div class="relaxy-coach-panel">
+        <span class="relaxy-coach-resize" aria-hidden="true"></span>
+        <button class="relaxy-coach-close" type="button" aria-label="Dismiss tip">×</button>
+        <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands!</p>
+        <div class="relaxy-coach-search">
+            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
+            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
+        </div>
+    </div>
+    <img class="relaxy-coach-avatar" alt="Relaxy!" title="Search Relaxy!'s commands" decoding="async" height="480" width="480" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
+</aside>
+
+<footer class="footer">
+    <img alt="" aria-hidden="true" class="footer-relaxy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.png">
+    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+</footer>
+
+<script defer src="/js/main/subpagebar.js"></script>
+<script defer src="/main.js"></script>
+<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.js"></script>
+<script defer src="/js/main/enhance.js"></script>
+<script defer src="/js/main/mobilenav.js"></script>
+<script defer src="/js/main/system-stats.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Relaxy! - Developer Log</title>
+    <script>document.documentElement.classList.add('js');
+    try
+    {
+        if (localStorage.getItem('theme') === 'light')
+        {
+            document.documentElement.classList.add('light-mode');
+        }
+    }
+    catch (e)
+    {
+    }</script>
+    <link crossorigin href="https://cdnjs.cloudflare.com" rel="preconnect">
+    <link href="/main.css" rel="stylesheet">
+    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
+    <meta content="#ff69b4" name="theme-color">
+    <meta content="MattFor" name="author">
+    <meta content="Check out Relaxy!'s creator, MattFor's development log." name="description">
+    <link href="https://www.relaxy.xyz/subpages/devlog" rel="canonical">
+    <meta content="website" property="og:type">
+    <meta content="https://www.relaxy.xyz/subpages/devlog" property="og:url">
+    <meta content="Relaxy! - Developer Log" property="og:title">
+    <meta content="Check out Relaxy!'s creator, MattFor's development log." property="og:description">
+    <meta content="https://cdn.relaxy.xyz/relaxy/website/img/social/og-image.jpg" property="og:image">
+    <meta content="summary" name="twitter:card">
+    <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/marked.min.js"></script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+    <a class="brand" href="/"> <img alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.png" width="56"> <span>Relaxy!</span> </a>
+    <nav aria-label="Sections" class="site-nav" id="topnav">
+        <a href="#devlog">Devlog</a> <a href="#upcoming">Upcoming</a>
+    </nav>
+    <div class="topbar-end">
+        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
+        </button>
+        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<div aria-hidden="true" class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-overlay" id="navOverlay"></div>
+    <div class="nav-drawer-panel">
+        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
+        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
+    </div>
+</div>
+
+<section class="hero">
+    <p class="eyebrow">Development</p>
+    <h1>Developer Log</h1>
+    <p class="tagline">MattFor's inner thoughts and current work-plan.</p>
+</section>
+
+<main class="wrap" id="main">
+    <button id="scrollToTop" onclick="scrollToTop()" type="button">Go up ↑</button>
+
+    <section class="card reveal" id="devlog">
+        <div id="changelog-content"></div>
+    </section>
+
+    <section class="card reveal" id="upcoming">
+        <div id="upcoming-content"></div>
+    </section>
+
+    <button id="scrollToBottom" onclick="scrollToBottom()" type="button">Go down ↓</button>
+</main>
+
+<div id="subpages-bar"></div>
+
+<aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
+    <div class="relaxy-coach-panel">
+        <span class="relaxy-coach-resize" aria-hidden="true"></span>
+        <button class="relaxy-coach-close" type="button" aria-label="Dismiss tip">×</button>
+        <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands!</p>
+        <div class="relaxy-coach-search">
+            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
+            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
+        </div>
+    </div>
+    <img class="relaxy-coach-avatar" alt="Relaxy!" title="Search Relaxy!'s commands" decoding="async" height="480" width="480" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
+</aside>
+
+<footer class="footer">
+    <img alt="" aria-hidden="true" class="footer-relaxy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.png">
+    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+</footer>
+
+<script defer src="/js/main/subpagebar.js"></script>
+<script defer src="/main.js"></script>
+<script defer src="/js/changelog.js"></script>
+<script defer src="/js/topbottombuttons.js"></script>
+<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.js"></script>
+<script defer src="/js/main/enhance.js"></script>
+<script defer src="/js/main/mobilenav.js"></script>
+</body>
+
+</html>
