@@ -1210,7 +1210,11 @@ main > .grid-2:first-child {
     height: 22px;
 }
 
-#ecosystem .section-head p,
+#ecosystem .section-head p {
+    max-width: 88ch;
+    text-wrap: balance;
+}
+
 #commands .section-head p {
     max-width: 74ch;
 }
