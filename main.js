@@ -710,9 +710,13 @@ const fmtUptime = (seconds) =>
 
 const piFields = {
     os: (d) => d.os,
+    kernel: (d) => d.kernel,
     arch: (d) => d.arch,
     cores: (d) => (d.cpu && d.cpu.cores != null
         ? d.cpu.cores + ' cores'
+        : null),
+    load: (d) => (d.cpu && typeof d.cpu.load === 'number'
+        ? d.cpu.load.toFixed(0) + '%'
         : null),
     mem: (d) => (d.memory && d.memory.usedGb != null && d.memory.totalGb != null
         ? d.memory.usedGb + ' / ' + d.memory.totalGb + ' GB'
