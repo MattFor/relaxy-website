@@ -688,7 +688,6 @@
         const panel = coach.querySelector('.relaxy-coach-panel');
         const hint = coach.querySelector('.relaxy-coach-hint');
         const avatar = coach.querySelector('.relaxy-coach-avatar');
-        const closeBtn = coach.querySelector('.relaxy-coach-close');
         const resizeHandle = coach.querySelector('.relaxy-coach-resize');
         const input = coach.querySelector('.relaxy-coach-input');
         const result = coach.querySelector('.relaxy-coach-result');
@@ -950,32 +949,51 @@
             });
         }
 
-        if (closeBtn)
-        {
-            closeBtn.addEventListener('click', (e) =>
-            {
-                e.stopPropagation();
-                tuck();
-            });
-        }
-
         if (hint)
         {
             hint.addEventListener('click', openSearch);
         }
 
+        const toggleTuck = () =>
+        {
+            if (coach.classList.contains('is-tucked'))
+            {
+                untuck();
+                return;
+            }
+
+            tuck();
+        };
+
         if (avatar)
         {
+            // A double-click tucks Relaxy! away or brings her back. Hold the
+            // single-click action briefly so the first click of a double-click
+            // does not flash the search panel open before it tucks.
+            let clickTimer = 0;
+
             avatar.addEventListener('click', () =>
             {
-                if (coach.classList.contains('is-tucked'))
+                window.clearTimeout(clickTimer);
+                clickTimer = window.setTimeout(() =>
                 {
-                    untuck();
-                    return;
-                }
-                coach.classList.contains('is-open')
-                    ? closeSearch()
-                    : openSearch();
+                    if (coach.classList.contains('is-tucked'))
+                    {
+                        untuck();
+                        return;
+                    }
+
+                    coach.classList.contains('is-open')
+                        ? closeSearch()
+                        : openSearch();
+                }, 220);
+            });
+
+            avatar.addEventListener('dblclick', (e) =>
+            {
+                e.preventDefault();
+                window.clearTimeout(clickTimer);
+                toggleTuck();
             });
         }
 

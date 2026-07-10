@@ -47,6 +47,129 @@
         }
     };
 
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+
+    const buildMatrixWeb = (svg, hub) =>
+    {
+        const linksG = svg.querySelector('.ma-links');
+        const nodesG = svg.querySelector('.ma-nodes');
+        const grabsG = svg.querySelector('.ma-grabs');
+        if (!linksG || !nodesG || !grabsG)
+        {
+            return;
+        }
+
+        const COUNT = 7;
+        const VIEW_W = 220;
+        const VIEW_H = 130;
+        const rnd = (a, b) => a + Math.random() * (b - a);
+        const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+        const make = (tag, attrs) =>
+        {
+            const el = document.createElementNS(SVG_NS, tag);
+            Object.keys(attrs).forEach((k) => el.setAttribute(k, attrs[k]));
+            return el;
+        };
+
+        linksG.textContent = '';
+        nodesG.textContent = '';
+        grabsG.textContent = '';
+
+        const spin = Math.random() * Math.PI * 2;
+        const nodes = [];
+
+        for (let i = 0; i < COUNT; i++)
+        {
+            const angle = spin + (i / COUNT) * Math.PI * 2 + rnd(-0.22, 0.22);
+            const r = Math.random() < 0.5
+                ? 5
+                : 5.5;
+
+            nodes.push({
+                r,
+                x: clamp(hub.x + Math.cos(angle) * rnd(62, 92), r + 2, VIEW_W - r - 2),
+                y: clamp(hub.y + Math.sin(angle) * rnd(32, 48), r + 2, VIEW_H - r - 2),
+                blue: Math.random() < 0.35
+            });
+        }
+
+        const pulsing = nodes.map((_, i) => i);
+        for (let i = pulsing.length - 1; i > 0; i--)
+        {
+            const j = Math.floor(Math.random() * (i + 1));
+            const t = pulsing[i];
+            pulsing[i] = pulsing[j];
+            pulsing[j] = t;
+        }
+        const pulse = pulsing.slice(0, 3);
+
+        nodes.forEach((n, i) =>
+        {
+            const classes = [];
+            if (n.blue)
+            {
+                classes.push('b');
+            }
+
+            const at = pulse.indexOf(i);
+            if (at > -1)
+            {
+                classes.push('ma-pulse');
+                if (at % 2)
+                {
+                    classes.push('d');
+                }
+            }
+
+            linksG.appendChild(make('line', {
+                'data-a': 'h',
+                'data-b': String(i),
+                x1: hub.x,
+                y1: hub.y,
+                x2: n.x.toFixed(2),
+                y2: n.y.toFixed(2)
+            }));
+
+            nodesG.appendChild(make('circle', {
+                'data-node': String(i),
+                class: classes.join(' '),
+                cx: n.x.toFixed(2),
+                cy: n.y.toFixed(2),
+                r: n.r
+            }));
+
+            grabsG.appendChild(make('circle', {
+                class: 'ma-grab',
+                'data-grab': String(i),
+                cx: n.x.toFixed(2),
+                cy: n.y.toFixed(2),
+                r: 13
+            }));
+        });
+
+        let extra = 0;
+        for (let i = 0; i < COUNT && extra < 3; i++)
+        {
+            const j = (i + 1) % COUNT;
+            if (Math.random() >= 0.45)
+            {
+                continue;
+            }
+
+            extra += 1;
+            linksG.appendChild(make('line', {
+                class: 'b',
+                'data-a': String(i),
+                'data-b': String(j),
+                x1: nodes[i].x.toFixed(2),
+                y1: nodes[i].y.toFixed(2),
+                x2: nodes[j].x.toFixed(2),
+                y2: nodes[j].y.toFixed(2)
+            }));
+        }
+    };
+
     const initMatrixWeb = () =>
     {
         const svg = document.querySelector('.matrix-art');
@@ -54,6 +177,11 @@
         {
             return;
         }
+
+        buildMatrixWeb(svg, {
+            x: 110,
+            y: 62
+        });
 
         const circles = Array.from(svg.querySelectorAll('[data-node]'));
         const grabs = Array.from(svg.querySelectorAll('[data-grab]'));
@@ -440,7 +568,7 @@
     };
 
     const HEART_GLYPHS = [
-        '❤',
+        '❤️',
         '💖',
         '💕',
         '💗',

@@ -417,7 +417,9 @@ img,
 .topgg-link,
 .botlist-link,
 .node-card,
-.owner-flip {
+.owner-flip,
+.owner-text a,
+.tag-item {
     -webkit-user-drag: none;
 }
 
@@ -1882,7 +1884,6 @@ main > .grid-2:first-child {
 
 .relaxy-coach-hint {
     margin: 0;
-    padding-right: var(--space-4);
     font-size: 0.98rem;
     line-height: 1.5;
     color: var(--text);
@@ -1989,26 +1990,6 @@ main > .grid-2:first-child {
     transform: rotate(-45deg);
 }
 
-.relaxy-coach-close {
-    position: absolute;
-    top: 2px;
-    right: 4px;
-    appearance: none;
-    border: none;
-    background: none;
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    line-height: 1;
-    padding: 2px 4px;
-    cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: color var(--t-fast);
-}
-
-.relaxy-coach-close:hover, .relaxy-coach-close:focus-visible {
-    color: var(--accent);
-}
-
 .relaxy-coach-resize {
     display: none;
     position: absolute;
@@ -2057,11 +2038,24 @@ main > .grid-2:first-child {
 
 .relaxy-coach.is-flashing .relaxy-coach-avatar {
     animation: coach-bob 2.6s var(--ease) infinite,
-    coach-attention 1s var(--ease) 0.1s 3;
+    coach-attention 1s var(--ease) 0.1s 3,
+    coach-avatar-pop 0.55s var(--ease);
+}
+
+@keyframes coach-avatar-pop {
+    0% {
+        scale: 0.62;
+    }
+    55% {
+        scale: 1.12;
+    }
+    100% {
+        scale: 1;
+    }
 }
 
 .relaxy-coach.is-flashing .relaxy-coach-panel {
-    animation: coach-panel-pop 0.55s var(--ease);
+    animation: coach-panel-pop 0.5s var(--ease);
 }
 
 @keyframes coach-attention {
@@ -2075,10 +2069,15 @@ main > .grid-2:first-child {
 
 @keyframes coach-panel-pop {
     0% {
-        transform: scale(0.94);
+        opacity: 0;
+        transform: scale(0.86) translateY(10px);
+    }
+    60% {
+        opacity: 1;
     }
     100% {
-        transform: scale(1);
+        opacity: 1;
+        transform: none;
     }
 }
 
@@ -2173,7 +2172,8 @@ main > .grid-2:first-child {
     animation: kofi-beat 1.9s ease-in-out infinite;
 }
 
-.kofi-button:hover .kofi-heart, .kofi-button:focus-visible .kofi-heart {
+.kofi-button:hover .kofi-heart, .kofi-button:focus-visible .kofi-heart,
+.kofi-cta:hover .kofi-heart, .kofi-cta:focus-visible .kofi-heart {
     animation-duration: 0.62s;
 }
 
@@ -2536,15 +2536,12 @@ main > .grid-2:first-child {
     transition: background var(--t-fast), transform var(--t-fast), color var(--t-fast);
 }
 
-.owner-links a::before {
-    content: "";
+.owner-icon {
     flex: none;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
-    transform: scale(0.55);
-    transition: transform var(--t-fast), box-shadow var(--t-fast);
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    transition: filter var(--t-fast), transform var(--t-fast);
 }
 
 .owner-links a:hover, .owner-links a:focus-visible {
@@ -2552,18 +2549,56 @@ main > .grid-2:first-child {
     transform: translateX(6px);
 }
 
-.owner-links a:hover::before, .owner-links a:focus-visible::before {
-    transform: scale(1);
-    box-shadow: 0 0 10px var(--accent);
+.owner-links a:hover .owner-icon, .owner-links a:focus-visible .owner-icon {
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 8px var(--accent));
 }
 
 .owner-note {
     color: var(--text-muted);
 }
 
+.inline-icon {
+    display: inline-block;
+    width: 1.05em;
+    height: 1.05em;
+    fill: currentColor;
+    vertical-align: -0.17em;
+    margin-right: 0.32em;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.icon-mail {
+    margin-right: 0.16em;
+}
+
+.tag-item {
+    white-space: nowrap;
+}
+
+.owner-contact {
+    color: var(--text-muted);
+}
+
+.owner-contact .sep {
+    margin: 0 0.45em;
+    color: var(--border-strong);
+}
+
 .owner-photo {
     position: relative;
-    width: 337px;
+    width: 420px;
     max-width: 100%;
     perspective: 1000px;
 }
@@ -2769,12 +2804,34 @@ main > .grid-2:first-child {
 }
 
 .tier-legend {
+    position: absolute;
+    top: clamp(var(--space-5), 4vw, var(--space-6));
+    right: clamp(var(--space-5), 4vw, var(--space-6));
+    z-index: 1;
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    margin: var(--space-3) 0 0;
-    font-size: 0.78rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: 0.72rem;
     color: var(--text-muted);
+}
+
+@media (min-width: 721px) {
+    #patreon-supporters .section-head {
+        padding-right: 190px;
+    }
+}
+
+@media (max-width: 720px) {
+    .tier-legend {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-2) var(--space-4);
+        margin: 0 0 var(--space-4);
+        font-size: 0.75rem;
+    }
 }
 
 .tier-key {

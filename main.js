@@ -253,8 +253,7 @@ const buildBackgroundFx = () =>
         }
     }
 
-    fx.innerHTML = '<svg class="bg-fx-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"'
-        + ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + parts.join('') + '</svg>';
+    fx.innerHTML = '<svg class="bg-fx-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"' + ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + parts.join('') + '</svg>';
 };
 
 const playEgg = (el, anim) =>
@@ -301,7 +300,7 @@ const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 
 const HEART_GLYPHS = [
-    '❤',
+    '❤️',
     '💖',
     '💕',
     '💗',
@@ -419,7 +418,9 @@ const NO_DRAG_SELECTOR = [
     '.topgg-link',
     '.botlist-link',
     '.node-card',
-    '.owner-flip'
+    '.owner-flip',
+    '.owner-text a',
+    '.tag-item'
 ].join(', ');
 
 const disableGhostDrag = () =>
@@ -676,19 +677,8 @@ const greetTheCurious = () =>
         return;
     }
 
-    console.log(
-        '%c  ___     _                 _ \n'
-        + ' | _ \\___| |__ _ __ ___  _| |\n'
-        + ' |   / -_) / _` \\ \\ / || |_|\n'
-        + ' |_|_\\___|_\\__,_/_\\_\\\\_, (_)\n'
-        + '                     |__/   ',
-        'color:#ff69b4;font-weight:700'
-    );
-    console.log(
-        '%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website'
-        + '\nMaybe there are some more eggs here to find....',
-        'color:#4a90e2'
-    );
+    console.log('%c  ___     _                 _ \n' + ' | _ \\___| |__ _ __ ___  _| |\n' + ' |   / -_) / _` \\ \\ / || |_|\n' + ' |_|_\\___|_\\__,_/_\\_\\\\_, (_)\n' + '                     |__/   ', 'color:#ff69b4;font-weight:700');
+    console.log('%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website' + '\nMaybe there are some more eggs here to find....', 'color:#4a90e2');
 };
 
 const fmtUptime = (seconds) =>
