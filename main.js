@@ -447,19 +447,133 @@ const attachKofi = () =>
 
 const OWNER_TILT_DEG = 9;
 
+const OWNER_IMG_BASE = 'https://cdn.relaxy.xyz/relaxy/website/img/people/';
+const OWNER_IMG_COUNT = 17;
+const OWNER_CURRENT = 'owner7';
+
 const attachOwnerCard = () =>
 {
     const photo = document.getElementById('ownerPhoto');
     const flip = photo && photo.querySelector('.owner-flip');
-    if (!flip)
+    const inner = flip && flip.querySelector('.owner-flip-inner');
+    const front = flip && flip.querySelector('.owner-front');
+    const back = flip && flip.querySelector('.owner-back');
+    if (!flip || !inner || !front || !back)
     {
         return;
     }
 
+    const urls = [];
+    for (let i = 1; i <= OWNER_IMG_COUNT; i++)
+    {
+        urls.push(OWNER_IMG_BASE + 'owner' + i + '.webp');
+    }
+
+    let currentIndex = urls.indexOf(OWNER_IMG_BASE + OWNER_CURRENT + '.webp');
+    if (currentIndex < 0)
+    {
+        currentIndex = 0;
+    }
+
+    let bag = [];
+
+    const refill = () =>
+    {
+        bag = urls.map((_, i) => i);
+        for (let i = bag.length - 1; i > 0; i--)
+        {
+            const j = Math.floor(Math.random() * (i + 1));
+            [bag[i], bag[j]] = [bag[j], bag[i]];
+        }
+    };
+
+    const draw = (exclude) =>
+    {
+        if (!bag.length)
+        {
+            refill();
+        }
+
+        let at = bag.findIndex((i) => i !== exclude);
+        if (at < 0)
+        {
+            refill();
+            at = bag.findIndex((i) => i !== exclude);
+            if (at < 0)
+            {
+                at = 0;
+            }
+        }
+
+        return bag.splice(at, 1)[0];
+    };
+
+    refill();
+    const usedAt = bag.indexOf(currentIndex);
+    if (usedAt >= 0)
+    {
+        bag.splice(usedAt, 1);
+    }
+
+    let frontIndex = currentIndex;
+    let backIndex = draw(currentIndex);
+    front.src = urls[frontIndex];
+    back.src = urls[backIndex];
+
+    let flipped = false;
+    let busy = false;
+
     flip.addEventListener('click', () =>
     {
-        const flipped = flip.classList.toggle('is-flipped');
+        if (busy)
+        {
+            return;
+        }
+        busy = true;
+
+        flipped = !flipped;
+        flip.classList.toggle('is-flipped', flipped);
         flip.setAttribute('aria-pressed', String(flipped));
+
+        const shownIndex = flipped
+            ? backIndex
+            : frontIndex;
+
+        let done = false;
+        const advance = () =>
+        {
+            if (done)
+            {
+                return;
+            }
+            done = true;
+            inner.removeEventListener('transitionend', onEnd);
+
+            const nextIndex = draw(shownIndex);
+            if (flipped)
+            {
+                frontIndex = nextIndex;
+                front.src = urls[nextIndex];
+            }
+            else
+            {
+                backIndex = nextIndex;
+                back.src = urls[nextIndex];
+            }
+
+            busy = false;
+        };
+
+        const onEnd = (e) =>
+        {
+            if (e.target === inner && e.propertyName === 'transform')
+            {
+                advance();
+            }
+        };
+
+        inner.addEventListener('transitionend', onEnd);
+        window.setTimeout(advance, 600);
     });
 
     if (prefersReducedMotion())
