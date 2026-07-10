@@ -409,6 +409,80 @@ const stopConfetti = () =>
     }
 };
 
+const NO_DRAG_SELECTOR = [
+    'img',
+    '.brand',
+    '.invite-button',
+    '.button-secondary',
+    '.kofi-button',
+    '.supporter-chip',
+    '.topgg-link',
+    '.botlist-link',
+    '.node-card',
+    '.owner-flip'
+].join(', ');
+
+const disableGhostDrag = () =>
+{
+    document.querySelectorAll(NO_DRAG_SELECTOR).forEach((el) => el.setAttribute('draggable', 'false'));
+
+    document.addEventListener('dragstart', (e) =>
+    {
+        const el = e.target;
+        if (el && el.closest && el.closest(NO_DRAG_SELECTOR))
+        {
+            e.preventDefault();
+        }
+    });
+};
+
+const attachKofi = () =>
+{
+    document.querySelectorAll('.kofi-button').forEach((button) =>
+    {
+        button.addEventListener('click', () => heartBurst(12));
+    });
+};
+
+const OWNER_TILT_DEG = 9;
+
+const attachOwnerCard = () =>
+{
+    const photo = document.getElementById('ownerPhoto');
+    const flip = photo && photo.querySelector('.owner-flip');
+    if (!flip)
+    {
+        return;
+    }
+
+    flip.addEventListener('click', () =>
+    {
+        const flipped = flip.classList.toggle('is-flipped');
+        flip.setAttribute('aria-pressed', String(flipped));
+    });
+
+    if (prefersReducedMotion())
+    {
+        return;
+    }
+
+    photo.addEventListener('pointermove', (e) =>
+    {
+        const box = photo.getBoundingClientRect();
+        const nx = (e.clientX - box.left) / box.width - 0.5;
+        const ny = (e.clientY - box.top) / box.height - 0.5;
+
+        flip.style.setProperty('--ry', (nx * OWNER_TILT_DEG * 2).toFixed(2) + 'deg');
+        flip.style.setProperty('--rx', (-ny * OWNER_TILT_DEG).toFixed(2) + 'deg');
+    });
+
+    photo.addEventListener('pointerleave', () =>
+    {
+        flip.style.removeProperty('--rx');
+        flip.style.removeProperty('--ry');
+    });
+};
+
 const attachEggs = () =>
 {
     const anims = [
@@ -723,9 +797,12 @@ const initPage = () =>
 {
     syncThemeButton();
     buildBackgroundFx();
+    disableGhostDrag();
     attachEggs();
     attachKeyboardEggs();
     attachButtonMagnet();
+    attachKofi();
+    attachOwnerCard();
     greetTheCurious();
     loadPiStats();
 

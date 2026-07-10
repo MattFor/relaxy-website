@@ -408,6 +408,23 @@ img {
     height: auto;
 }
 
+img,
+.brand,
+.invite-button,
+.button-secondary,
+.kofi-button,
+.supporter-chip,
+.topgg-link,
+.botlist-link,
+.node-card,
+.owner-flip {
+    -webkit-user-drag: none;
+}
+
+img {
+    user-select: none;
+}
+
 h1, h2, h3, h4 {
     line-height: 1.15;
     text-wrap: balance;
@@ -1046,6 +1063,20 @@ body.nav-open {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
     border-color: var(--border-strong);
+}
+
+.card:hover,
+.host-card:hover,
+.tech-stat:hover,
+.tech-tag:hover,
+.host-machine:hover {
+    border-color: var(--border-strong);
+}
+
+.host-card,
+.tech-stat,
+.host-machine {
+    transition: border-color var(--t);
 }
 
 .section {
@@ -2083,8 +2114,13 @@ main > .grid-2:first-child {
     color: var(--text-muted);
 }
 
-.patreon-content a {
-    display: inline-block;
+.kofi-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     margin-top: var(--space-2);
     font-size: 1.05rem;
     font-weight: 600;
@@ -2092,12 +2128,75 @@ main > .grid-2:first-child {
     border-radius: var(--radius-pill);
     background: var(--accent-soft);
     color: var(--accent);
-    transition: background var(--t-fast), color var(--t-fast);
+    border: 1px solid var(--accent-ring);
+    transition: color var(--t-fast), transform var(--t-fast), box-shadow var(--t), border-color var(--t-fast);
 }
 
-.patreon-content a:hover {
-    background: var(--accent);
+.kofi-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, var(--accent), var(--accent-2), #ff8a00, var(--accent));
+    background-size: 260% 100%;
+    opacity: 0;
+    transition: opacity var(--t);
+}
+
+.kofi-button:hover, .kofi-button:focus-visible {
     color: #fff;
+    border-color: transparent;
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.45);
+}
+
+.kofi-button:hover::before, .kofi-button:focus-visible::before {
+    opacity: 1;
+    animation: kofi-wash 2.4s linear infinite;
+}
+
+@keyframes kofi-wash {
+    to {
+        background-position: 260% 50%;
+    }
+}
+
+.kofi-heart {
+    display: inline-block;
+    transform-origin: center;
+    animation: kofi-beat 1.9s ease-in-out infinite;
+}
+
+.kofi-button:hover .kofi-heart, .kofi-button:focus-visible .kofi-heart {
+    animation-duration: 0.62s;
+}
+
+@keyframes kofi-beat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    12% {
+        transform: scale(1.28);
+    }
+    24% {
+        transform: scale(1);
+    }
+    36% {
+        transform: scale(1.18);
+    }
+    52% {
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kofi-heart {
+        animation: none;
+    }
+
+    .kofi-button:hover::before, .kofi-button:focus-visible::before {
+        animation: none;
+    }
 }
 
 .support-topgg-container {
@@ -2411,11 +2510,138 @@ main > .grid-2:first-child {
     margin: 0.4em 0;
 }
 
-.owner-grid img {
+.owner-links {
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+}
+
+.owner-links li {
+    margin: 0 0 var(--space-2);
+}
+
+.owner-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-weight: 600;
+    padding: 6px var(--space-3);
+    border-radius: var(--radius-sm);
+    transition: background var(--t-fast), transform var(--t-fast), color var(--t-fast);
+}
+
+.owner-links a::before {
+    content: "";
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    transform: scale(0.55);
+    transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+
+.owner-links a:hover, .owner-links a:focus-visible {
+    background: var(--accent-soft);
+    transform: translateX(6px);
+}
+
+.owner-links a:hover::before, .owner-links a:focus-visible::before {
+    transform: scale(1);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+.owner-note {
+    color: var(--text-muted);
+}
+
+.owner-photo {
+    position: relative;
     width: 337px;
     max-width: 100%;
+    perspective: 1000px;
+}
+
+.owner-flip {
+    display: block;
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.35s var(--ease);
+}
+
+.owner-flip-inner {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 337 / 244;
+    transform-style: preserve-3d;
+    transition: transform 0.75s var(--ease);
+}
+
+.owner-flip.is-flipped .owner-flip-inner {
+    transform: rotateY(180deg);
+}
+
+.owner-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 20%;
     box-shadow: var(--shadow-md);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.owner-back {
+    transform: rotateY(180deg);
+}
+
+.owner-photo::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    z-index: -1;
+    border-radius: 22%;
+    background: conic-gradient(var(--accent), var(--blue), #ffe600, var(--accent-2), var(--accent));
+    filter: blur(14px);
+    opacity: 0;
+    transition: opacity var(--t);
+}
+
+.owner-photo:hover::before {
+    opacity: 0.55;
+}
+
+.owner-hint {
+    position: absolute;
+    left: 50%;
+    bottom: -0.4rem;
+    translate: -50% 0;
+    padding: 3px var(--space-3);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--bg-elevated);
+    border: 1px solid var(--accent-ring);
+    border-radius: var(--radius-pill);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--t), bottom var(--t);
+}
+
+.owner-photo:hover .owner-hint,
+.owner-flip:focus-visible ~ .owner-hint {
+    opacity: 1;
+    bottom: -0.9rem;
 }
 
 @media (max-width: 600px) {
@@ -2428,6 +2654,21 @@ main > .grid-2:first-child {
     .owner-grid .owner-text, .owner-grid .owner-text h2 {
         text-align: center;
     }
+
+    .owner-links a {
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .owner-flip {
+        transform: none;
+    }
+
+    .owner-flip-inner,
+    .owner-flip.is-flipped .owner-flip-inner {
+        transition: none;
+    }
 }
 
 .supporter-grid {
@@ -2438,6 +2679,7 @@ main > .grid-2:first-child {
 }
 
 .supporter-chip {
+    position: relative;
     display: block;
     text-align: center;
     padding: var(--space-3);
@@ -2446,6 +2688,7 @@ main > .grid-2:first-child {
     border-radius: var(--radius-sm);
     color: var(--text);
     font-weight: 600;
+    cursor: grab;
     transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast), transform var(--t-fast);
 }
 
@@ -2454,6 +2697,147 @@ main > .grid-2:first-child {
     border-color: var(--accent-ring);
     background: var(--accent-soft);
     transform: translateY(-2px);
+}
+
+.supporter-chip[data-tier="donator"] {
+    --tier: var(--accent);
+}
+
+.supporter-chip[data-tier="supporter"] {
+    --tier: var(--blue);
+}
+
+.supporter-chip[data-tier="previous"] {
+    --tier: var(--text-muted);
+}
+
+.supporter-chip[data-tier]::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--tier);
+    opacity: 0.55;
+    transition: opacity var(--t-fast), box-shadow var(--t-fast);
+}
+
+.supporter-chip:hover::after,
+.supporter-chip:focus-visible::after {
+    opacity: 1;
+    box-shadow: 0 0 8px var(--tier);
+}
+
+.supporter-chip:hover,
+.supporter-chip:focus-visible {
+    z-index: 2;
+}
+
+.chip-tier {
+    position: absolute;
+    left: 50%;
+    bottom: -0.5rem;
+    translate: -50% 0;
+    padding: 1px var(--space-2);
+    font-family: var(--font);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--tier);
+    background: var(--bg-elevated);
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--t-fast), bottom var(--t-fast);
+}
+
+.supporter-chip:hover .chip-tier,
+.supporter-chip:focus-visible .chip-tier {
+    opacity: 1;
+    bottom: -0.8rem;
+}
+
+.tier-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-3) 0 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.tier-key {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.tier-key::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--tier);
+}
+
+.tier-key[data-tier="donator"] {
+    --tier: var(--accent);
+}
+
+.tier-key[data-tier="supporter"] {
+    --tier: var(--blue);
+}
+
+.tier-key[data-tier="previous"] {
+    --tier: var(--text-muted);
+}
+
+.supporter-chip.is-dragging {
+    z-index: 3;
+    cursor: grabbing;
+    transition: none;
+    box-shadow: var(--shadow-lg);
+}
+
+.chip-heart {
+    --drift: 0px;
+
+    position: absolute;
+    top: 6px;
+    line-height: 1;
+    color: var(--accent);
+    pointer-events: none;
+    user-select: none;
+    animation: chip-heart-float 1.2s var(--ease) forwards;
+}
+
+@keyframes chip-heart-float {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.4);
+    }
+    22% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--drift)), -48px) scale(0.9);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chip-heart {
+        display: none;
+    }
+
+    .supporter-chip {
+        cursor: pointer;
+    }
 }
 
 .request-list {
@@ -2876,6 +3260,7 @@ html.js .reveal {
     background: var(--bg-inset);
     border: 1px solid var(--border);
     color: var(--text-muted);
+    transition: border-color var(--t);
 }
 
 .tech-tree {

@@ -439,6 +439,123 @@
         layout(-1);
     };
 
+    const HEART_GLYPHS = [
+        '❤',
+        '💖',
+        '💕',
+        '💗',
+        '💓'
+    ];
+
+    const spawnChipHeart = (chip) =>
+    {
+        const heart = document.createElement('span');
+        heart.className = 'chip-heart';
+        heart.textContent = HEART_GLYPHS[Math.floor(Math.random() * HEART_GLYPHS.length)];
+        heart.setAttribute('aria-hidden', 'true');
+        heart.style.left = (14 + Math.random() * 72).toFixed(1) + '%';
+        heart.style.fontSize = (0.65 + Math.random() * 0.5).toFixed(2) + 'rem';
+        heart.style.setProperty('--drift', Math.round(Math.random() * 44 - 22) + 'px');
+        heart.style.animationDuration = (0.95 + Math.random() * 0.7).toFixed(2) + 's';
+
+        chip.appendChild(heart);
+        heart.addEventListener('animationend', () => heart.remove(), { once: true });
+    };
+
+    const initSupporters = () =>
+    {
+        const chips = Array.from(document.querySelectorAll('.supporter-chip'));
+        if (!chips.length)
+        {
+            return;
+        }
+
+        chips.forEach((chip) =>
+        {
+            if (!reduceMotion)
+            {
+                let hearts = 0;
+
+                const stopHearts = () =>
+                {
+                    window.clearInterval(hearts);
+                    hearts = 0;
+                };
+
+                chip.addEventListener('pointerenter', () =>
+                {
+                    stopHearts();
+                    spawnChipHeart(chip);
+                    hearts = window.setInterval(() => spawnChipHeart(chip), 260);
+                });
+
+                chip.addEventListener('pointerleave', stopHearts);
+                chip.addEventListener('pointercancel', stopHearts);
+            }
+
+            if (!canDrag)
+            {
+                return;
+            }
+
+            let dragging = false;
+            let startX = 0;
+            let startY = 0;
+            let moved = 0;
+
+            chip.addEventListener('pointerdown', (e) =>
+            {
+                e.preventDefault();
+                dragging = true;
+                moved = 0;
+                startX = e.clientX;
+                startY = e.clientY;
+                chip.classList.add('is-dragging');
+                capture(chip, e);
+            });
+
+            chip.addEventListener('pointermove', (e) =>
+            {
+                if (!dragging)
+                {
+                    return;
+                }
+
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                moved = Math.max(moved, Math.hypot(dx, dy));
+                chip.style.transform = 'translate(' + dx.toFixed(1) + 'px, ' + dy.toFixed(1) + 'px)';
+            });
+
+            const stop = (e) =>
+            {
+                if (!dragging)
+                {
+                    return;
+                }
+
+                dragging = false;
+                release(chip, e);
+                chip.classList.remove('is-dragging');
+
+                chip.style.transform = '';
+            };
+
+            chip.addEventListener('pointerup', stop);
+            chip.addEventListener('pointercancel', stop);
+
+            chip.addEventListener('click', (e) =>
+            {
+                if (moved > 4)
+                {
+                    e.preventDefault();
+                }
+                moved = 0;
+            });
+        });
+    };
+
     initMatrixWeb();
     initBotlistOrder();
+    initSupporters();
 })();

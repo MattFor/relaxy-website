@@ -1036,6 +1036,34 @@
             }
         });
 
+        let helpTyped = '';
+        document.addEventListener('keydown', (e) =>
+        {
+            const tag = e.target.tagName;
+            if (e.key.length !== 1 || tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable)
+            {
+                return;
+            }
+
+            helpTyped = (helpTyped + e.key.toLowerCase()).slice(-4);
+            if (helpTyped !== 'help')
+            {
+                return;
+            }
+
+            helpTyped = '';
+
+            e.preventDefault();
+
+            untuck();
+            openSearch();
+
+            if (input)
+            {
+                input.value = '';
+            }
+        });
+
         reveal();
 
         const commandsSection = document.getElementById('commands');
