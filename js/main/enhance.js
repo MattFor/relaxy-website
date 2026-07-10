@@ -967,9 +967,6 @@
 
         if (avatar)
         {
-            // A double-click tucks Relaxy! away or brings her back. Hold the
-            // single-click action briefly so the first click of a double-click
-            // does not flash the search panel open before it tucks.
             let clickTimer = 0;
 
             avatar.addEventListener('click', () =>

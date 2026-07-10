@@ -24,6 +24,12 @@
             nav: true
         },
         {
+            name: 'Minecraft',
+            short: 'Minecraft',
+            link: '/subpages/minecraft',
+            nav: true
+        },
+        {
             name: 'Dashboard',
             short: 'Dashboard',
             link: '/subpages/dashboard',

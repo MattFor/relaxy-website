@@ -590,6 +590,32 @@
         heart.addEventListener('animationend', () => heart.remove(), { once: true });
     };
 
+    const attachHearts = (el) =>
+    {
+        if (reduceMotion || !el)
+        {
+            return;
+        }
+
+        let hearts = 0;
+
+        const stopHearts = () =>
+        {
+            window.clearInterval(hearts);
+            hearts = 0;
+        };
+
+        el.addEventListener('pointerenter', () =>
+        {
+            stopHearts();
+            spawnChipHeart(el);
+            hearts = window.setInterval(() => spawnChipHeart(el), 260);
+        });
+
+        el.addEventListener('pointerleave', stopHearts);
+        el.addEventListener('pointercancel', stopHearts);
+    };
+
     const initSupporters = () =>
     {
         const chips = Array.from(document.querySelectorAll('.supporter-chip'));
@@ -600,26 +626,7 @@
 
         chips.forEach((chip) =>
         {
-            if (!reduceMotion)
-            {
-                let hearts = 0;
-
-                const stopHearts = () =>
-                {
-                    window.clearInterval(hearts);
-                    hearts = 0;
-                };
-
-                chip.addEventListener('pointerenter', () =>
-                {
-                    stopHearts();
-                    spawnChipHeart(chip);
-                    hearts = window.setInterval(() => spawnChipHeart(chip), 260);
-                });
-
-                chip.addEventListener('pointerleave', stopHearts);
-                chip.addEventListener('pointercancel', stopHearts);
-            }
+            attachHearts(chip);
 
             if (!canDrag)
             {
@@ -683,7 +690,13 @@
         });
     };
 
+    const initLegendHearts = () =>
+    {
+        attachHearts(document.querySelector('.tier-key[data-tier="supporter"]'));
+    };
+
     initMatrixWeb();
     initBotlistOrder();
     initSupporters();
+    initLegendHearts();
 })();
