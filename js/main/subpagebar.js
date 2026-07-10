@@ -80,8 +80,6 @@
     const top = document.getElementById('topnav');
     if (top)
     {
-        const onHome = top.children.length > 0;
-
         const makePill = (p) =>
         {
             const a = document.createElement('a');
@@ -137,44 +135,92 @@
         const rest = pages.filter((p) => !p.nav && p.link !== '/');
         const home = pages.find((p) => p.link === '/');
 
-        const homePill = makePill(home);
-        top.insertBefore(homePill, top.firstChild);
-        const homeSep = document.createElement('span');
-        homeSep.className = 'nav-sep';
-        homeSep.setAttribute('aria-hidden', 'true');
-        top.insertBefore(homeSep, homePill.nextSibling);
-
-        if (onHome)
+        const makeSep = () =>
         {
             const sep = document.createElement('span');
             sep.className = 'nav-sep';
             sep.setAttribute('aria-hidden', 'true');
-            top.appendChild(sep);
-            top.appendChild(buildMore(rest, services));
-        }
-        else
-        {
-            rest.forEach((p) => top.appendChild(makePill(p)));
-            top.appendChild(buildMore(services));
-        }
+            return sep;
+        };
 
-        const details = top.querySelector('.nav-more');
-        if (details)
+        const hasSections = top.querySelectorAll(':scope > a[href^="#"]').length > 0;
+
+        const renderNav = (compact) =>
         {
-            details.addEventListener('click', (e) =>
+            Array.from(top.children).forEach((el) =>
             {
-                if (e.target.tagName === 'A')
+                if (!el.matches('a[href^="#"]'))
                 {
-                    details.removeAttribute('open');
+                    el.remove();
                 }
             });
-            document.addEventListener('click', (e) =>
+
+            if (hasSections)
             {
-                if (!details.contains(e.target))
-                {
-                    details.removeAttribute('open');
-                }
-            });
-        }
+                top.appendChild(makeSep());
+            }
+
+            top.appendChild(makePill(home));
+
+            if (!compact)
+            {
+                rest.forEach((p) => top.appendChild(makePill(p)));
+            }
+
+            top.appendChild(compact
+                ? buildMore(rest, services)
+                : buildMore(services));
+        };
+
+        const spillsOntoTwoLines = () =>
+        {
+            const tallest = Array.from(top.children)
+            .reduce((max, el) => Math.max(max, el.offsetHeight), 0);
+
+            return tallest > 0 && top.offsetHeight > tallest * 1.5;
+        };
+
+        const fitNav = () =>
+        {
+            renderNav(false);
+            if (spillsOntoTwoLines())
+            {
+                renderNav(true);
+            }
+        };
+
+        fitNav();
+
+        let fitTimer;
+        let fitWidth = window.innerWidth;
+        window.addEventListener('resize', () =>
+        {
+            if (window.innerWidth === fitWidth)
+            {
+                return;
+            }
+
+            fitWidth = window.innerWidth;
+            window.clearTimeout(fitTimer);
+            fitTimer = window.setTimeout(fitNav, 150);
+        });
+
+        top.addEventListener('click', (e) =>
+        {
+            const details = top.querySelector('.nav-more');
+            if (details && e.target.tagName === 'A')
+            {
+                details.removeAttribute('open');
+            }
+        });
+
+        document.addEventListener('click', (e) =>
+        {
+            const details = top.querySelector('.nav-more');
+            if (details && !details.contains(e.target))
+            {
+                details.removeAttribute('open');
+            }
+        });
     }
 })();

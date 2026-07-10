@@ -30,25 +30,41 @@ const toggleTheme = () =>
     }
     catch (e)
     {
-        // storage unavailable so theme won't persist
+        // Storage unavailable so theme won't persist
     }
 
     syncThemeButton();
 };
 
-let bgFxSize = '';
+let bgFxW = 0;
+let bgFxH = 0;
+
+const BG_FX_H_TOLERANCE = 200;
 
 const buildBackgroundFx = () =>
 {
-    const W = Math.max(320, window.innerWidth);
-    const H = Math.max(320, window.innerHeight);
+    let fx = document.querySelector('.bg-fx');
+    const isNew = !fx;
 
-    const key = W + 'x' + H;
-    if (document.querySelector('.bg-fx') && key === bgFxSize)
+    if (isNew)
+    {
+        fx = document.createElement('div');
+        fx.className = 'bg-fx';
+        fx.setAttribute('aria-hidden', 'true');
+        document.body.prepend(fx);
+    }
+
+    const box = fx.getBoundingClientRect();
+    const W = Math.max(320, Math.round(box.width) || window.innerWidth);
+    const H = Math.max(320, Math.round(box.height) || window.innerHeight);
+
+    if (!isNew && W === bgFxW && Math.abs(H - bgFxH) <= BG_FX_H_TOLERANCE)
     {
         return;
     }
-    bgFxSize = key;
+
+    bgFxW = W;
+    bgFxH = H;
 
     const grid = 20;
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -79,13 +95,34 @@ const buildBackgroundFx = () =>
         ];
     };
 
+    const inset = Math.min(120, Math.round(Math.min(W, H) * 0.12));
+    const minX = inset;
+    const maxX = W - inset;
+    const minY = inset;
+    const maxY = H - inset;
+
+    const flowPoint = () => [
+        clamp(snap(rnd(minX, maxX)), minX, maxX),
+        clamp(snap(rnd(minY, maxY)), minY, maxY)
+    ];
+
+    const bounceTo = (v, len, lo, hi) =>
+    {
+        const forward = v + len;
+        return clamp(snap(forward < lo || forward > hi
+            ? v - len
+            : forward), lo, hi);
+    };
+
     const parts = [];
     const nodes = [];
     const flows = [];
 
     const trace = (flow) =>
     {
-        const start = edgePoint();
+        const start = flow
+            ? flowPoint()
+            : edgePoint();
         let x = start[0];
         let y = start[1];
         let d = 'M' + x + ' ' + y;
@@ -96,21 +133,28 @@ const buildBackgroundFx = () =>
         let pathLen = 0;
         for (let i = 0; i < segs; i++)
         {
+            const span = horiz
+                ? maxX - minX
+                : maxY - minY;
             const len = snap(flow
-                ? rnd(160, 440)
+                ? Math.min(rnd(160, 440), span)
                 : rnd(80, 300)) * (chance(0.5)
                 ? 1
                 : -1);
             if (horiz)
             {
-                const nx = clamp(x + len, 0, W);
+                const nx = flow
+                    ? bounceTo(x, len, minX, maxX)
+                    : clamp(x + len, 0, W);
                 pathLen += Math.abs(nx - x);
                 x = nx;
                 d += ' H' + x;
             }
             else
             {
-                const ny = clamp(y + len, 0, H);
+                const ny = flow
+                    ? bounceTo(y, len, minY, maxY)
+                    : clamp(y + len, 0, H);
                 pathLen += Math.abs(ny - y);
                 y = ny;
                 d += ' V' + y;
@@ -209,20 +253,160 @@ const buildBackgroundFx = () =>
         }
     }
 
-    const svg = '<svg class="bg-fx-svg" xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + parts.join('') + '</svg>';
+    fx.innerHTML = '<svg class="bg-fx-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"'
+        + ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + parts.join('') + '</svg>';
+};
 
-    const existing = document.querySelector('.bg-fx');
-    if (existing)
+const playEgg = (el, anim) =>
+{
+    if (el.dataset.egging)
     {
-        existing.remove();
+        return;
     }
 
-    const fx = document.createElement('div');
-    fx.className = 'bg-fx';
-    fx.setAttribute('aria-hidden', 'true');
-    fx.innerHTML = svg;
+    el.dataset.egging = '1';
+    el.classList.add(anim);
+    el.addEventListener('animationend', () =>
+    {
+        el.classList.remove(anim);
+        delete el.dataset.egging;
+    }, { once: true });
+};
 
-    document.body.prepend(fx);
+const eggToast = (text) =>
+{
+    const previous = document.querySelector('.egg-toast');
+    if (previous)
+    {
+        previous.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'egg-toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = text;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
+    window.setTimeout(() =>
+    {
+        toast.classList.remove('is-visible');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+    }, 2800);
+};
+
+const prefersReducedMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+const rand = (a, b) => a + Math.random() * (b - a);
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
+
+const HEART_GLYPHS = [
+    '❤',
+    '💖',
+    '💕',
+    '💗',
+    '💓',
+    '💘'
+];
+
+const heartBurst = (count) =>
+{
+    if (prefersReducedMotion())
+    {
+        return;
+    }
+
+    for (let i = 0; i < count; i++)
+    {
+        const heart = document.createElement('span');
+        heart.className = 'egg-heart';
+        heart.textContent = pick(HEART_GLYPHS);
+        heart.setAttribute('aria-hidden', 'true');
+        heart.style.left = rand(2, 98).toFixed(2) + 'vw';
+        heart.style.top = rand(20, 95).toFixed(2) + 'vh';
+        heart.style.fontSize = rand(0.9, 2.4).toFixed(2) + 'rem';
+        heart.style.setProperty('--drift', Math.round(rand(-140, 140)) + 'px');
+        heart.style.setProperty('--rise', Math.round(rand(150, 380)) + 'px');
+        heart.style.setProperty('--tilt', Math.round(rand(-35, 35)) + 'deg');
+        heart.style.animationDuration = rand(1.6, 3.1).toFixed(2) + 's';
+        heart.style.animationDelay = rand(0, 0.7).toFixed(2) + 's';
+        document.body.appendChild(heart);
+        heart.addEventListener('animationend', () => heart.remove(), { once: true });
+    }
+};
+
+const CONFETTI_COLORS = [
+    '#ff69b4',
+    '#ff4069',
+    '#4a90e2',
+    '#ffe600',
+    '#38d430',
+    '#9b4dff',
+    '#00c2ff',
+    '#ff8a00'
+];
+
+let confettiLayer = null;
+let confettiTimer = 0;
+
+const dropConfetti = (count) =>
+{
+    if (prefersReducedMotion())
+    {
+        return;
+    }
+
+    if (!confettiLayer)
+    {
+        confettiLayer = document.createElement('div');
+        confettiLayer.className = 'egg-confetti';
+        confettiLayer.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(confettiLayer);
+    }
+
+    for (let i = 0; i < count; i++)
+    {
+        const bit = document.createElement('span');
+        bit.className = 'egg-confetti-bit';
+        bit.style.left = rand(0, 100).toFixed(2) + 'vw';
+        bit.style.background = pick(CONFETTI_COLORS);
+        bit.style.setProperty('--drift', Math.round(rand(-160, 160)) + 'px');
+        bit.style.setProperty('--spin', Math.round(rand(-900, 900)) + 'deg');
+        bit.style.animationDuration = rand(2.4, 4.6).toFixed(2) + 's';
+        bit.style.animationDelay = rand(0, 0.6).toFixed(2) + 's';
+
+        if (Math.random() < 0.35)
+        {
+            bit.style.borderRadius = '50%';
+        }
+
+        confettiLayer.appendChild(bit);
+        bit.addEventListener('animationend', () => bit.remove(), { once: true });
+    }
+};
+
+const startConfetti = () =>
+{
+    if (prefersReducedMotion() || confettiTimer)
+    {
+        return;
+    }
+
+    dropConfetti(70);
+
+    confettiTimer = window.setInterval(() => dropConfetti(16), 700);
+};
+
+const stopConfetti = () =>
+{
+    window.clearInterval(confettiTimer);
+    confettiTimer = 0;
+
+    if (confettiLayer)
+    {
+        confettiLayer.remove();
+        confettiLayer = null;
+    }
 };
 
 const attachEggs = () =>
@@ -232,25 +416,304 @@ const attachEggs = () =>
         'egg-wobble',
         'egg-jump'
     ];
+
     const targets = document.querySelectorAll('.hero-logo, .footer-relaxy, .patreon-image, .eng-icon');
     targets.forEach((el) =>
     {
+        let clicks = 0;
         el.style.cursor = 'pointer';
         el.addEventListener('click', () =>
         {
-            if (el.dataset.egging)
+            clicks += 1;
+
+            // Every fifth poke escalates from a nudge into a full barrel roll :D
+            if (clicks % 5 === 0)
+            {
+                playEgg(el, 'egg-roll');
+                return;
+            }
+
+            playEgg(el, anims[Math.floor(Math.random() * anims.length)]);
+        });
+    });
+};
+
+const KONAMI = [
+    'ArrowUp',
+    'ArrowUp',
+    'ArrowDown',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'ArrowLeft',
+    'ArrowRight',
+    'b',
+    'a'
+];
+
+const LOVE_WORDS = [
+    {
+        word: 'iloverelaxy',
+        hearts: 46,
+        confetti: true,
+        toast: 'Relaxy! loves you MORE. 💞'
+    },
+    {
+        word: 'iloveyou',
+        hearts: 46,
+        confetti: true,
+        toast: 'Relaxy! loves you MORE. 💞'
+    },
+    {
+        word: 'relaxy',
+        hearts: 20,
+        confetti: false,
+        toast: 'Relaxy! loves you too.'
+    },
+    {
+        word: 'love',
+        hearts: 10,
+        confetti: false,
+        toast: 'Aww. Love you too. 💗'
+    }
+];
+
+const LOVE_SETTLE_MS = 500;
+
+const attachKeyboardEggs = () =>
+{
+    let konamiAt = 0;
+    let typed = '';
+    let settleTimer = 0;
+
+    document.addEventListener('keydown', (e) =>
+    {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable)
+        {
+            return;
+        }
+
+        const key = e.key.length === 1
+            ? e.key.toLowerCase()
+            : e.key;
+
+        konamiAt = key === KONAMI[konamiAt]
+            ? konamiAt + 1
+            : (key === KONAMI[0]
+                ? 1
+                : 0);
+
+        if (konamiAt === KONAMI.length)
+        {
+            konamiAt = 0;
+
+            const on = document.documentElement.classList.toggle('party-mode');
+            if (on)
+            {
+                startConfetti();
+            }
+            else
+            {
+                stopConfetti();
+            }
+
+            eggToast(on
+                ? 'Party mode! Relaxy! is dancing.'
+                : 'Party over. Back to work.');
+            return;
+        }
+
+        if (e.key.length !== 1)
+        {
+            return;
+        }
+
+        typed = (typed + key).slice(-16);
+
+        window.clearTimeout(settleTimer);
+        settleTimer = window.setTimeout(() =>
+        {
+            const hit = LOVE_WORDS.find((entry) => typed.endsWith(entry.word));
+            if (!hit)
             {
                 return;
             }
-            const anim = anims[Math.floor(Math.random() * anims.length)];
-            el.dataset.egging = '1';
-            el.classList.add(anim);
-            el.addEventListener('animationend', () =>
+
+            typed = '';
+
+            heartBurst(hit.hearts);
+            eggToast(hit.toast);
+
+            if (hit.confetti)
             {
-                el.classList.remove(anim);
-                delete el.dataset.egging;
-            }, { once: true });
+                dropConfetti(80);
+            }
+
+            const mascot = document.querySelector('.hero-logo') || document.querySelector('.relaxy-coach-avatar');
+            if (mascot)
+            {
+                playEgg(mascot, 'egg-jump');
+            }
+        }, LOVE_SETTLE_MS);
+    });
+};
+
+const BUTTON_TILT_DEG = 13;
+const BUTTON_PULL_PX = 7;
+
+const attachButtonMagnet = () =>
+{
+    if (prefersReducedMotion())
+    {
+        return;
+    }
+
+    document.querySelectorAll('.button-secondary').forEach((button) =>
+    {
+        button.addEventListener('pointermove', (e) =>
+        {
+            const box = button.getBoundingClientRect();
+            const nx = (e.clientX - box.left) / box.width - 0.5;
+            const ny = (e.clientY - box.top) / box.height - 0.5;
+
+            button.style.setProperty('--ry', (nx * BUTTON_TILT_DEG * 2).toFixed(2) + 'deg');
+            button.style.setProperty('--rx', (-ny * BUTTON_TILT_DEG).toFixed(2) + 'deg');
+            button.style.setProperty('--tx', (nx * BUTTON_PULL_PX * 2).toFixed(2) + 'px');
+            button.style.setProperty('--ty', (ny * BUTTON_PULL_PX).toFixed(2) + 'px');
         });
+
+        button.addEventListener('pointerleave', () =>
+        {
+            [
+                '--rx',
+                '--ry',
+                '--tx',
+                '--ty'
+            ].forEach((prop) => button.style.removeProperty(prop));
+        });
+    });
+};
+
+const greetTheCurious = () =>
+{
+    if (!window.console || !console.log)
+    {
+        return;
+    }
+
+    console.log(
+        '%c  ___     _                 _ \n'
+        + ' | _ \\___| |__ _ __ ___  _| |\n'
+        + ' |   / -_) / _` \\ \\ / || |_|\n'
+        + ' |_|_\\___|_\\__,_/_\\_\\\\_, (_)\n'
+        + '                     |__/   ',
+        'color:#ff69b4;font-weight:700'
+    );
+    console.log(
+        '%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website'
+        + '\nMaybe there are some more eggs here to find....',
+        'color:#4a90e2'
+    );
+};
+
+const fmtUptime = (seconds) =>
+{
+    const s = Math.max(0, Math.floor(seconds));
+    const d = Math.floor(s / 86400);
+    const h = Math.floor((s % 86400) / 3600);
+    const m = Math.floor((s % 3600) / 60);
+
+    if (d > 0)
+    {
+        return d + 'd ' + h + 'h';
+    }
+
+    return h > 0
+        ? h + 'h ' + m + 'm'
+        : m + 'm';
+};
+
+const piFields = {
+    os: (d) => d.os,
+    arch: (d) => d.arch,
+    cores: (d) => (d.cpu && d.cpu.cores != null
+        ? d.cpu.cores + ' cores'
+        : null),
+    mem: (d) => (d.memory && d.memory.usedGb != null && d.memory.totalGb != null
+        ? d.memory.usedGb + ' / ' + d.memory.totalGb + ' GB'
+        : null),
+    uptime: (d) => (typeof d.uptimeSeconds === 'number'
+        ? fmtUptime(d.uptimeSeconds)
+        : null),
+    temp: (d) => (typeof d.temperatureC === 'number'
+        ? d.temperatureC.toFixed(1) + ' °C'
+        : null)
+};
+
+const PI_ONLINE_ENDPOINT = 'https://on.relaxy.xyz/';
+
+const setPiStatus = (badge, state, label) =>
+{
+    badge.classList.remove('is-up', 'is-down', 'is-checking');
+    badge.classList.add(state);
+    badge.querySelector('.status-text').textContent = label;
+};
+
+const checkPiOnline = () =>
+{
+    const badge = document.getElementById('piStatus');
+    if (!badge || !('fetch' in window))
+    {
+        return;
+    }
+
+    setPiStatus(badge, 'is-checking', 'Checking');
+
+    fetch(PI_ONLINE_ENDPOINT, { cache: 'no-store' })
+    .then((res) => res.text())
+    .then((body) => body.trim() === '1')
+    .catch(() => fetch(PI_ONLINE_ENDPOINT, {
+        cache: 'no-store',
+        mode: 'no-cors'
+    }).then(() => true))
+    .then((up) => setPiStatus(badge, up
+        ? 'is-up'
+        : 'is-down', up
+        ? 'Online'
+        : 'Offline'))
+    .catch(() => setPiStatus(badge, 'is-down', 'Offline'));
+};
+
+const loadPiStats = () =>
+{
+    const card = document.getElementById('hostMachine');
+    if (!card || !('fetch' in window))
+    {
+        return;
+    }
+
+    fetch('/status.json', { cache: 'no-store' })
+    .then((res) => (res.ok
+        ? res.json()
+        : Promise.reject(res.status)))
+    .then((data) =>
+    {
+        Object.keys(piFields).forEach((key) =>
+        {
+            const cell = card.querySelector('[data-pi="' + key + '"]');
+            const value = piFields[key](data);
+            if (cell && value != null && value !== '')
+            {
+                cell.textContent = value;
+            }
+        });
+
+        card.classList.add('is-live');
+    })
+    .catch(() =>
+    {
+        // Feed is down;
     });
 };
 
@@ -261,6 +724,16 @@ const initPage = () =>
     syncThemeButton();
     buildBackgroundFx();
     attachEggs();
+    attachKeyboardEggs();
+    attachButtonMagnet();
+    greetTheCurious();
+    loadPiStats();
+
+    if (document.getElementById('piStatus'))
+    {
+        checkPiOnline();
+        window.setInterval(checkPiOnline, 60000);
+    }
 };
 
 if (document.readyState === 'loading')
@@ -273,8 +746,16 @@ else
 }
 
 let bgFxTimer;
+let bgFxLastW = window.innerWidth;
+
 window.addEventListener('resize', () =>
 {
+    if (window.innerWidth === bgFxLastW)
+    {
+        return;
+    }
+
+    bgFxLastW = window.innerWidth;
     clearTimeout(bgFxTimer);
     bgFxTimer = setTimeout(buildBackgroundFx, 250);
 });

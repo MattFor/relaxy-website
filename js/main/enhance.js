@@ -831,6 +831,8 @@
                 {
                     resizeHandle.releasePointerCapture(e.pointerId);
                 }
+
+                coach.classList.remove('is-resizing');
                 window.removeEventListener('pointermove', onMove);
                 window.removeEventListener('pointerup', onUp);
             };
@@ -842,10 +844,13 @@
                 startY = e.clientY;
                 startW = panel.getBoundingClientRect().width;
                 startH = result.getBoundingClientRect().height;
+
                 if (resizeHandle.setPointerCapture)
                 {
                     resizeHandle.setPointerCapture(e.pointerId);
                 }
+
+                coach.classList.add('is-resizing');
                 window.addEventListener('pointermove', onMove);
                 window.addEventListener('pointerup', onUp);
             });

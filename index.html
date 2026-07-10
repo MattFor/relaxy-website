@@ -258,19 +258,49 @@
                 relaxy.xyz roof.</p>
         </div>
 
-        <div class="host-strip">
-            <span class="host-strip-name">
-                <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="16" x="4"
-                                                                                                                                                                    y="4"/><rect height="6" width="6"
-                                                                                                                                                                                 x="9" y="9"/><path
-                        d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
-                relaxy-pi
-            </span> <span class="host-strip-stat"><b>4</b> services</span> <span class="host-strip-stat"><b>100%</b> self-hosted</span> <span class="host-strip-stat"><b>$0</b> cloud bills</span> <span
-                class="host-strip-stat host-strip-live"><span class="live-dot" aria-hidden="true"></span> all systems live</span>
+        <div class="host-machine" id="hostMachine">
+            <div class="host-machine-head">
+                <span class="host-machine-id">
+                    <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="16"
+                                                                                                                                                                        x="4" y="4"/><rect height="6"
+                                                                                                                                                                                           width="6" x="9"
+                                                                                                                                                                                           y="9"/><path
+                            d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+                    relaxy-pi
+                </span> <span aria-live="polite" class="status-badge is-up" id="piStatus"><span class="dot" aria-hidden="true"></span> <span class="status-text">Online</span></span>
+            </div>
+            <dl class="host-machine-specs">
+                <div class="host-spec">
+                    <dt>OS</dt>
+                    <dd data-pi="os">Void Linux</dd>
+                </div>
+                <div class="host-spec">
+                    <dt>Arch</dt>
+                    <dd data-pi="arch">aarch64</dd>
+                </div>
+                <div class="host-spec">
+                    <dt>CPU</dt>
+                    <dd data-pi="cores">4 cores</dd>
+                </div>
+                <div class="host-spec">
+                    <dt>Memory</dt>
+                    <dd data-pi="mem">7.6 GB</dd>
+                </div>
+                <div class="host-spec">
+                    <dt>Uptime</dt>
+                    <dd data-pi="uptime">—</dd>
+                </div>
+                <div class="host-spec">
+                    <dt>CPU temp</dt>
+                    <dd data-pi="temp">—</dd>
+                </div>
+            </dl>
+            <p class="host-machine-services">Runs <b>4</b> services around the clock: this site, the Matrix homeserver, the CDN and the dashboard. <a href="/subpages/technical#live">See the live
+                hardware readout</a>.</p>
         </div>
 
         <div class="node-grid">
-            <a class="node-card" href="/subpages/technical"> <span class="node-status is-up"><span class="node-dot" aria-hidden="true"></span>Online</span> <span class="node-icon"><svg fill="none"
+            <a class="node-card" draggable="false" href="/subpages/technical"> <span class="node-status is-up"><span class="node-dot" aria-hidden="true"></span>Online</span> <span class="node-icon"><svg fill="none"
                                                                                                                                                                                          stroke="currentColor"
                                                                                                                                                                                          stroke-linecap="round"
                                                                                                                                                                                          stroke-linejoin="round"
@@ -282,7 +312,7 @@
                 <p class="node-desc">This page you're on right now, served straight off the Pi. Built to be as fast as possible.</p>
                 <span class="node-go">How it's built</span> </a>
 
-            <a class="node-card" href="/subpages/matrix"> <span class="node-status is-up"><span class="node-dot" aria-hidden="true"></span>Online</span> <span class="node-icon"><svg fill="none"
+            <a class="node-card" draggable="false" href="/subpages/matrix"> <span class="node-status is-up"><span class="node-dot" aria-hidden="true"></span>Online</span> <span class="node-icon"><svg fill="none"
                                                                                                                                                                                       stroke="currentColor"
                                                                                                                                                                                       stroke-linecap="round"
                                                                                                                                                                                       stroke-linejoin="round"
@@ -294,7 +324,7 @@
                 <p class="node-desc">My own private, encrypted Matrix homeserver. Make an account and hang out. Made especially to circumvent EU chat control.</p>
                 <span class="node-go">Join the server</span> </a>
 
-            <a class="node-card" href="/subpages/cdn"> <span class="node-status is-up"><span class="node-dot" aria-hidden="true"></span>Online</span> <span class="node-icon"><svg fill="none"
+            <a class="node-card" draggable="false" href="/subpages/cdn"> <span class="node-status is-up"><span class="node-dot" aria-hidden="true"></span>Online</span> <span class="node-icon"><svg fill="none"
                                                                                                                                                                                    stroke="currentColor"
                                                                                                                                                                                    stroke-linecap="round"
                                                                                                                                                                                    stroke-linejoin="round"
@@ -306,7 +336,7 @@
                 <p class="node-desc">A self-run content delivery network. Every image, asset and file the bot and site use is served from here.</p>
                 <span class="node-go">Browse the CDN</span> </a>
 
-            <a class="node-card is-wip" href="/subpages/dashboard"> <span class="node-status is-building"><span class="node-dot" aria-hidden="true"></span>Building</span> <span class="node-icon"><svg
+            <a class="node-card is-wip" draggable="false" href="/subpages/dashboard"> <span class="node-status is-building"><span class="node-dot" aria-hidden="true"></span>Building</span> <span class="node-icon"><svg
                     fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="9" rx="1" width="7" x="3" y="3"/><rect
                     height="5" rx="1" width="7" x="14" y="3"/><rect height="9" rx="1" width="7" x="14" y="12"/><rect height="5" rx="1" width="7" x="3" y="16"/></svg></span>
                 <h3 class="node-name">The dashboard</h3>
@@ -355,31 +385,41 @@
             <section class="card support-section">
                 <svg class="matrix-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
                     <g class="ma-links">
-                        <line x1="110" y1="62" x2="34" y2="30"/>
-                        <line x1="110" y1="62" x2="186" y2="34"/>
-                        <line x1="110" y1="62" x2="26" y2="96"/>
-                        <line x1="110" y1="62" x2="194" y2="98"/>
-                        <line x1="110" y1="62" x2="108" y2="16"/>
-                        <line x1="110" y1="62" x2="150" y2="112"/>
-                        <line x1="110" y1="62" x2="70" y2="112"/>
-                        <line class="b" x1="34" y1="30" x2="108" y2="16"/>
-                        <line class="b" x1="186" y1="34" x2="194" y2="98"/>
-                        <line class="b" x1="26" y1="96" x2="70" y2="112"/>
+                        <line data-a="h" data-b="0" x1="110" y1="62" x2="34" y2="30"/>
+                        <line data-a="h" data-b="1" x1="110" y1="62" x2="186" y2="34"/>
+                        <line data-a="h" data-b="2" x1="110" y1="62" x2="26" y2="96"/>
+                        <line data-a="h" data-b="3" x1="110" y1="62" x2="194" y2="98"/>
+                        <line data-a="h" data-b="4" x1="110" y1="62" x2="108" y2="16"/>
+                        <line data-a="h" data-b="5" x1="110" y1="62" x2="150" y2="112"/>
+                        <line data-a="h" data-b="6" x1="110" y1="62" x2="70" y2="112"/>
+                        <line class="b" data-a="0" data-b="4" x1="34" y1="30" x2="108" y2="16"/>
+                        <line class="b" data-a="1" data-b="3" x1="186" y1="34" x2="194" y2="98"/>
+                        <line class="b" data-a="2" data-b="6" x1="26" y1="96" x2="70" y2="112"/>
                     </g>
                     <g class="ma-nodes">
-                        <circle cx="34" cy="30" r="5.5" class="ma-pulse"/>
-                        <circle cx="186" cy="34" r="5.5" class="b"/>
-                        <circle cx="26" cy="96" r="5" class="b ma-pulse d"/>
-                        <circle cx="194" cy="98" r="5.5"/>
-                        <circle cx="108" cy="16" r="5" class="ma-pulse d"/>
-                        <circle cx="150" cy="112" r="5.5" class="b"/>
-                        <circle cx="70" cy="112" r="5" class="ma-pulse"/>
+                        <circle data-node="0" cx="34" cy="30" r="5.5" class="ma-pulse"/>
+                        <circle data-node="1" cx="186" cy="34" r="5.5" class="b"/>
+                        <circle data-node="2" cx="26" cy="96" r="5" class="b ma-pulse d"/>
+                        <circle data-node="3" cx="194" cy="98" r="5.5"/>
+                        <circle data-node="4" cx="108" cy="16" r="5" class="ma-pulse d"/>
+                        <circle data-node="5" cx="150" cy="112" r="5.5" class="b"/>
+                        <circle data-node="6" cx="70" cy="112" r="5" class="ma-pulse"/>
                     </g>
                     <circle class="ma-hub" cx="110" cy="62" r="14"/>
                     <g class="ma-lock">
-                        <path d="M104 59 v-3 a6 6 0 0 1 12 0 v3"/>
+                        <path class="ma-shackle" d="M104 59 v-3 a6 6 0 0 1 12 0 v3"/>
                         <rect x="102" y="59" width="16" height="13" rx="2.5"/>
                         <circle class="ma-keyhole" cx="110" cy="65" r="1.9"/>
+                    </g>
+                    <circle class="ma-lock-hit" cx="110" cy="62" r="15"/>
+                    <g class="ma-grabs">
+                        <circle class="ma-grab" data-grab="0" cx="34" cy="30" r="13"/>
+                        <circle class="ma-grab" data-grab="1" cx="186" cy="34" r="13"/>
+                        <circle class="ma-grab" data-grab="2" cx="26" cy="96" r="13"/>
+                        <circle class="ma-grab" data-grab="3" cx="194" cy="98" r="13"/>
+                        <circle class="ma-grab" data-grab="4" cx="108" cy="16" r="13"/>
+                        <circle class="ma-grab" data-grab="5" cx="150" cy="112" r="13"/>
+                        <circle class="ma-grab" data-grab="6" cx="70" cy="112" r="13"/>
                     </g>
                 </svg>
                 <h2>Chat on my Matrix server</h2>
@@ -389,7 +429,7 @@
                 about it</a>
             </section>
         </div>
-        <div class="reveal" style="margin-top:var(--space-5)">
+        <div class="support-topgg-container reveal" style="margin-top:var(--space-5)">
             <section class="card topgg-section">
                 <a class="topgg-link" href="https://top.gg/bot/775358898088968202" rel="noopener" target="_blank">
                     <h2>Find Relaxy! on top.gg</h2>
@@ -400,6 +440,45 @@
                                                                                                                                                                              decoding="async"
                                                                                                                                                                              loading="lazy"
                                                                                                                                                                              src="https://cdn.relaxy.xyz/relaxy/website/img/social/topgg.png">
+            </section>
+            <section class="card botlist-section">
+                <a class="botlist-link" href="https://discordbotlist.com/bots/775358898088968202" rel="noopener" target="_blank">
+                    <h2>Find Relaxy! on Discord Bot List</h2>
+                </a>
+                <p>Another place to vote - every upvote helps people find Relaxy!</p>
+                <a class="invite-button" href="https://discordbotlist.com/bots/775358898088968202/upvote" rel="noopener" style="font-size:1.1rem" target="_blank">Upvote Relaxy!</a>
+                <svg class="botlist-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
+                    <g class="bl-row is-top" data-row="0" transform="translate(0 14)">
+                        <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>
+                        <circle class="bl-avatar" cx="44" cy="15" r="8"/>
+                        <rect class="bl-line" x="60" y="9" width="72" height="4" rx="2"/>
+                        <rect class="bl-line dim" x="60" y="18" width="46" height="4" rx="2"/>
+                        <g class="bl-vote">
+                            <circle cx="172" cy="15" r="11"/>
+                            <path class="bl-chevron" d="M167 18 l5 -6 l5 6"/>
+                        </g>
+                    </g>
+                    <g class="bl-row" data-row="1" transform="translate(0 50)">
+                        <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>
+                        <circle class="bl-avatar b" cx="44" cy="15" r="8"/>
+                        <rect class="bl-line" x="60" y="9" width="62" height="4" rx="2"/>
+                        <rect class="bl-line dim" x="60" y="18" width="40" height="4" rx="2"/>
+                        <g class="bl-vote">
+                            <circle cx="172" cy="15" r="11"/>
+                            <path class="bl-chevron" d="M167 18 l5 -6 l5 6"/>
+                        </g>
+                    </g>
+                    <g class="bl-row" data-row="2" transform="translate(0 86)">
+                        <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>
+                        <circle class="bl-avatar b" cx="44" cy="15" r="8"/>
+                        <rect class="bl-line" x="60" y="9" width="66" height="4" rx="2"/>
+                        <rect class="bl-line dim" x="60" y="18" width="36" height="4" rx="2"/>
+                        <g class="bl-vote">
+                            <circle cx="172" cy="15" r="11"/>
+                            <path class="bl-chevron" d="M167 18 l5 -6 l5 6"/>
+                        </g>
+                    </g>
+                </svg>
             </section>
         </div>
     </section>
@@ -431,6 +510,7 @@
 <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.js"></script>
 <script defer src="/js/main/enhance.js"></script>
 <script defer src="/js/main/mobilenav.js"></script>
+<script defer src="/js/main/art.js"></script>
 </body>
 
 </html>
