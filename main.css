@@ -1125,7 +1125,6 @@ body.nav-open {
     }
 }
 
-/* Calmer rainbow drift on the subpage call-to-action buttons (2s was eye-searing). */
 body:not(.is-home) .invite-button:not(.kofi-cta):hover,
 body:not(.is-home) .invite-button:not(.kofi-cta):focus-visible {
     animation-duration: 7s;
