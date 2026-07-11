@@ -483,7 +483,13 @@ const attachOwnerCard = () =>
         for (let i = bag.length - 1; i > 0; i--)
         {
             const j = Math.floor(Math.random() * (i + 1));
-            [bag[i], bag[j]] = [bag[j], bag[i]];
+            [
+                bag[i],
+                bag[j]
+            ] = [
+                bag[j],
+                bag[i]
+            ];
         }
     };
 

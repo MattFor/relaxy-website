@@ -2403,6 +2403,32 @@ main > .grid-2:first-child {
     gap: var(--space-4);
 }
 
+.topgg-section, .botlist-section {
+    position: relative;
+    isolation: isolate;
+}
+
+.topgg-section::before, .botlist-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.09;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.topgg-section::before {
+    background-image: url('https://cdn.relaxy.xyz/relaxy/website/img/social/topgg.png');
+}
+
+.botlist-section::before {
+    background-image: url('https://discordbotlist.com/icon.png');
+}
+
 .support-section h2, .topgg-section h2, .botlist-section h2 {
     font-size: 1.3rem;
 }
@@ -2419,17 +2445,76 @@ main > .grid-2:first-child {
     color: var(--accent);
 }
 
-.topgg-image {
+.topgg-section .invite-button, .botlist-section .invite-button {
+    margin-top: auto;
+}
+
+.topgg-art {
+    display: block;
     width: 100%;
-    max-width: 380px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    max-width: 340px;
+    height: auto;
+    margin-inline: auto;
+    user-select: none;
+}
+
+.topgg-art .tg-base {
+    stroke: var(--border-strong);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+}
+
+.topgg-art .tg-bar {
+    transition: transform 0.35s var(--ease);
+}
+
+.topgg-art.is-interactive .tg-bar {
+    cursor: grab;
+    touch-action: none;
+}
+
+.topgg-art .tg-bar.is-dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+.topgg-art .tg-bar-plate {
+    fill: var(--bg-inset);
+    stroke: var(--border-strong);
+    stroke-width: 1.4;
+    transition: fill var(--t), stroke var(--t);
+}
+
+.topgg-art .tg-bar.is-top .tg-bar-plate {
+    fill: var(--accent-soft);
+    stroke: var(--accent);
+    stroke-width: 1.8;
+}
+
+.topgg-art .tg-star {
+    fill: var(--accent);
+    opacity: 0;
+    transition: opacity var(--t);
+}
+
+.topgg-art .tg-bar.is-top .tg-star {
+    opacity: 1;
+    animation: tg-star 2.8s ease-in-out infinite;
+}
+
+@keyframes tg-star {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
 }
 
 .botlist-art {
     display: block;
     width: 100%;
-    max-width: 380px;
+    max-width: 340px;
     height: auto;
     margin-inline: auto;
     user-select: none;
@@ -2510,6 +2595,13 @@ main > .grid-2:first-child {
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .botlist-art .bl-row.is-top .bl-vote,
+    .topgg-art .tg-bar.is-top .tg-star {
+        animation: none;
+    }
+}
+
 .matrix-art {
     user-select: none;
 }
@@ -2530,12 +2622,6 @@ main > .grid-2:first-child {
     cursor: grabbing;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .botlist-art .bl-row.is-top .bl-vote {
-        animation: none;
-    }
-}
-
 .matrix-art {
     display: block;
     width: 100%;
@@ -2548,6 +2634,12 @@ main > .grid-2:first-child {
     stroke: var(--accent-ring);
     stroke-width: 1.6;
     opacity: 0.55;
+    transition: opacity 0.5s var(--ease), stroke-width 0.5s var(--ease);
+}
+
+.matrix-art.lock-open .ma-links line {
+    opacity: 0.9;
+    stroke-width: 2;
 }
 
 .matrix-art .ma-links line.b {
@@ -2566,6 +2658,12 @@ main > .grid-2:first-child {
     fill: var(--bg-elevated);
     stroke: var(--accent);
     stroke-width: 2.5;
+    transition: fill 0.4s var(--ease), filter 0.4s var(--ease);
+}
+
+.matrix-art.lock-open .ma-hub {
+    fill: var(--accent-soft);
+    filter: drop-shadow(0 0 5px var(--accent));
 }
 
 .matrix-art .ma-lock path {
@@ -2582,15 +2680,11 @@ main > .grid-2:first-child {
 .matrix-art .ma-shackle {
     transform-box: fill-box;
     transform-origin: 100% 100%;
-    transition: transform 0.4s var(--ease);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .matrix-art.lock-open .ma-shackle {
-    transform: translate(1px, -1px) rotate(-28deg);
-}
-
-.matrix-art.lock-open .ma-lock .ma-keyhole {
-    fill: var(--accent-2);
+    transform: translateY(-4px) rotate(-38deg);
 }
 
 .matrix-art .ma-lock rect {
@@ -2599,6 +2693,29 @@ main > .grid-2:first-child {
 
 .matrix-art .ma-lock .ma-keyhole {
     fill: var(--bg-elevated);
+    transition: fill 0.3s var(--ease), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.matrix-art:not(.lock-open) .ma-lock .ma-keyhole {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ma-keyhole-hint 2.6s ease-in-out infinite;
+}
+
+.matrix-art.lock-open .ma-lock .ma-keyhole {
+    fill: var(--accent-2);
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(1.35);
+}
+
+@keyframes ma-keyhole-hint {
+    0%, 70%, 100% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 0.35;
+    }
 }
 
 .matrix-art .ma-pulse {
@@ -2619,7 +2736,8 @@ main > .grid-2:first-child {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .matrix-art .ma-pulse {
+    .matrix-art .ma-pulse,
+    .matrix-art:not(.lock-open) .ma-lock .ma-keyhole {
         animation: none;
     }
 }

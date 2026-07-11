@@ -567,6 +567,139 @@
         layout(-1);
     };
 
+    const initTopggBars = () =>
+    {
+        const svg = document.querySelector('.topgg-art');
+        if (!svg)
+        {
+            return;
+        }
+
+        const bars = Array.from(svg.querySelectorAll('.tg-bar'));
+        if (bars.length < 2 || !canDrag)
+        {
+            return;
+        }
+
+        svg.classList.add('is-interactive');
+
+        const SLOT_X = [
+            22,
+            58,
+            94,
+            130,
+            166
+        ];
+        const RESET_MS = 5000;
+
+        let order = bars.map((_, i) => i);
+        let dragBar = -1;
+        let grabOffset = 0;
+        let resetTimer = 0;
+
+        const place = (bar, x) =>
+        {
+            bars[bar].style.transform = 'translate(' + x + 'px, 0px)';
+        };
+
+        const layout = (skip) =>
+        {
+            order.forEach((bar, slot) =>
+            {
+                bars[bar].classList.toggle('is-top', slot === 0);
+
+                if (bar !== skip)
+                {
+                    place(bar, SLOT_X[slot]);
+                }
+            });
+        };
+
+        const scheduleReset = () =>
+        {
+            window.clearTimeout(resetTimer);
+            resetTimer = window.setTimeout(() =>
+            {
+                order = bars.map((_, i) => i);
+                layout(-1);
+            }, RESET_MS);
+        };
+
+        bars.forEach((bar, i) =>
+        {
+            bar.addEventListener('pointerdown', (e) =>
+            {
+                e.preventDefault();
+                const p = svgPoint(svg, e.clientX, e.clientY);
+                dragBar = i;
+                grabOffset = p
+                    ? p.x - SLOT_X[order.indexOf(i)]
+                    : 0;
+                bar.classList.add('is-dragging');
+                capture(bar, e);
+                window.clearTimeout(resetTimer);
+            });
+
+            bar.addEventListener('pointermove', (e) =>
+            {
+                if (dragBar !== i)
+                {
+                    return;
+                }
+
+                const p = svgPoint(svg, e.clientX, e.clientY);
+                if (!p)
+                {
+                    return;
+                }
+
+                const first = SLOT_X[0] - 16;
+                const last = SLOT_X[SLOT_X.length - 1] + 16;
+                const x = Math.max(first, Math.min(p.x - grabOffset, last));
+                place(i, x.toFixed(2));
+
+                let best = 0;
+                let bestGap = Infinity;
+                SLOT_X.forEach((slotX, slot) =>
+                {
+                    const gap = Math.abs(slotX - x);
+                    if (gap < bestGap)
+                    {
+                        bestGap = gap;
+                        best = slot;
+                    }
+                });
+
+                const current = order.indexOf(i);
+                if (best !== current)
+                {
+                    order.splice(current, 1);
+                    order.splice(best, 0, i);
+                    layout(i);
+                }
+            });
+
+            const stop = (e) =>
+            {
+                if (dragBar !== i)
+                {
+                    return;
+                }
+
+                release(bar, e);
+                bar.classList.remove('is-dragging');
+                dragBar = -1;
+                layout(-1);
+                scheduleReset();
+            };
+
+            bar.addEventListener('pointerup', stop);
+            bar.addEventListener('pointercancel', stop);
+        });
+
+        layout(-1);
+    };
+
     const HEART_GLYPHS = [
         '❤️',
         '💖',
@@ -697,6 +830,7 @@
 
     initMatrixWeb();
     initBotlistOrder();
+    initTopggBars();
     initSupporters();
     initLegendHearts();
 })();
