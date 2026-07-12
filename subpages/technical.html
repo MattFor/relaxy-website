@@ -69,13 +69,29 @@
             (ES Modules)</strong> with <strong>JSDoc + TypeScript declaration files</strong> for type-checking. There is <em>no build step</em>, the bot runs directly from source. It is sharded and
             clustered so it can easily scale horizontally across multiple machines.</p>
         <div class="tech-stat-grid">
-            <div class="tech-stat"><span class="num">171</span><span class="label">command modules</span></div>
+            <div class="tech-stat"><span class="num">173</span><span class="label">command modules</span></div>
+            <div class="tech-stat"><span class="num">151</span><span class="label">user-facing commands</span></div>
             <div class="tech-stat"><span class="num">6</span><span class="label">command categories</span></div>
-            <div class="tech-stat"><span class="num">v1.1.0</span><span class="label">current version</span></div>
+            <div class="tech-stat"><span class="num">58</span><span class="label">event handlers</span></div>
+            <div class="tech-stat"><span class="num">15</span><span class="label">database models</span></div>
+            <div class="tech-stat"><span class="num">47</span><span class="label">npm dependencies</span></div>
+            <div class="tech-stat"><span class="num">~85k</span><span class="label">lines of JavaScript</span></div>
+            <div class="tech-stat"><span class="num">14</span><span class="label">toggleable log channels</span></div>
             <div class="tech-stat"><span class="num">2019</span><span class="label">first written</span></div>
-            <div class="tech-stat"><span class="num">~80</span><span class="label">npm dependencies</span></div>
-            <div class="tech-stat"><span class="num">10</span><span class="label">database models</span></div>
+            <div class="tech-stat"><span class="num">0</span><span class="label">build steps</span></div>
         </div>
+
+        <h3 style="color:var(--accent);margin-top:var(--space-5)">Commands, by category</h3>
+        <div class="tech-stat-grid">
+            <div class="tech-stat"><span class="num">39</span><span class="label">miscellaneous</span></div>
+            <div class="tech-stat"><span class="num">36</span><span class="label">moderation</span></div>
+            <div class="tech-stat"><span class="num">29</span><span class="label">image</span></div>
+            <div class="tech-stat"><span class="num">24</span><span class="label">music</span></div>
+            <div class="tech-stat"><span class="num">23</span><span class="label">fun</span></div>
+            <div class="tech-stat"><span class="num">22</span><span class="label">administrator</span></div>
+        </div>
+        <p class="prose" style="margin:var(--space-4) 0 0">The <code>administrator</code> category is behaviour, not filing: those 22 are excluded from slash-command registration and hidden from
+            everyone but the owners, which is why only <strong>151</strong> of the 173 modules are commands anyone can actually run.</p>
     </section>
 
     <section class="card section" id="live">
@@ -87,6 +103,26 @@
         <div class="tech-stat-grid" id="system-stats">
             <div class="tech-stat"><span class="num">…</span><span class="label">connecting</span></div>
         </div>
+    </section>
+
+    <!--
+        Where the bot actually is. The Pi is always up, but Relaxy! itself is not always ON
+        the Pi - it moves to whichever machine is worth running it on. Every cluster manager
+        writes its own row into a `hosts` collection in MongoDB every 30 seconds, and the Pi
+        republishes those rows into status.json. So this stays correct even when the bot is
+        on a machine the Pi has no way of reaching.
+
+        Rendered entirely by js/main/system-stats.js, and it starts `hidden`: the section
+        only appears once status.json actually carries fleet data, so a Pi still running the
+        old publisher degrades to the page it served before rather than to an empty panel.
+    -->
+    <section class="card section" hidden id="fleet">
+        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
+            <p class="eyebrow">Live from the fleet</p>
+            <h2 style="text-align:left">Where Relaxy! is running</h2>
+            <p style="margin:0" id="fleet-stamp">Asking the fleet…</p>
+        </div>
+        <div class="host-live-grid" id="fleet-hosts"></div>
     </section>
 
     <section class="card section" id="architecture">
@@ -268,8 +304,8 @@
                 <p>An always-on ARM board, detected via <code>arm</code>/<code>arm64</code> architecture. Acts as a low-power node that keeps a slice of the fleet alive around the clock.</p>
             </div>
             <div class="host-card">
-                <h3>Laptop <span class="host-tag">HOST_TYPE = windows / linux</span></h3>
-                <p>A secondary / development host. Used for debugging single shards (<code>./start --client</code>) and to add capacity when needed.</p>
+                <h3>Laptop <span class="host-tag">HOST_TYPE = linux</span></h3>
+                <p>A Linux secondary / development host. Used for debugging single shards (<code>./start --client</code>) and to add capacity when needed.</p>
             </div>
         </div>
     </section>

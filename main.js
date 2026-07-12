@@ -836,7 +836,24 @@ const piFields = {
         : null),
     temp: (d) => (typeof d.temperatureC === 'number'
         ? d.temperatureC.toFixed(1) + ' °C'
-        : null)
+        : null),
+
+    botHost: (d) =>
+    {
+        if (!d.bot)
+        {
+            return 'Unknown';
+        }
+
+        if (!d.bot.online || !d.bot.primary)
+        {
+            return 'Offline';
+        }
+
+        return d.bot.hostCount > 1
+            ? d.bot.primary + ' (+' + (d.bot.hostCount - 1) + ' more)'
+            : d.bot.primary;
+    }
 };
 
 const PI_ONLINE_ENDPOINT = 'https://on.relaxy.xyz/';

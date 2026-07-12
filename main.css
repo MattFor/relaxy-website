@@ -2811,6 +2811,32 @@ main > .grid-2:first-child {
     border-radius: inherit;
 }
 
+/*
+ * The "Others" card gets Fancy behind it, on the same terms as the owner card: laid in
+ * behind the text on its own layer, kept faint enough that the copy stays readable in
+ * both themes. `isolation` is what stops the negative z-index escaping the card and
+ * sliding underneath the page background instead.
+ */
+#others {
+    position: relative;
+    isolation: isolate;
+}
+
+#others::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://cdn.relaxy.xyz/relaxy/website/img/people/fancy.png') center / cover no-repeat;
+    opacity: 0.06;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+:root.light-mode #others::before {
+    opacity: 0.05;
+}
+
 .owner-grid {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -3680,6 +3706,91 @@ html.js .reveal {
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: var(--space-5);
+}
+
+/*
+ * Live fleet tiles - one per machine currently running the bot (js/main/system-stats.js).
+ *
+ * Distinct from `.host-card` above on purpose: those describe the machines Relaxy! CAN
+ * run on, which is a fixed list. These are the machines it IS running on right now, which
+ * changes, and may be none of them.
+ */
+.host-live-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+}
+
+.host-live {
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-5);
+}
+
+.host-live.is-primary {
+    border-color: var(--accent);
+    background: linear-gradient(var(--accent-soft), var(--accent-soft)), var(--bg-inset);
+}
+
+.host-live.is-down {
+    opacity: 0.75;
+}
+
+.host-live-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.host-live-name {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--accent);
+    word-break: break-word;
+}
+
+.host-live-badge {
+    flex-shrink: 0;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.host-live-facts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.host-live-facts li {
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    color: var(--text);
+}
+
+.host-live-foot {
+    margin: var(--space-3) 0 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.host-spec.is-bot-host dd {
+    color: var(--accent);
+    font-weight: 700;
 }
 
 .host-card h3 {

@@ -101,6 +101,102 @@
     {
         grid.innerHTML = '<div class="tech-stat"><span class="num">—</span><span class="label">status feed offline</span></div>';
         setStamp('Live feed unavailable right now - the Pi is not publishing /status.json yet.');
+
+        const section = document.getElementById('fleet');
+        if (section)
+        {
+            section.hidden = true;
+        }
+    };
+
+    const fleetSection = document.getElementById('fleet');
+    const fleetGrid = document.getElementById('fleet-hosts');
+    const fleetStamp = document.getElementById('fleet-stamp');
+
+    const plural = (n, one, many) => n + ' ' + (n === 1
+        ? one
+        : many);
+
+    const hostTile = (host, isPrimary) =>
+    {
+        const facts = [];
+
+        if (host.shards && host.shards.length)
+        {
+            facts.push(plural(host.shards.length, 'shard', 'shards') + ' (' + host.shards.join(', ') + ')');
+        }
+        if (host.clusters)
+        {
+            facts.push(plural(host.clusters, 'cluster', 'clusters'));
+        }
+        if (host.guilds)
+        {
+            facts.push(host.guilds.toLocaleString() + ' servers');
+        }
+        if (host.players)
+        {
+            facts.push(plural(host.players, 'voice player', 'voice players'));
+        }
+        if (host.cpuCount)
+        {
+            facts.push(host.cpuLoad + '% of ' + host.cpuCount + ' cores');
+        }
+        if (host.memTotalGb)
+        {
+            facts.push(host.memUsedGb + ' / ' + host.memTotalGb + ' GB');
+        }
+        if (typeof host.uptimeSeconds === 'number' && host.uptimeSeconds > 0)
+        {
+            facts.push('up ' + fmtUptime(host.uptimeSeconds));
+        }
+
+        return '<div class="host-live' + (isPrimary
+            ? ' is-primary'
+            : '') + '">' + '<div class="host-live-head">' + '<span class="host-live-name">' + esc(host.id) + '</span>' + (isPrimary
+            ? '<span class="host-live-badge">primary</span>'
+            : '') + '</div>' + '<ul class="host-live-facts"><li>' + facts.map(esc).join('</li><li>') + '</li></ul>' + '<p class="host-live-foot">reported ' + host.lastSeenAgoSeconds + 's ago' + (host.version
+            ? ' · v' + esc(host.version)
+            : '') + '</p>' + '</div>';
+    };
+
+    const renderFleet = (bot) =>
+    {
+        if (!fleetSection || !fleetGrid)
+        {
+            return;
+        }
+
+        if (!bot)
+        {
+            fleetSection.hidden = true;
+            return;
+        }
+
+        if (!bot.online || !bot.hosts || !bot.hosts.length)
+        {
+            fleetSection.hidden = false;
+            fleetGrid.innerHTML = '<div class="host-live is-down"><div class="host-live-head"><span class="host-live-name">Nothing reporting</span></div>' + '<p class="host-live-foot">No machine has checked in for over 90 seconds. Relaxy! is offline.</p></div>';
+
+            if (fleetStamp)
+            {
+                fleetStamp.textContent = 'The database is reachable, but no machine is currently running the bot.';
+            }
+            return;
+        }
+
+        fleetSection.hidden = false;
+        fleetGrid.innerHTML = bot.hosts
+        .slice()
+        .sort((a, b) => (b.shards || []).length - (a.shards || []).length || b.clusters - a.clusters)
+        .map((h) => hostTile(h, h.id === bot.primary))
+        .join('');
+
+        if (fleetStamp)
+        {
+            fleetStamp.textContent = bot.hostCount > 1
+                ? 'Spread across ' + plural(bot.hostCount, 'machine', 'machines') + ' · ' + bot.totalClusters + ' clusters · ' + bot.totalGuilds.toLocaleString() + ' servers'
+                : 'Running entirely on ' + bot.primary + ' · ' + plural(bot.totalClusters, 'cluster', 'clusters') + ' · ' + bot.totalGuilds.toLocaleString() + ' servers';
+        }
     };
 
     const render = (data) =>
@@ -114,6 +210,9 @@
                 tiles.push('<div class="tech-stat"><span class="num">' + esc(v) + '</span><span class="label">' + esc(t.label) + '</span></div>');
             }
         });
+
+        renderFleet(data.bot);
+
         if (!tiles.length)
         {
             renderOffline();
