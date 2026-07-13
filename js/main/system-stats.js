@@ -155,7 +155,7 @@
             : '') + '">' + '<div class="host-live-head">' + '<span class="host-live-name">' + esc(host.id) + '</span>' + (isPrimary
             ? '<span class="host-live-badge">primary</span>'
             : '') + '</div>' + '<ul class="host-live-facts"><li>' + facts.map(esc).join('</li><li>') + '</li></ul>' + '<p class="host-live-foot">reported ' + host.lastSeenAgoSeconds + 's ago' + (host.version
-            ? ' · v' + esc(host.version)
+            ? ' · ' + esc(host.version)
             : '') + '</p>' + '</div>';
     };
 
