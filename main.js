@@ -853,7 +853,21 @@ const piFields = {
         return d.bot.hostCount > 1
             ? d.bot.primary + ' (+' + (d.bot.hostCount - 1) + ' more)'
             : d.bot.primary;
-    }
+    },
+
+    botGuilds: (d) => (d.bot && d.bot.online && typeof d.bot.totalGuilds === 'number'
+        ? d.bot.totalGuilds.toLocaleString()
+        : '-'),
+
+    botClusters: (d) => (d.bot && d.bot.online && typeof d.bot.totalClusters === 'number'
+        ? String(d.bot.totalClusters) + (d.bot.totalShards
+            ? ' (' + d.bot.totalShards + ' shards)'
+            : '')
+        : '-'),
+
+    botPlayers: (d) => (d.bot && d.bot.online && typeof d.bot.totalPlayers === 'number'
+        ? String(d.bot.totalPlayers)
+        : '-')
 };
 
 const PI_ONLINE_ENDPOINT = 'https://on.relaxy.xyz/';

@@ -3709,7 +3709,7 @@ html.js .reveal {
 }
 
 /*
- * Live fleet tiles - one per machine currently running the bot (js/main/system-stats.js).
+ * Live swarm tiles - one per machine currently running the bot (js/main/system-stats.js).
  *
  * Distinct from `.host-card` above on purpose: those describe the machines Relaxy! CAN
  * run on, which is a fixed list. These are the machines it IS running on right now, which

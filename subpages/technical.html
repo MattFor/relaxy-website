@@ -105,24 +105,13 @@
         </div>
     </section>
 
-    <!--
-        Where the bot actually is. The Pi is always up, but Relaxy! itself is not always ON
-        the Pi - it moves to whichever machine is worth running it on. Every cluster manager
-        writes its own row into a `hosts` collection in MongoDB every 30 seconds, and the Pi
-        republishes those rows into status.json. So this stays correct even when the bot is
-        on a machine the Pi has no way of reaching.
-
-        Rendered entirely by js/main/system-stats.js, and it starts `hidden`: the section
-        only appears once status.json actually carries fleet data, so a Pi still running the
-        old publisher degrades to the page it served before rather than to an empty panel.
-    -->
-    <section class="card section" hidden id="fleet">
+    <section class="card section" hidden id="swarm">
         <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Live from the fleet</p>
+            <p class="eyebrow">Live from the swarm</p>
             <h2 style="text-align:left">Where Relaxy! is running</h2>
-            <p style="margin:0" id="fleet-stamp">Asking the fleet…</p>
+            <p style="margin:0" id="swarm-stamp">Asking the swarm…</p>
         </div>
-        <div class="host-live-grid" id="fleet-hosts"></div>
+        <div class="host-live-grid" id="swarm-hosts"></div>
     </section>
 
     <section class="card section" id="architecture">
@@ -144,8 +133,8 @@
             </div>
             <div class="host-card">
                 <h3>IPC &amp; heartbeats</h3>
-                <p>Manager and clusters talk over Node IPC. Spawn hand-off is the <code>CLIENT_PROCESS_SPAWNED</code> message; liveness uses a <strong>push heartbeat</strong> (every 3s, 5 missed beats
-                    = dead) so the manager only watches for silence instead of polling.</p>
+                <p>Manager and clusters talk over Node IPC. Spawn hand-off is the <code>CLIENT_PROCESS_SPAWNED</code> message; liveness uses a <strong>push heartbeat</strong> - each cluster reports in
+                    every 5s and is respawned after 12 missed beats (60s of silence), so the manager only ever watches for silence instead of polling for it.</p>
             </div>
             <div class="host-card">
                 <h3>Self-repair &amp; hot-patch</h3>
@@ -155,15 +144,16 @@
         </div>
         <h3 style="color:var(--accent);margin-top:var(--space-5)">Boot sequence</h3>
         <ul class="feature-list">
-            <li><code>./start</code> sets <code>UV_THREADPOOL_SIZE=64</code> and execs Node with <code>nice -n 20</code>, <code>--stack_size=1000</code>, <code>--trace-uncaught</code> and <code>--max-old-space-size=32768</code>
-                (32&nbsp;GB V8 heap).
+            <li><code>./start</code> exports <code>UV_THREADPOOL_SIZE=64</code> and execs Node under <code>nice -n 20</code> with <code>--stack_size=1000</code>, <code>--trace-uncaught</code> and
+                <code>--max-old-space-size=32768</code> (a 32&nbsp;GB V8 heap).
             </li>
-            <li>The Manager parses <code>key.json</code>, empties caches, then <code>spawn()</code>s clusters sequentially (7s apart).
+            <li>The Manager reads its secrets and paths from <code>.env</code>, pulls the operator-mutable settings (version, owners, status line) from MongoDB, empties the caches, then
+                <code>spawn()</code>s each cluster in turn, 7s apart.
             </li>
-            <li>Each client loads its modules in parallel, connects to MongoDB, spawns the database workers, loads commands, then logs into the Discord gateway, music extractors load in the
-                background, off the critical path.
+            <li>Each client loads its modules in parallel, connects to MongoDB, spawns the database worker, registers its commands and logs into the gateway. The music extractors load
+                <em>afterwards</em>, deliberately off the critical path - the bot is answering commands before yt-dlp is even ready.
             </li>
-            <li>Before the clusters report <code>clusterReady</code>, they launch <em>Mutes, Reminds, TicketSystems, RelaxyForums, ClearingChannels, and every other feature's intervals</em>.
+            <li>Only once every shard it owns is actually connected does a cluster report ready, at which point the feature intervals start: mutes, reminders, ticket systems, forums, clearing channels.
             </li>
         </ul>
     </section>
@@ -185,28 +175,32 @@
         <div class="tech-stack-group">
             <h3>Discord core &amp; sharding</h3>
             <div class="chip-grid">
-                <span class="tech-tag">discord.js 14</span> <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">discord-api-types</span>
-                <span class="tech-tag">discord-hybrid-sharding</span> <span class="tech-tag">discord-cross-hosting</span> <span class="tech-tag">discord-cross-ratelimit</span> <span class="tech-tag">discord-voip</span>
+                <span class="tech-tag">discord.js 14</span> <span class="tech-tag">discord-api-types</span> <span class="tech-tag">discord-hybrid-sharding</span> <span class="tech-tag">discord-voip</span>
             </div>
         </div>
 
         <div class="tech-stack-group">
             <h3>Database</h3>
             <div class="chip-grid">
-                <span class="tech-tag">MongoDB</span> <span class="tech-tag">Mongoose 8</span>
+                <span class="tech-tag">MongoDB</span> <span class="tech-tag">Mongoose 9</span>
             </div>
-            <p class="prose" style="margin:var(--space-3) 0 0">10 schema "blueprints": Server, Member, Profile, Warning, Reminder, TicketSystem, ForumChannel, HeartBoard, HeartBoardPost and Limits,
-                all persisted through a dedicated database worker with a local cache as well.</p>
+            <p class="prose" style="margin:var(--space-3) 0 0">15 schema "blueprints" - Server, GuildConfig, Member, Profile, Warning, Mute, Case, Reminder, TicketSystem, ForumChannel, ReactionRole,
+                HeartBoard, HeartBoardPost, Settings and Host. Writes are batched through a queue and flushed on a dedicated worker thread, so nothing on the command path ever waits on the database.
+                The guild document is deliberately split in two: <code>servers</code> for the fields touched on every message, <code>guildconfig</code> for the ones only a config command changes.</p>
         </div>
 
         <div class="tech-stack-group">
             <h3>Music &amp; voice</h3>
             <div class="chip-grid">
-                <span class="tech-tag">discord-player 7</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-youtubei (SABR)</span> <span
-                    class="tech-tag">discord-player-soundcloud</span> <span class="tech-tag">ytdl-core</span> <span class="tech-tag">youtube-sr</span> <span class="tech-tag">prism-media</span> <span
-                    class="tech-tag">ffmpeg-static</span> <span class="tech-tag">fluent-ffmpeg</span> <span class="tech-tag">genius-lyrics</span> <span class="tech-tag">LrcLib (synced lyrics)</span>
+                <span class="tech-tag">yt-dlp</span> <span class="tech-tag">discord-player 7 (vendored fork)</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-soundcloud</span>
+                <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">prism-media</span> <span class="tech-tag">ffmpeg-static</span>
+                <span class="tech-tag">LrcLib (synced lyrics)</span>
             </div>
-            <p class="prose" style="margin:var(--space-3) 0 0">Built around a heavily customised player with its own stream interceptor, a biquad/DSP equalizer, and a voice recorder.</p>
+            <p class="prose" style="margin:var(--space-3) 0 0"><strong>yt-dlp is the only YouTube path.</strong> The old in-process stack (youtubei / BotGuard-in-JSDOM) was removed: it broke every time
+                YouTube rotated its PO-token and SABR scheme, and generating those tokens pinned the Pi's CPU at boot. yt-dlp tracks that churn upstream so the bot does not have to.</p>
+            <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>vendored fork</strong> of discord-player - their TypeScript, rewritten into this codebase's style, with local
+                fixes on top. It carries its own stream interceptor and a biquad/DSP equalizer. A small pipeline (<code>scripts/music/</code>) diffs it against upstream and builds merge bundles; the
+                merge is left to a human on purpose, since several of those local fixes exist precisely <em>because</em> upstream is wrong for this bot.</p>
         </div>
 
         <div class="tech-stack-group">
@@ -226,28 +220,12 @@
         </div>
 
         <div class="tech-stack-group">
-            <h3>Web, networking &amp; utilities</h3>
+            <h3>Networking &amp; utilities</h3>
             <div class="chip-grid">
-                <span class="tech-tag">express</span> <span class="tech-tag">body-parser</span> <span class="tech-tag">axios</span> <span class="tech-tag">node-fetch</span> <span class="tech-tag">lodash</span>
-                <span class="tech-tag">fs-extra</span> <span class="tech-tag">archiver</span> <span class="tech-tag">chalk</span> <span class="tech-tag">asciiart-logo</span> <span class="tech-tag">systeminformation</span>
+                <span class="tech-tag">axios</span> <span class="tech-tag">undici</span> <span class="tech-tag">lodash</span> <span class="tech-tag">fs-extra</span> <span class="tech-tag">archiver</span>
+                <span class="tech-tag">chalk</span> <span class="tech-tag">figlet</span> <span class="tech-tag">systeminformation</span> <span class="tech-tag">dotenvx</span>
             </div>
         </div>
-    </section>
-
-    <section class="card section" id="commands-breakdown">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Commands</p>
-            <h2 style="text-align:left">171 modules across 6 categories</h2>
-            <p style="margin:0">Default prefix <code>=</code>, plus slash-command support.</p>
-        </div>
-        <ul class="request-list">
-            <li><code>miscellaneous</code> <span>38 commands</span></li>
-            <li><code>moderation</code> <span>33 commands</span></li>
-            <li><code>image</code> <span>30 commands</span></li>
-            <li><code>administrator</code> <span>25 commands</span></li>
-            <li><code>music</code> <span>24 commands</span></li>
-            <li><code>fun</code> <span>21 commands</span></li>
-        </ul>
     </section>
 
     <section class="card section" id="structure">
@@ -258,13 +236,13 @@
         <pre class="tech-tree"><span class="dir">relaxy-private/</span>
 ├── start                     <span class="cmt"># launcher: ./start [--client], sets Node flags</span>
 ├── index.js                  <span class="cmt"># root entry -> boots the manager</span>
-├── detect_os.js              <span class="cmt"># host detection (void / raspberry-pi / windows / linux)</span>
-├── package.json              <span class="cmt"># ESM, ~80 dependencies, no build step</span>
+├── detect_os.js              <span class="cmt"># host detection (void / raspberry-pi / linux)</span>
+├── package.json              <span class="cmt"># ESM, 47 dependencies, no build step</span>
 ├── tsconfig.json / jsconfig.json
 ├── <span class="dir">bot/</span>                      <span class="cmt"># process entry points + handlers</span>
 │   ├── Manager.js            <span class="cmt"># supervisor process entry</span>
 │   ├── Client.js             <span class="cmt"># cluster/client process entry</span>
-│   ├── <span class="dir">commands/</span>             <span class="cmt"># 171 commands in 6 categories</span>
+│   ├── <span class="dir">commands/</span>             <span class="cmt"># 173 modules in 6 categories</span>
 │   │   ├── administrator/  fun/  image/
 │   │   └── miscellaneous/  moderation/  music/
 │   └── <span class="dir">events/</span>               <span class="cmt"># discord/ + music/ event handlers</span>
@@ -301,7 +279,7 @@
             </div>
             <div class="host-card">
                 <h3>Raspberry Pi <span class="host-tag">HOST_TYPE = raspberry-pi</span></h3>
-                <p>An always-on ARM board, detected via <code>arm</code>/<code>arm64</code> architecture. Acts as a low-power node that keeps a slice of the fleet alive around the clock.</p>
+                <p>An always-on ARM board, detected via <code>arm</code>/<code>arm64</code> architecture. Acts as a low-power node that keeps a slice of the swarm alive around the clock.</p>
             </div>
             <div class="host-card">
                 <h3>Laptop <span class="host-tag">HOST_TYPE = linux</span></h3>
