@@ -153,7 +153,8 @@
             <li>Each client loads its modules in parallel, connects to MongoDB, spawns the database worker, registers its commands and logs into the gateway. The music extractors load
                 <em>afterwards</em>, deliberately off the critical path - the bot is answering commands before yt-dlp is even ready.
             </li>
-            <li>Only once every shard it owns is actually connected does a cluster report ready, at which point the feature intervals start: mutes, reminders, ticket systems, forums, clearing channels.
+            <li>Only once every shard it owns is actually connected does a cluster report ready, at which point the feature intervals start: mutes, reminders, ticket systems, forums, clearing
+                channels.
             </li>
         </ul>
     </section>
@@ -175,7 +176,8 @@
         <div class="tech-stack-group">
             <h3>Discord core &amp; sharding</h3>
             <div class="chip-grid">
-                <span class="tech-tag">discord.js 14</span> <span class="tech-tag">discord-api-types</span> <span class="tech-tag">discord-hybrid-sharding</span> <span class="tech-tag">discord-voip</span>
+                <span class="tech-tag">discord.js 14</span> <span class="tech-tag">discord-api-types</span> <span class="tech-tag">discord-hybrid-sharding</span> <span
+                    class="tech-tag">discord-voip</span>
             </div>
         </div>
 
@@ -193,14 +195,14 @@
             <h3>Music &amp; voice</h3>
             <div class="chip-grid">
                 <span class="tech-tag">yt-dlp</span> <span class="tech-tag">discord-player 7 (vendored fork)</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-soundcloud</span>
-                <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">prism-media</span> <span class="tech-tag">ffmpeg-static</span>
-                <span class="tech-tag">LrcLib (synced lyrics)</span>
+                <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">prism-media</span> <span class="tech-tag">ffmpeg-static</span> <span
+                    class="tech-tag">LrcLib (synced lyrics)</span>
             </div>
-            <p class="prose" style="margin:var(--space-3) 0 0"><strong>yt-dlp is the only YouTube path.</strong> The old in-process stack (youtubei / BotGuard-in-JSDOM) was removed: it broke every time
-                YouTube rotated its PO-token and SABR scheme, and generating those tokens pinned the Pi's CPU at boot. yt-dlp tracks that churn upstream so the bot does not have to.</p>
-            <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>vendored fork</strong> of discord-player - their TypeScript, rewritten into this codebase's style, with local
-                fixes on top. It carries its own stream interceptor and a biquad/DSP equalizer. A small pipeline (<code>scripts/music/</code>) diffs it against upstream and builds merge bundles; the
-                merge is left to a human on purpose, since several of those local fixes exist precisely <em>because</em> upstream is wrong for this bot.</p>
+            <p class="prose" style="margin:var(--space-3) 0 0"><strong>yt-dlp is the only YouTube path.</strong> The old in-process stack (youtubei / BotGuard-in-JSDOM) was removed: it broke every
+                time YouTube rotated its PO-token and SABR scheme, and generating those tokens pinned the Pi's CPU at boot. yt-dlp tracks that churn upstream so the bot does not have to.</p>
+            <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>vendored fork</strong> of discord-player - their TypeScript, rewritten into this codebase's style, with
+                local fixes on top. It carries its own stream interceptor and a biquad/DSP equalizer. A small pipeline (<code>scripts/music/</code>) diffs it against upstream and builds merge bundles;
+                the merge is left to a human on purpose, since several of those local fixes exist precisely <em>because</em> upstream is wrong for this bot.</p>
         </div>
 
         <div class="tech-stack-group">
@@ -222,8 +224,8 @@
         <div class="tech-stack-group">
             <h3>Networking &amp; utilities</h3>
             <div class="chip-grid">
-                <span class="tech-tag">axios</span> <span class="tech-tag">undici</span> <span class="tech-tag">lodash</span> <span class="tech-tag">fs-extra</span> <span class="tech-tag">archiver</span>
-                <span class="tech-tag">chalk</span> <span class="tech-tag">figlet</span> <span class="tech-tag">systeminformation</span> <span class="tech-tag">dotenvx</span>
+                <span class="tech-tag">axios</span> <span class="tech-tag">undici</span> <span class="tech-tag">lodash</span> <span class="tech-tag">fs-extra</span> <span
+                    class="tech-tag">archiver</span> <span class="tech-tag">chalk</span> <span class="tech-tag">figlet</span> <span class="tech-tag">systeminformation</span> <span class="tech-tag">dotenvx</span>
             </div>
         </div>
     </section>

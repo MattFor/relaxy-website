@@ -9,7 +9,10 @@
 
     const reduceMotion = mq('(prefers-reduced-motion: reduce)');
 
-    const canDrag = mq('(pointer: fine)') && !reduceMotion;
+    const hasHover = mq('(hover: hover)') && mq('(pointer: fine)');
+
+    const canDragArt = !reduceMotion;
+    const canDrag = hasHover && !reduceMotion;
 
     const svgPoint = (svg, clientX, clientY) =>
     {
@@ -339,14 +342,14 @@
             lockHit.addEventListener('click', () => svg.classList.toggle('lock-open'));
         }
 
-        if (canDrag)
+        if (canDragArt)
         {
             svg.classList.add('is-interactive');
         }
 
         grabs.forEach((grab, i) =>
         {
-            if (!canDrag)
+            if (!canDragArt)
             {
                 return;
             }
@@ -445,7 +448,7 @@
         }
 
         const rows = Array.from(svg.querySelectorAll('.bl-row'));
-        if (rows.length < 2 || !canDrag)
+        if (rows.length < 2 || !canDragArt)
         {
             return;
         }
@@ -576,7 +579,7 @@
         }
 
         const bars = Array.from(svg.querySelectorAll('.tg-bar'));
-        if (bars.length < 2 || !canDrag)
+        if (bars.length < 2 || !canDragArt)
         {
             return;
         }
@@ -708,8 +711,15 @@
         '💓'
     ];
 
+    const MAX_CHIP_HEARTS = 14;
+
     const spawnChipHeart = (chip) =>
     {
+        if (chip.querySelectorAll('.chip-heart').length >= MAX_CHIP_HEARTS)
+        {
+            return;
+        }
+
         const heart = document.createElement('span');
         heart.className = 'chip-heart';
         heart.textContent = HEART_GLYPHS[Math.floor(Math.random() * HEART_GLYPHS.length)];
@@ -717,11 +727,45 @@
         heart.style.left = (14 + Math.random() * 72).toFixed(1) + '%';
         heart.style.fontSize = (0.65 + Math.random() * 0.5).toFixed(2) + 'rem';
         heart.style.setProperty('--drift', Math.round(Math.random() * 44 - 22) + 'px');
-        heart.style.animationDuration = (0.95 + Math.random() * 0.7).toFixed(2) + 's';
+
+        const dur = 0.95 + Math.random() * 0.7;
+        heart.style.animationDuration = dur.toFixed(2) + 's';
 
         chip.appendChild(heart);
-        heart.addEventListener('animationend', () => heart.remove(), { once: true });
+
+        let gone = false;
+        const kill = () =>
+        {
+            if (gone)
+            {
+                return;
+            }
+
+            gone = true;
+            window.clearTimeout(timer);
+            heart.remove();
+        };
+
+        const timer = window.setTimeout(kill, dur * 1000 + 400);
+        heart.addEventListener('animationend', kill, { once: true });
     };
+
+    let heartTimer = 0;
+
+    const stopChipHearts = () =>
+    {
+        window.clearInterval(heartTimer);
+        heartTimer = 0;
+    };
+
+    window.addEventListener('blur', stopChipHearts);
+    document.addEventListener('visibilitychange', () =>
+    {
+        if (document.hidden)
+        {
+            stopChipHearts();
+        }
+    });
 
     const attachHearts = (el) =>
     {
@@ -730,23 +774,28 @@
             return;
         }
 
-        let hearts = 0;
-
-        const stopHearts = () =>
+        if (!hasHover)
         {
-            window.clearInterval(hearts);
-            hearts = 0;
-        };
+            el.addEventListener('pointerdown', () =>
+            {
+                for (let i = 0; i < 3; i++)
+                {
+                    window.setTimeout(() => spawnChipHeart(el), i * 110);
+                }
+            });
+
+            return;
+        }
 
         el.addEventListener('pointerenter', () =>
         {
-            stopHearts();
+            stopChipHearts();
             spawnChipHeart(el);
-            hearts = window.setInterval(() => spawnChipHeart(el), 260);
+            heartTimer = window.setInterval(() => spawnChipHeart(el), 260);
         });
 
-        el.addEventListener('pointerleave', stopHearts);
-        el.addEventListener('pointercancel', stopHearts);
+        el.addEventListener('pointerleave', stopChipHearts);
+        el.addEventListener('pointercancel', stopChipHearts);
     };
 
     const initSupporters = () =>

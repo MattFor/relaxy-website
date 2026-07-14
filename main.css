@@ -298,18 +298,25 @@ body::before {
     transform: translate(-50%, 0);
 }
 
+.egg-heart-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    pointer-events: none;
+    overflow: hidden;
+    contain: strict;
+}
+
 .egg-heart {
     --drift: 0px;
     --rise: 220px;
     --tilt: 0deg;
 
-    position: fixed;
-    z-index: 400;
+    position: absolute;
     line-height: 1;
     color: var(--accent);
     pointer-events: none;
     user-select: none;
-    will-change: transform, opacity;
     animation: egg-float 2s var(--ease) forwards;
 }
 
@@ -334,6 +341,7 @@ body::before {
     z-index: 390;
     pointer-events: none;
     overflow: hidden;
+    contain: strict;
 }
 
 .egg-confetti-bit {
@@ -345,7 +353,6 @@ body::before {
     width: 9px;
     height: 15px;
     border-radius: 2px;
-    will-change: transform, opacity;
     animation: egg-confetti-fall 3.4s linear forwards;
 }
 
@@ -2811,12 +2818,6 @@ main > .grid-2:first-child {
     border-radius: inherit;
 }
 
-/*
- * The "Others" card gets Fancy behind it, on the same terms as the owner card: laid in
- * behind the text on its own layer, kept faint enough that the copy stays readable in
- * both themes. `isolation` is what stops the negative z-index escaping the card and
- * sliding underneath the page background instead.
- */
 #others {
     position: relative;
     isolation: isolate;
@@ -3033,16 +3034,50 @@ main > .grid-2:first-child {
 @media (max-width: 600px) {
     .owner-grid {
         grid-template-columns: 1fr;
-        text-align: center;
         justify-items: center;
+        gap: var(--space-5);
+        text-align: center;
     }
 
     .owner-grid .owner-text, .owner-grid .owner-text h2 {
         text-align: center;
     }
 
+    .owner-links {
+        display: inline-block;
+        text-align: left;
+    }
+
     .owner-links a {
         text-align: left;
+    }
+
+    .owner-photo {
+        width: min(240px, 58vw);
+        margin-inline: auto;
+        margin-bottom: var(--space-4);
+    }
+
+    .owner-contact {
+        justify-content: center;
+    }
+}
+
+.owner-hint::before {
+    content: attr(data-hover);
+}
+
+@media (hover: none) {
+    .owner-hint {
+        position: static;
+        display: inline-block;
+        translate: none;
+        margin-top: var(--space-3);
+        opacity: 1;
+    }
+
+    .owner-hint::before {
+        content: attr(data-touch);
     }
 }
 
@@ -3708,13 +3743,6 @@ html.js .reveal {
     padding: var(--space-5);
 }
 
-/*
- * Live swarm tiles - one per machine currently running the bot (js/main/system-stats.js).
- *
- * Distinct from `.host-card` above on purpose: those describe the machines Relaxy! CAN
- * run on, which is a fixed list. These are the machines it IS running on right now, which
- * changes, and may be none of them.
- */
 .host-live-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -3817,4 +3845,31 @@ html.js .reveal {
     color: var(--text-muted);
     font-size: 0.92rem;
     margin: var(--space-2) 0 0;
+}
+
+/**
+ * Fix so that hearts don't continuously re-blur on mobile causing massive
+ * performance issues, using opaque backgrounds to remove per-frame work
+ */
+@media (hover: none), (pointer: coarse) {
+    .topbar {
+        background: var(--bg);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    #scrollToTop, #scrollToBottom {
+        background: var(--bg-elevated);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    #subpages-bar {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .topgg-art.is-interactive .tg-bar {
+        touch-action: pan-y;
+    }
 }

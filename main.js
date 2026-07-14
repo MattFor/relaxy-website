@@ -36,6 +36,14 @@ const toggleTheme = () =>
     syncThemeButton();
 };
 
+const mq = (q) => !!(window.matchMedia && window.matchMedia(q).matches);
+
+const prefersReducedMotion = () => mq('(prefers-reduced-motion: reduce)');
+
+const canHover = () => mq('(hover: hover)') && mq('(pointer: fine)');
+
+const lowPower = () => mq('(pointer: coarse)') || mq('(max-width: 700px)');
+
 let bgFxW = 0;
 let bgFxH = 0;
 
@@ -188,9 +196,47 @@ const buildBackgroundFx = () =>
         }
     };
 
+    const thin = lowPower();
+
+    const TRACE = thin
+        ? {
+            per: 90000,
+            min: 8,
+            max: 34
+        }
+        : {
+            per: 34000,
+            min: 14,
+            max: 110
+        };
+
+    const FLOW = thin
+        ? {
+            per: 420000,
+            min: 2,
+            max: 6
+        }
+        : {
+            per: 200000,
+            min: 3,
+            max: 20
+        };
+
+    const PAD = thin
+        ? {
+            per: 200000,
+            min: 2,
+            max: 5
+        }
+        : {
+            per: 200000,
+            min: 4,
+            max: 18
+        };
+
     const area = W * H;
-    const nTrace = clamp(Math.round(area / 34000), 14, 110);
-    const nFlow = clamp(Math.round(area / 200000), 3, 20);
+    const nTrace = clamp(Math.round(area / TRACE.per), TRACE.min, TRACE.max);
+    const nFlow = clamp(Math.round(area / FLOW.per), FLOW.min, FLOW.max);
 
     for (let i = 0; i < nTrace; i++)
     {
@@ -206,7 +252,7 @@ const buildBackgroundFx = () =>
         parts.push('<circle class="bg-fx-node' + n[2] + '" cx="' + n[0] + '" cy="' + n[1] + '" r="3"/>');
     });
 
-    const nPad = clamp(Math.round(area / 200000), 4, 18);
+    const nPad = clamp(Math.round(area / PAD.per), PAD.min, PAD.max);
     for (let i = 0; i < nPad; i++)
     {
         const n = nodes[rint(0, nodes.length - 1)];
@@ -219,8 +265,7 @@ const buildBackgroundFx = () =>
         parts.push('<circle class="bg-fx-pad bg-fx-pulse' + n[2] + '" style="animation-duration:' + dur + 's;animation-delay:' + del + 's" cx="' + n[0] + '" cy="' + n[1] + '" r="6"/>');
     }
 
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduce && flows.length)
+    if (!prefersReducedMotion() && !thin && flows.length)
     {
         const nRider = clamp(Math.round(nFlow * 0.35), 1, 3);
         const headR = 3.4;
@@ -294,7 +339,30 @@ const eggToast = (text) =>
     }, 2800);
 };
 
-const prefersReducedMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const retire = (el, lifetimeMs, done) =>
+{
+    let gone = false;
+
+    const kill = () =>
+    {
+        if (gone)
+        {
+            return;
+        }
+
+        gone = true;
+        window.clearTimeout(timer);
+        el.remove();
+
+        if (done)
+        {
+            done();
+        }
+    };
+
+    const timer = window.setTimeout(kill, lifetimeMs);
+    el.addEventListener('animationend', kill, { once: true });
+};
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
@@ -308,6 +376,24 @@ const HEART_GLYPHS = [
     '💘'
 ];
 
+const MAX_LIVE_HEARTS = 60;
+
+let heartLayer = null;
+let liveHearts = 0;
+
+const getHeartLayer = () =>
+{
+    if (!heartLayer || !heartLayer.isConnected)
+    {
+        heartLayer = document.createElement('div');
+        heartLayer.className = 'egg-heart-layer';
+        heartLayer.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(heartLayer);
+    }
+
+    return heartLayer;
+};
+
 const heartBurst = (count) =>
 {
     if (prefersReducedMotion())
@@ -315,23 +401,44 @@ const heartBurst = (count) =>
         return;
     }
 
-    for (let i = 0; i < count; i++)
+    const wanted = lowPower()
+        ? Math.ceil(count / 2)
+        : count;
+    const n = Math.min(wanted, MAX_LIVE_HEARTS - liveHearts);
+    if (n < 1)
+    {
+        return;
+    }
+
+    const batch = document.createDocumentFragment();
+
+    for (let i = 0; i < n; i++)
     {
         const heart = document.createElement('span');
         heart.className = 'egg-heart';
         heart.textContent = pick(HEART_GLYPHS);
-        heart.setAttribute('aria-hidden', 'true');
-        heart.style.left = rand(2, 98).toFixed(2) + 'vw';
-        heart.style.top = rand(20, 95).toFixed(2) + 'vh';
+        heart.style.left = rand(2, 98).toFixed(2) + '%';
+        heart.style.top = rand(20, 95).toFixed(2) + '%';
         heart.style.fontSize = rand(0.9, 2.4).toFixed(2) + 'rem';
         heart.style.setProperty('--drift', Math.round(rand(-140, 140)) + 'px');
         heart.style.setProperty('--rise', Math.round(rand(150, 380)) + 'px');
         heart.style.setProperty('--tilt', Math.round(rand(-35, 35)) + 'deg');
-        heart.style.animationDuration = rand(1.6, 3.1).toFixed(2) + 's';
-        heart.style.animationDelay = rand(0, 0.7).toFixed(2) + 's';
-        document.body.appendChild(heart);
-        heart.addEventListener('animationend', () => heart.remove(), { once: true });
+
+        const dur = rand(1.6, 3.1);
+        const delay = rand(0, 0.7);
+        heart.style.animationDuration = dur.toFixed(2) + 's';
+        heart.style.animationDelay = delay.toFixed(2) + 's';
+
+        batch.appendChild(heart);
+        liveHearts += 1;
+
+        retire(heart, (dur + delay) * 1000 + 400, () =>
+        {
+            liveHearts -= 1;
+        });
     }
+
+    getHeartLayer().appendChild(batch);
 };
 
 const CONFETTI_COLORS = [
@@ -345,8 +452,11 @@ const CONFETTI_COLORS = [
     '#ff8a00'
 ];
 
+const MAX_LIVE_CONFETTI = 110;
+
 let confettiLayer = null;
 let confettiTimer = 0;
+let liveConfetti = 0;
 
 const dropConfetti = (count) =>
 {
@@ -355,7 +465,16 @@ const dropConfetti = (count) =>
         return;
     }
 
-    if (!confettiLayer)
+    const wanted = lowPower()
+        ? Math.ceil(count / 2)
+        : count;
+    const n = Math.min(wanted, MAX_LIVE_CONFETTI - liveConfetti);
+    if (n < 1)
+    {
+        return;
+    }
+
+    if (!confettiLayer || !confettiLayer.isConnected)
     {
         confettiLayer = document.createElement('div');
         confettiLayer.className = 'egg-confetti';
@@ -363,37 +482,53 @@ const dropConfetti = (count) =>
         document.body.appendChild(confettiLayer);
     }
 
-    for (let i = 0; i < count; i++)
+    const batch = document.createDocumentFragment();
+
+    for (let i = 0; i < n; i++)
     {
         const bit = document.createElement('span');
         bit.className = 'egg-confetti-bit';
-        bit.style.left = rand(0, 100).toFixed(2) + 'vw';
+        bit.style.left = rand(0, 100).toFixed(2) + '%';
         bit.style.background = pick(CONFETTI_COLORS);
         bit.style.setProperty('--drift', Math.round(rand(-160, 160)) + 'px');
         bit.style.setProperty('--spin', Math.round(rand(-900, 900)) + 'deg');
-        bit.style.animationDuration = rand(2.4, 4.6).toFixed(2) + 's';
-        bit.style.animationDelay = rand(0, 0.6).toFixed(2) + 's';
+
+        const dur = rand(2.4, 4.6);
+        const delay = rand(0, 0.6);
+        bit.style.animationDuration = dur.toFixed(2) + 's';
+        bit.style.animationDelay = delay.toFixed(2) + 's';
 
         if (Math.random() < 0.35)
         {
             bit.style.borderRadius = '50%';
         }
 
-        confettiLayer.appendChild(bit);
-        bit.addEventListener('animationend', () => bit.remove(), { once: true });
+        batch.appendChild(bit);
+        liveConfetti += 1;
+
+        retire(bit, (dur + delay) * 1000 + 400, () =>
+        {
+            liveConfetti -= 1;
+        });
     }
+
+    confettiLayer.appendChild(batch);
 };
+
+const confettiRunning = () => document.documentElement.classList.contains('party-mode');
 
 const startConfetti = () =>
 {
-    if (prefersReducedMotion() || confettiTimer)
+    if (prefersReducedMotion() || confettiTimer || document.hidden)
     {
         return;
     }
 
     dropConfetti(70);
 
-    confettiTimer = window.setInterval(() => dropConfetti(16), 700);
+    confettiTimer = window.setInterval(() => dropConfetti(lowPower()
+        ? 8
+        : 16), 700);
 };
 
 const stopConfetti = () =>
@@ -406,7 +541,24 @@ const stopConfetti = () =>
         confettiLayer.remove();
         confettiLayer = null;
     }
+
+    liveConfetti = 0;
 };
+
+document.addEventListener('visibilitychange', () =>
+{
+    if (document.hidden)
+    {
+        window.clearInterval(confettiTimer);
+        confettiTimer = 0;
+        return;
+    }
+
+    if (confettiRunning())
+    {
+        startConfetti();
+    }
+});
 
 const NO_DRAG_SELECTOR = [
     'img',
@@ -582,7 +734,7 @@ const attachOwnerCard = () =>
         window.setTimeout(advance, 600);
     });
 
-    if (prefersReducedMotion())
+    if (prefersReducedMotion() || !canHover())
     {
         return;
     }
@@ -759,7 +911,7 @@ const BUTTON_PULL_PX = 7;
 
 const attachButtonMagnet = () =>
 {
-    if (prefersReducedMotion())
+    if (prefersReducedMotion() || !canHover())
     {
         return;
     }
@@ -797,8 +949,8 @@ const greetTheCurious = () =>
         return;
     }
 
-    console.log('%c  ___     _                 _ \n' + ' | _ \\___| |__ _ __ ___  _| |\n' + ' |   / -_) / _` \\ \\ / || |_|\n' + ' |_|_\\___|_\\__,_/_\\_\\\\_, (_)\n' + '                     |__/   ', 'color:#ff69b4;font-weight:700');
-    console.log('%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website' + '\nMaybe there are some more eggs here to find....', 'color:#4a90e2');
+    console.log('%c ___     _               _ \n| _ \\___| |__ ___ ___  _| |\n|   / -_) / _` \\ \\ / || |_|\n|_|_\\___|_\\__,_/_\\_\\\\_, (_)\n                    |__/   ', 'color:#ff69b4;font-weight:700');
+    console.log('%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website\nMaybe there are some more eggs here to find....', 'color:#4a90e2');
 };
 
 const fmtUptime = (seconds) =>
@@ -861,8 +1013,8 @@ const piFields = {
 
     botClusters: (d) => (d.bot && d.bot.online && typeof d.bot.totalClusters === 'number'
         ? String(d.bot.totalClusters) + (d.bot.totalShards
-            ? ' (' + d.bot.totalShards + ' shards)'
-            : '')
+        ? ' (' + d.bot.totalShards + ' shards)'
+        : '')
         : '-'),
 
     botPlayers: (d) => (d.bot && d.bot.online && typeof d.bot.totalPlayers === 'number'
@@ -932,7 +1084,7 @@ const loadPiStats = () =>
     })
     .catch(() =>
     {
-        // Feed is down;
+        // Feed is down
     });
 };
 
