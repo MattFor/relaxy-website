@@ -100,18 +100,18 @@
     const renderOffline = () =>
     {
         grid.innerHTML = '<div class="tech-stat"><span class="num">-</span><span class="label">status feed offline</span></div>';
-        setStamp('Live feed unavailable right now - the Pi is not publishing /status.json yet.');
+        setStamp('Live feed unavailable right now. The Pi is not publishing /status.json yet.');
 
-        const section = document.getElementById('swarm');
+        const section = document.getElementById('fleet');
         if (section)
         {
             section.hidden = true;
         }
     };
 
-    const swarmSection = document.getElementById('swarm');
-    const swarmGrid = document.getElementById('swarm-hosts');
-    const swarmStamp = document.getElementById('swarm-stamp');
+    const swarmSection = document.getElementById('fleet');
+    const swarmGrid = document.getElementById('fleet-hosts');
+    const swarmStamp = document.getElementById('fleet-stamp');
 
     const plural = (n, one, many) => n + ' ' + (n === 1
         ? one
@@ -159,7 +159,7 @@
             : '') + '</p>' + '</div>';
     };
 
-    const renderSwarm = (bot) =>
+    const renderFleet = (bot) =>
     {
         if (!swarmSection || !swarmGrid)
         {
@@ -211,7 +211,7 @@
             }
         });
 
-        renderSwarm(data.bot);
+        renderFleet(data.bot);
 
         if (!tiles.length)
         {

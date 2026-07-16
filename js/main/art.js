@@ -50,6 +50,52 @@
         }
     };
 
+    const bindDrag = (el, handlers) =>
+    {
+        let active = false;
+
+        const onMove = (e) =>
+        {
+            if (active)
+            {
+                handlers.move(e);
+            }
+        };
+
+        const onUp = (e) =>
+        {
+            if (!active)
+            {
+                return;
+            }
+
+            active = false;
+            window.removeEventListener('pointermove', onMove);
+            window.removeEventListener('pointerup', onUp);
+            window.removeEventListener('pointercancel', onUp);
+            release(el, e);
+            handlers.end(e);
+        };
+
+        el.addEventListener('pointerdown', (e) =>
+        {
+            if (active || e.button > 0)
+            {
+                return;
+            }
+
+            e.preventDefault();
+            active = true;
+            capture(el, e);
+            window.addEventListener('pointermove', onMove);
+            window.addEventListener('pointerup', onUp);
+            window.addEventListener('pointercancel', onUp);
+            handlers.start(e);
+        });
+
+        el.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+    };
+
     const SVG_NS = 'http://www.w3.org/2000/svg';
 
     const buildMatrixWeb = (svg, hub) =>
@@ -354,57 +400,43 @@
                 return;
             }
 
-            grab.addEventListener('pointerdown', (e) =>
-            {
-                e.preventDefault();
-                dragging = i;
-                lastDragged = i;
-                capture(grab, e);
-                svg.classList.add('is-dragging');
+            bindDrag(grab, {
+                start: () =>
+                {
+                    dragging = i;
+                    lastDragged = i;
+                    svg.classList.add('is-dragging');
+                },
+
+                move: (e) =>
+                {
+                    const p = svgPoint(svg, e.clientX, e.clientY);
+                    if (!p)
+                    {
+                        return;
+                    }
+
+                    let dx = p.x - nodes[i].hx;
+                    let dy = p.y - nodes[i].hy;
+                    const len = Math.hypot(dx, dy);
+
+                    if (len > MAX_DRAG)
+                    {
+                        dx *= MAX_DRAG / len;
+                        dy *= MAX_DRAG / len;
+                    }
+
+                    dragOx = dx;
+                    dragOy = dy;
+                },
+
+                end: () =>
+                {
+                    dragging = -1;
+                    settleUntil = performance.now() + SETTLE_MS;
+                    svg.classList.remove('is-dragging');
+                }
             });
-
-            grab.addEventListener('pointermove', (e) =>
-            {
-                if (dragging !== i)
-                {
-                    return;
-                }
-
-                const p = svgPoint(svg, e.clientX, e.clientY);
-                if (!p)
-                {
-                    return;
-                }
-
-                let dx = p.x - nodes[i].hx;
-                let dy = p.y - nodes[i].hy;
-                const len = Math.hypot(dx, dy);
-
-                if (len > MAX_DRAG)
-                {
-                    dx *= MAX_DRAG / len;
-                    dy *= MAX_DRAG / len;
-                }
-
-                dragOx = dx;
-                dragOy = dy;
-            });
-
-            const stop = (e) =>
-            {
-                if (dragging !== i)
-                {
-                    return;
-                }
-
-                release(grab, e);
-                dragging = -1;
-                settleUntil = performance.now() + SETTLE_MS;
-                svg.classList.remove('is-dragging');
-            };
-
-            grab.addEventListener('pointerup', stop);
-            grab.addEventListener('pointercancel', stop);
         });
 
         if (reduceMotion)
@@ -463,7 +495,6 @@
         const RESET_MS = 5000;
 
         let order = rows.map((_, i) => i);
-        let dragRow = -1;
         let grabOffset = 0;
         let resetTimer = 0;
 
@@ -497,74 +528,58 @@
 
         rows.forEach((row, i) =>
         {
-            row.addEventListener('pointerdown', (e) =>
-            {
-                e.preventDefault();
-                const p = svgPoint(svg, e.clientX, e.clientY);
-                dragRow = i;
-                grabOffset = p
-                    ? p.y - SLOT_Y[order.indexOf(i)]
-                    : 0;
-                row.classList.add('is-dragging');
-                capture(row, e);
-                window.clearTimeout(resetTimer);
-            });
-
-            row.addEventListener('pointermove', (e) =>
-            {
-                if (dragRow !== i)
+            bindDrag(row, {
+                start: (e) =>
                 {
-                    return;
-                }
+                    const p = svgPoint(svg, e.clientX, e.clientY);
+                    grabOffset = p
+                        ? p.y - SLOT_Y[order.indexOf(i)]
+                        : 0;
+                    row.classList.add('is-dragging');
+                    window.clearTimeout(resetTimer);
+                },
 
-                const p = svgPoint(svg, e.clientX, e.clientY);
-                if (!p)
+                move: (e) =>
                 {
-                    return;
-                }
-
-                const first = SLOT_Y[0] - 12;
-                const last = SLOT_Y[SLOT_Y.length - 1] + 12;
-                const y = Math.max(first, Math.min(p.y - grabOffset, last));
-                place(i, y.toFixed(2));
-
-                let best = 0;
-                let bestGap = Infinity;
-                SLOT_Y.forEach((slotY, slot) =>
-                {
-                    const gap = Math.abs(slotY - y);
-                    if (gap < bestGap)
+                    const p = svgPoint(svg, e.clientX, e.clientY);
+                    if (!p)
                     {
-                        bestGap = gap;
-                        best = slot;
+                        return;
                     }
-                });
 
-                const current = order.indexOf(i);
-                if (best !== current)
+                    const first = SLOT_Y[0] - 12;
+                    const last = SLOT_Y[SLOT_Y.length - 1] + 12;
+                    const y = Math.max(first, Math.min(p.y - grabOffset, last));
+                    place(i, y.toFixed(2));
+
+                    let best = 0;
+                    let bestGap = Infinity;
+                    SLOT_Y.forEach((slotY, slot) =>
+                    {
+                        const gap = Math.abs(slotY - y);
+                        if (gap < bestGap)
+                        {
+                            bestGap = gap;
+                            best = slot;
+                        }
+                    });
+
+                    const current = order.indexOf(i);
+                    if (best !== current)
+                    {
+                        order.splice(current, 1);
+                        order.splice(best, 0, i);
+                        layout(i);
+                    }
+                },
+
+                end: () =>
                 {
-                    order.splice(current, 1);
-                    order.splice(best, 0, i);
-                    layout(i);
+                    row.classList.remove('is-dragging');
+                    layout(-1);
+                    scheduleReset();
                 }
             });
-
-            const stop = (e) =>
-            {
-                if (dragRow !== i)
-                {
-                    return;
-                }
-
-                release(row, e);
-                row.classList.remove('is-dragging');
-                dragRow = -1;
-                layout(-1);
-                scheduleReset();
-            };
-
-            row.addEventListener('pointerup', stop);
-            row.addEventListener('pointercancel', stop);
         });
 
         layout(-1);
@@ -596,7 +611,6 @@
         const RESET_MS = 5000;
 
         let order = bars.map((_, i) => i);
-        let dragBar = -1;
         let grabOffset = 0;
         let resetTimer = 0;
 
@@ -630,74 +644,58 @@
 
         bars.forEach((bar, i) =>
         {
-            bar.addEventListener('pointerdown', (e) =>
-            {
-                e.preventDefault();
-                const p = svgPoint(svg, e.clientX, e.clientY);
-                dragBar = i;
-                grabOffset = p
-                    ? p.x - SLOT_X[order.indexOf(i)]
-                    : 0;
-                bar.classList.add('is-dragging');
-                capture(bar, e);
-                window.clearTimeout(resetTimer);
-            });
-
-            bar.addEventListener('pointermove', (e) =>
-            {
-                if (dragBar !== i)
+            bindDrag(bar, {
+                start: (e) =>
                 {
-                    return;
-                }
+                    const p = svgPoint(svg, e.clientX, e.clientY);
+                    grabOffset = p
+                        ? p.x - SLOT_X[order.indexOf(i)]
+                        : 0;
+                    bar.classList.add('is-dragging');
+                    window.clearTimeout(resetTimer);
+                },
 
-                const p = svgPoint(svg, e.clientX, e.clientY);
-                if (!p)
+                move: (e) =>
                 {
-                    return;
-                }
-
-                const first = SLOT_X[0] - 16;
-                const last = SLOT_X[SLOT_X.length - 1] + 16;
-                const x = Math.max(first, Math.min(p.x - grabOffset, last));
-                place(i, x.toFixed(2));
-
-                let best = 0;
-                let bestGap = Infinity;
-                SLOT_X.forEach((slotX, slot) =>
-                {
-                    const gap = Math.abs(slotX - x);
-                    if (gap < bestGap)
+                    const p = svgPoint(svg, e.clientX, e.clientY);
+                    if (!p)
                     {
-                        bestGap = gap;
-                        best = slot;
+                        return;
                     }
-                });
 
-                const current = order.indexOf(i);
-                if (best !== current)
+                    const first = SLOT_X[0] - 16;
+                    const last = SLOT_X[SLOT_X.length - 1] + 16;
+                    const x = Math.max(first, Math.min(p.x - grabOffset, last));
+                    place(i, x.toFixed(2));
+
+                    let best = 0;
+                    let bestGap = Infinity;
+                    SLOT_X.forEach((slotX, slot) =>
+                    {
+                        const gap = Math.abs(slotX - x);
+                        if (gap < bestGap)
+                        {
+                            bestGap = gap;
+                            best = slot;
+                        }
+                    });
+
+                    const current = order.indexOf(i);
+                    if (best !== current)
+                    {
+                        order.splice(current, 1);
+                        order.splice(best, 0, i);
+                        layout(i);
+                    }
+                },
+
+                end: () =>
                 {
-                    order.splice(current, 1);
-                    order.splice(best, 0, i);
-                    layout(i);
+                    bar.classList.remove('is-dragging');
+                    layout(-1);
+                    scheduleReset();
                 }
             });
-
-            const stop = (e) =>
-            {
-                if (dragBar !== i)
-                {
-                    return;
-                }
-
-                release(bar, e);
-                bar.classList.remove('is-dragging');
-                dragBar = -1;
-                layout(-1);
-                scheduleReset();
-            };
-
-            bar.addEventListener('pointerup', stop);
-            bar.addEventListener('pointercancel', stop);
         });
 
         layout(-1);
