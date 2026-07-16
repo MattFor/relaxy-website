@@ -42,6 +42,9 @@
     --maxw: 1100px;
     --measure: 84ch;
 
+    --footer-relaxy-w: clamp(120px, 14vw, 220px);
+    --footer-relaxy-right: clamp(0.75rem, 4vw, 3rem);
+
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
     --t-fast: 0.18s var(--ease);
     --t: 0.28s var(--ease);
@@ -3502,6 +3505,12 @@ body:has(#scrollToTop) .relaxy-coach {
     margin: 0 var(--space-1);
 }
 
+@media (min-width: 700px) {
+    #subpages-bar {
+        padding-right: calc(var(--footer-relaxy-right) + var(--footer-relaxy-w) + var(--space-3));
+    }
+}
+
 .footer {
     position: relative;
     overflow: visible;
@@ -3514,9 +3523,9 @@ body:has(#scrollToTop) .relaxy-coach {
 
 .footer-relaxy {
     position: absolute;
-    right: clamp(0.75rem, 4vw, 3rem);
+    right: var(--footer-relaxy-right);
     bottom: 100%;
-    width: clamp(120px, 14vw, 220px);
+    width: var(--footer-relaxy-w);
     height: auto;
     transform: translateY(7%);
     pointer-events: none;
