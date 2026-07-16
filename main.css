@@ -1232,7 +1232,7 @@ main > .grid-2:first-child {
     width: clamp(120px, 29vw, 290px);
     height: auto;
 
-    transform: translateX(-180%) translateY(49%);
+    transform: translateX(-200%) translateY(80%);
 
     pointer-events: none;
     user-select: none;
@@ -3541,13 +3541,13 @@ html.js .reveal {
 .about-relaxy.reveal {
     opacity: 0;
     transition: opacity 2s var(--ease), transform 2s var(--ease) !important;
-    transform: translateX(-180%) translateY(49%) !important;
+    transform: translateX(-200%) translateY(49%) !important;
 }
 
 .about-relaxy.reveal.is-visible {
     opacity: 1;
     transition: opacity 2s var(--ease), transform 2s var(--ease) !important;
-    transform: translateX(-180%) translateY(49%) !important;
+    transform: translateX(-200%) translateY(49%) !important;
 }
 
 @media (max-width: 720px) {
