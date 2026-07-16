@@ -291,7 +291,7 @@ const buildBackgroundFx = () =>
                 const r = (headR - (headR - tailR) * (k / (count - 1))).toFixed(2);
                 const op = (0.85 * Math.pow(1 - k / count, 1.15)).toFixed(3);
                 const begin = (base + k * step).toFixed(3);
-                g += '<circle r="' + r + '" fill="currentColor" opacity="' + op + '"><animateMotion dur="' + dur + 's" begin="' + begin + 's" repeatCount="indefinite" rotate="none" path="' + f[0] + '"/></circle>';
+                g += '<circle r="' + r + '" fill="currentColor" opacity="' + op + '"><animateMotion dur="' + dur + 's" begin="' + begin + 's" repeatCount="indefinite" rotate="0" path="' + f[0] + '"/></circle>';
             }
             g += '</g>';
             parts.push(g);
