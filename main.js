@@ -1088,6 +1088,115 @@ const loadPiStats = () =>
     });
 };
 
+const SERVICE_STATE = {
+    true:    { css: 'is-up', label: 'Online' },
+    false:   { css: 'is-down', label: 'Offline' },
+    unknown: { css: 'is-checking', label: 'Unknown' }
+};
+
+const NODE_STATE = {
+    true:    { css: '', label: 'online!' },
+    false:   { css: 'is-down', label: 'offline!' },
+    unknown: { css: 'is-unknown', label: 'unknown' }
+};
+
+const paintNodeCards = (services) =>
+{
+    const byKey = {};
+    services.forEach((service) =>
+    {
+        byKey[service.key] = service;
+    });
+
+    document.querySelectorAll('.node-card[data-health]').forEach((card) =>
+    {
+        const service = byKey[card.dataset.health];
+        const badge = card.querySelector('.node-online');
+
+        if (!service || !badge)
+        {
+            return;
+        }
+
+        const state = NODE_STATE[service.online === null
+            ? 'unknown'
+            : String(service.online)];
+
+        badge.classList.remove('is-down', 'is-unknown');
+
+        if (state.css)
+        {
+            badge.classList.add(state.css);
+        }
+
+        badge.textContent = state.label;
+
+        card.setAttribute('aria-label', service.name + ': ' + state.label.replace('!', ''));
+    });
+};
+
+const loadServiceHealth = () =>
+{
+    const grid = document.getElementById('service-health');
+    const cards = document.querySelectorAll('.node-card[data-health]');
+
+    if ((!grid && !cards.length) || !('fetch' in window))
+    {
+        return;
+    }
+
+    fetch('/health.json', { cache: 'no-store' })
+    .then((res) => (res.ok
+        ? res.json()
+        : Promise.reject(res.status)))
+    .then((data) =>
+    {
+        const services = data.services || [];
+
+        if (!services.length)
+        {
+            return;
+        }
+
+        paintNodeCards(services);
+
+        if (!grid)
+        {
+            return;
+        }
+
+        grid.innerHTML = services.map((service) =>
+        {
+            const state = SERVICE_STATE[service.online === null
+                ? 'unknown'
+                : String(service.online)];
+
+            return '<div class="host-card service-health-row">'
+                + '<span class="service-health-name">' + service.name + '</span>'
+                + '<span class="status-badge ' + state.css + '">'
+                + '<span class="dot" aria-hidden="true"></span>'
+                + '<span class="status-text">' + state.label + '</span>'
+                + '</span>'
+                + '</div>';
+        }).join('');
+
+        const stamp = document.getElementById('service-health-stamp');
+
+        if (stamp)
+        {
+            const online = services.filter((service) => service.online === true).length;
+
+            stamp.textContent = online + ' of ' + services.length + ' services responding.';
+        }
+
+        grid.closest('section').hidden = false;
+    })
+    .catch(() =>
+    {
+        // Feed is down
+    });
+};
+
 window.toggleTheme = toggleTheme;
 
 const initPage = () =>
@@ -1102,6 +1211,12 @@ const initPage = () =>
     attachOwnerCard();
     greetTheCurious();
     loadPiStats();
+    loadServiceHealth();
+
+    if (document.getElementById('service-health'))
+    {
+        window.setInterval(loadServiceHealth, 60000);
+    }
 
     if (document.getElementById('piStatus'))
     {
