@@ -2960,6 +2960,27 @@ main > .grid-2:first-child {
     margin-right: 0;
 }
 
+@media (max-width: 720px) {
+    .hero .byline {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-1);
+    }
+
+    .hero .byline .byline-stats {
+        order: 1;
+    }
+
+    .hero .byline .byline-credit {
+        order: 2;
+    }
+
+    .hero .byline .byline-sep {
+        display: none;
+    }
+}
+
 .tag-item {
     white-space: nowrap;
 }
