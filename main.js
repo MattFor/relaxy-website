@@ -1089,15 +1089,33 @@ const loadPiStats = () =>
 };
 
 const SERVICE_STATE = {
-    true:    { css: 'is-up', label: 'Online' },
-    false:   { css: 'is-down', label: 'Offline' },
-    unknown: { css: 'is-checking', label: 'Unknown' }
+    true: {
+        css: 'is-up',
+        label: 'Online'
+    },
+    false: {
+        css: 'is-down',
+        label: 'Offline'
+    },
+    unknown: {
+        css: 'is-checking',
+        label: 'Unknown'
+    }
 };
 
 const NODE_STATE = {
-    true:    { css: '', label: 'online!' },
-    false:   { css: 'is-down', label: 'offline!' },
-    unknown: { css: 'is-unknown', label: 'unknown' }
+    true: {
+        css: '',
+        label: 'online!'
+    },
+    false: {
+        css: 'is-down',
+        label: 'offline!'
+    },
+    unknown: {
+        css: 'is-unknown',
+        label: 'unknown'
+    }
 };
 
 const paintNodeCards = (services) =>
@@ -1171,13 +1189,7 @@ const loadServiceHealth = () =>
                 ? 'unknown'
                 : String(service.online)];
 
-            return '<div class="host-card service-health-row">'
-                + '<span class="service-health-name">' + service.name + '</span>'
-                + '<span class="status-badge ' + state.css + '">'
-                + '<span class="dot" aria-hidden="true"></span>'
-                + '<span class="status-text">' + state.label + '</span>'
-                + '</span>'
-                + '</div>';
+            return '<div class="host-card service-health-row">' + '<span class="service-health-name">' + service.name + '</span>' + '<span class="status-badge ' + state.css + '">' + '<span class="dot" aria-hidden="true"></span>' + '<span class="status-text">' + state.label + '</span>' + '</span>' + '</div>';
         }).join('');
 
         const stamp = document.getElementById('service-health-stamp');

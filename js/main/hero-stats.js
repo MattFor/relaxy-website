@@ -34,8 +34,8 @@
         put(guilds, data && data.bot && data.bot.totalGuilds);
     })
     .catch(() =>
-    { 
-    	// Keep whatever was here before
+    {
+        // Keep whatever was here before
     });
 
     tick();

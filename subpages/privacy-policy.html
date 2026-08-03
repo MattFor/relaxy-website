@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Relaxy! - Privacy Policy</title>
+    <title>Relaxy! Privacy Policy - Discord Bot Data Handling</title>
     <script>document.documentElement.classList.add('js');
     try
     {
@@ -16,18 +16,73 @@
     catch (e)
     {
     }</script>
+    <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect">
+    <link href="https://cdn.relaxy.xyz" rel="dns-prefetch">
     <link href="/dist/main.css" rel="stylesheet">
     <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
     <meta content="#ff69b4" name="theme-color">
     <meta content="MattFor" name="author">
-    <meta content="Read the Privacy Policy for using Relaxy!, the Multipurpose Discord Bot." name="description">
+    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
+    <meta content="How Relaxy!, the free multipurpose Discord bot, collects, uses, stores and deletes your data - what is kept, why, for how long, and how to have it removed." name="description">
+    <meta content="relaxy privacy policy, discord bot privacy, discord bot data collection, gdpr discord bot" name="keywords">
     <link href="https://www.relaxy.xyz/subpages/privacy-policy" rel="canonical">
     <meta content="website" property="og:type">
     <meta content="https://www.relaxy.xyz/subpages/privacy-policy" property="og:url">
-    <meta content="Relaxy! - Privacy Policy" property="og:title">
+    <meta content="Relaxy! Privacy Policy - Discord Bot Data Handling" property="og:title">
     <meta content="Read the Privacy Policy for using Relaxy!, the Multipurpose Discord Bot." property="og:description">
     <meta content="https://cdn.relaxy.xyz/relaxy/website/img/social/og-image.jpg" property="og:image">
+    <meta content="Relaxy!" property="og:site_name">
+    <meta content="en_US" property="og:locale">
+    <meta content="600" property="og:image:width">
+    <meta content="600" property="og:image:height">
+    <meta content="Relaxy! the Discord bot mascot" property="og:image:alt">
     <meta content="summary" name="twitter:card">
+    <meta content="Relaxy! Privacy Policy - Discord Bot Data Handling" name="twitter:title">
+    <meta content="How Relaxy!, the free multipurpose Discord bot, collects, uses, stores and deletes your data - what is kept, why, for how long, and how to have it removed."
+          name="twitter:description">
+    <meta content="https://cdn.relaxy.xyz/relaxy/website/img/social/og-image.jpg" name="twitter:image">
+    <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebPage",
+                    "@id": "https://www.relaxy.xyz/subpages/privacy-policy",
+                    "url": "https://www.relaxy.xyz/subpages/privacy-policy",
+                    "name": "Relaxy! Privacy Policy - Discord Bot Data Handling",
+                    "description": "How Relaxy!, the free multipurpose Discord bot, collects, uses, stores and deletes your data - what is kept, why, for how long, and how to have it removed.",
+                    "isPartOf": {
+                        "@id": "https://www.relaxy.xyz/#website"
+                    },
+                    "primaryImageOfPage": {
+                        "@type": "ImageObject",
+                        "url": "https://cdn.relaxy.xyz/relaxy/website/img/social/og-image.jpg",
+                        "width": 600,
+                        "height": 600
+                    },
+                    "inLanguage": "en"
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Relaxy!",
+                            "item": "https://www.relaxy.xyz/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "Privacy Policy",
+                            "item": "https://www.relaxy.xyz/subpages/privacy-policy"
+                        }
+                    ]
+                }
+            ]
+        }
+    </script>
 </head>
 
 <body>
@@ -62,20 +117,129 @@
 <main class="wrap" id="main">
     <section class="card prose reveal" id="privacy">
         <h2>Privacy Policy</h2>
-        <p>This privacy policy outlines the data we collect and how we use it.</p>
-        <h3>What We Collect</h3>
+        <p><strong>Last updated:</strong> 3 August 2026</p>
+        <p>This policy explains what Relaxy! stores about you, why it stores it, how long it keeps it, and how to get it removed. It covers the Discord bot, this website, the dashboard at
+            dashboard.relaxy.xyz and every other service under the relaxy.xyz roof. It forms part of the <a href="/subpages/terms-of-service">Terms of Service</a>.</p>
+
+        <h3>The short version</h3>
         <ul>
-            <li>We collect your username, id, and server id for as long as you use Relaxy.</li>
-            <li>We also store the count of messages you've sent in all servers monitored by Relaxy.</li>
-            <li>We do not share any data with anyone.</li>
+            <li>Everything runs on hardware the Owner physically owns. There is no cloud provider, no rented server and no third-party host.</li>
+            <li>This website carries <strong>no analytics, no advertising, no tracking pixels and no third-party cookies</strong>. Nothing on it profiles you.</li>
+            <li>Your data is never sold, rented, or shared with anyone. There are no advertisers and no data partners.</li>
+            <li>Relaxy! stores as little as it can get away with: a setting left at its default is not written to the database at all.</li>
+            <li>Message content is read to check it against a server's filters and then discarded. It is not archived.</li>
         </ul>
-        <h3>Third-Party Services</h3>
-        <p>We may use third-party services to support our services. These third-party providers may collect, store, and process information only to the extent required to perform the services required
-            by us.</p>
-        <h3>Discord Integration</h3>
-        <p>As a Discord bot, we adhere to Discord's API Terms of Service and expect users to follow Discord's own Terms of Service as well.</p>
-        <h3>Changes to This Policy</h3>
-        <p>We may update our Privacy Policy from time to time. We recommend reviewing this page periodically for any changes.</p>
+
+        <h3>1. Who is Responsible</h3>
+        <p>Relaxy! is operated by MattFor ("the Owner"), acting as data controller, reachable at <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a>. Where a server's own staff configure how
+            Relaxy! behaves in their server, they determine that server's use of it and are responsible for it accordingly.</p>
+
+        <h3>2. What is Stored, and Why</h3>
+
+        <h4>Account and server identifiers</h4>
+        <p>Your Discord user id, and where relevant your username and avatar, along with the ids of servers, channels and roles. These are what let Relaxy! attribute a level, a warning or a
+            configuration to the right person and the right place. Without them the Service cannot function.</p>
+
+        <h4>Activity counters</h4>
+        <p>Message counts, experience and level, voice activity, reaction activity and command usage. These power levelling, ranks, leaderboards and the bot's own usage statistics.</p>
+
+        <h4>Moderation records</h4>
+        <p>Warnings, mutes, moderation cases and their reasons, timestamps and the id of the moderator who issued them, together with any message content quoted into a moderation log entry. These are
+            kept as the server's moderation history so that staff can review what happened and why.</p>
+
+        <h4>Message content</h4>
+        <p>Where a server enables censoring, Relaxy! reads message content in order to compare it against that server's filters, and then discards it. Message content is <strong>not</strong> archived,
+            profiled, or used for any purpose beyond the check itself. It is retained only where a moderator's action deliberately records it - for example a quoted line in a moderation case or a
+            modlog entry.</p>
+
+        <h4>Images and scam detection</h4>
+        <p>Where censoring is enabled, images posted in a server may be downloaded and passed through optical character recognition, because scam bots put the text that would trip a filter inside a
+            picture. The image is hashed and the extracted text is cached against that hash so the same picture is not read twice. An ordinary read is cached for about 30 minutes; an image confirmed
+            as a scam is remembered for about a day. The image itself is not retained.</p>
+
+        <h4>Voice recordings</h4>
+        <p>The recording feature captures voice audio from the members present in a voice channel and writes a separate track per speaker. The finished recording is posted into the channel that asked
+            for it and the file is then deleted from the Owner's storage; the copy that remains lives on Discord, as an attachment, under Discord's control. <strong>Recording people may require their
+                consent under the law that applies to you</strong> - see the Terms of Service, which places that responsibility on whoever starts the recording.</p>
+
+        <h4>Files you upload</h4>
+        <p>Files saved with the storage commands are kept until you delete them, subject to a quota of 20 MB per user and 50 MB per server. Server-shared images are visible to that server.</p>
+
+        <h4>Profile, economy and reminders</h4>
+        <p>Currency, inventory, reputation, trades, profile settings and any reminder you ask Relaxy! to keep, stored so those features work across sessions.</p>
+
+        <h4>Dashboard</h4>
+        <p>Signing in to the dashboard uses Discord's OAuth login. The dashboard receives your Discord account identifiers and the list of servers you are permitted to manage, and holds a session so
+            you stay signed in. Your Discord password is never seen by, or available to, Relaxy!.</p>
+
+        <h4>This website</h4>
+        <p>The site sets no cookies and runs no analytics. It uses your browser's local storage for two things only - your light/dark theme preference and whether the on-page command-search helper is
+            tucked away. Both stay in your browser, are never transmitted anywhere, and are cleared when you clear your browser data. Ordinary server logs may record requests for security and
+            troubleshooting.</p>
+
+        <h3>3. Legal Bases</h3>
+        <p>Where the GDPR or a comparable law applies, processing rests on: <strong>legitimate interests</strong> in operating, securing and maintaining the Service and in giving server staff the
+            moderation tools they have chosen to enable; <strong>performance of a contract</strong>, namely the Terms of Service you accept by using Relaxy!; <strong>consent</strong>, where you
+            volunteer something by choosing to use a feature, such as uploading a file or starting a recording; and <strong>legal obligation</strong> where one applies.</p>
+
+        <h3>4. How Long Data is Kept</h3>
+        <p>Relaxy! deletes on evidence, not on assumption, and refuses to act where the evidence is ambiguous:</p>
+        <ul>
+            <li><strong>Members who leave a server</strong> - the record is marked on departure and deleted after <strong>30 days</strong> if the mark still stands. Rejoining clears the mark.</li>
+            <li><strong>Servers that remove Relaxy!</strong> - marked on removal and purged in full after <strong>180 days</strong>. Re-adding Relaxy! at any point in that window cancels the purge.
+            </li>
+            <li><strong>Warnings, mutes and moderation cases</strong> - retained as the server's moderation history and <strong>not</strong> removed by the automatic cleanup, since they belong to the
+                server's record rather than to a single member's data. They can still be deleted on request.
+            </li>
+            <li><strong>Profiles that cannot be confidently placed</strong> - deliberately kept rather than guessed at, because deleting somebody's profile in error is worse than storing a few
+                kilobytes. Ask and it will be removed.
+            </li>
+            <li><strong>Scam-detection OCR cache</strong> - roughly 30 minutes, or roughly a day for an image confirmed as a scam.</li>
+            <li><strong>Voice recordings</strong> - deleted from the Owner's storage once delivered.</li>
+            <li><strong>Uploaded files</strong> - until you delete them.</li>
+        </ul>
+
+        <h3>5. Who Data is Shared With</h3>
+        <p>Your data is not sold, rented, licensed or shared for anyone else's purposes. There are no advertisers, no analytics providers and no data brokers involved.</p>
+        <p>Discord is unavoidably involved, since Relaxy! is a Discord bot: anything you send through Discord passes through Discord's systems under <a href="https://discord.com/privacy"
+                                                                                                                                                        rel="noopener" target="_blank">Discord's own
+            privacy policy</a>. Requesting music causes a request to be made to the third-party platform the content is resolved from, and lyrics lookups query a public lyrics service. Data may be
+            disclosed where the law compels it, or where it is necessary to investigate abuse or protect the Service.</p>
+
+        <h3>6. Where Data is Stored</h3>
+        <p>Every part of Relaxy! - the bot, the database, the dashboard, the CDN and this website - runs on a single-board computer that the Owner owns and keeps physically, in the Owner's country of
+            residence. Nothing is hosted with a cloud provider or rented from anyone, and data is not transferred to any third-country processor, because there are no processors. Discord, being a
+            service you are separately using, handles your data under its own terms and its own transfer arrangements.</p>
+
+        <h3>7. Security</h3>
+        <p>Access to the machine and the database is restricted to the Owner. Traffic to the website, the dashboard and the CDN is served over HTTPS. No system is perfectly secure, and no guarantee of
+            absolute security can be given; if a breach affecting your data occurs, the Owner will notify affected Users and any competent authority where the law requires it.</p>
+
+        <h3>8. Your Rights</h3>
+        <p>Depending on where you live, you may have the right to access the data held about you, to have it corrected, to have it erased, to restrict or object to its processing, to receive it in a
+            portable form, and to withdraw a consent you previously gave. To exercise any of these, email <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> or message @mattfor on Discord from
+            the account concerned, so the request can be tied to it.</p>
+        <p>Requests are answered as quickly as reasonably possible and in any event within one month where the GDPR applies. There is no charge. One limit is worth stating plainly: a warning or a
+            moderation case belongs to a server's record as much as to you, so erasing it removes that server's account of what happened. Such requests are honoured, but the server's staff may
+            separately keep their own record, which is outside the Owner's control. If you believe your data has been mishandled you may complain to your local data protection authority.</p>
+
+        <h3>9. Children</h3>
+        <p>The Service is not directed at children under 13, or under the higher minimum age that applies in your country, and Relaxy! does not knowingly collect data from them. If you believe a child
+            below that age has provided data, contact the Owner and it will be deleted.</p>
+
+        <h3>10. Third-Party Links</h3>
+        <p>This site and the bot link to third-party services - Discord, Ko-fi, top.gg, GitHub and others. Following those links takes you outside Relaxy!, and what happens there is governed by their
+            policies, not this one.</p>
+
+        <h3>11. Changes to This Policy</h3>
+        <p>This policy may be updated from time to time. The version published on this page is the version in force and the date at the top reflects the last change. Material changes will be announced
+            in the support server.</p>
+
+        <h3>12. Contact</h3>
+        <address>
+            Owner contact email: <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a>
+        </address>
+        <p>Or message @mattfor on Discord, or the <a href="https://www.discord.gg/xRAGVePxk6" rel="noopener" target="_blank">support server</a>.</p>
     </section>
 </main>
 
@@ -95,7 +259,8 @@
 </aside>
 
 <footer class="footer">
-    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp">
+    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" decoding="async" height="3072" loading="lazy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
+         width="2304">
     <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
 </footer>
 
