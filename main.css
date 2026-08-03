@@ -389,6 +389,7 @@ html.party-mode .hero-logo,
 html.party-mode .patreon-image,
 html.party-mode .brand img,
 html.party-mode .eng-icon,
+html.party-mode .feature-icon,
 html.party-mode .relaxy-coach-avatar {
     animation: party-dance 0.9s var(--ease) infinite;
 }
@@ -414,6 +415,7 @@ html.party-mode .invite-button {
     html.party-mode .patreon-image,
     html.party-mode .brand img,
     html.party-mode .eng-icon,
+    html.party-mode .feature-icon,
     html.party-mode .relaxy-coach-avatar,
     html.party-mode .invite-button {
         animation: none;
@@ -1266,6 +1268,37 @@ main > .grid-2:first-child {
     border-left: 2px solid var(--accent);
     border-bottom: 2px solid var(--accent);
     transform: rotate(-45deg);
+}
+
+.feature-list.has-icons li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding-left: 0;
+}
+
+.feature-list.has-icons li::before {
+    content: none;
+}
+
+.feature-icon {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 0.15em;
+    color: var(--accent);
+}
+
+.feature-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .feature-pager {
