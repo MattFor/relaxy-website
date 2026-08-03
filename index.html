@@ -225,28 +225,40 @@
         <section class="card reveal" data-reveal-delay="80" id="features">
             <p class="eyebrow">Features</p>
             <h2 style="text-align:left">Main features</h2>
-            <ul class="feature-list">
-                <li>Fully customizable ticketing system</li>
-                <li>Advanced warning ladder with tiers, autobanning and a per-member case dossier</li>
-                <li>Highly advanced censoring, including OCR that reads scam text straight out of posted screenshots</li>
-                <li>Raid protection that spots bursts of fresh accounts and clears them out on its own</li>
-                <li>Comprehensive moderator log tracking over 32 events</li>
-                <li>Cross-server links, mirror a role across every server you link and, if you allow it, share moderation with them too</li>
-                <li>Appeal channels hosted in a separate server, so punished members can appeal without rejoining yours</li>
-                <li>Per-command permission grants, hand a single command to a trainee role without touching Discord's permissions</li>
-                <li>Custom forums with detailed access control</li>
-                <li>Multiple heartboards with extensive customization</li>
-                <li>Levelling with rank cards, leaderboards and automatic role rewards per tier</li>
-                <li>Economy and profiles: dailies, a shop, inventories, reputation and player-to-player trading</li>
-                <li>Built-in games, counting channels, snake, minesweeper, tic-tac-toe and polls</li>
-                <li>Live reaction control panel for messages, plus reaction roles</li>
-                <li>Built-in music player: play YouTube links, plain search keywords or whole playlists, plus SoundCloud and Spotify, with audio filters and an equalizer</li>
-                <li>Custom-built voice recorder that writes a separate track per speaker</li>
-                <li>Join-to-create voice channels, and private voice channels with their own limit, bitrate and region</li>
-                <li>Customizable welcome / leave channels with generated cards, plus custom boost messages</li>
-                <li>Fully customizable embeds, self-clearing channels on a timer and reminders Relaxy! pings you for</li>
-                <li>Image manipulation and file saving to user/server storage</li>
-            </ul>
+            <div class="feature-pager" id="featurePager">
+                <div class="feature-stage">
+                    <ul class="feature-list feature-page is-active" data-feature-page="1">
+                        <li>Highly advanced censoring, including OCR that reads scam text straight out of users' images</li>
+                        <li>Advanced warning ladder with tiers, autobanning and a per-member case dossier</li>
+                        <li>Raid protection that spots bursts of fresh accounts and clears them out on its own</li>
+                        <li>Comprehensive moderator log tracking over 32 events</li>
+                        <li>Cross-server links, mirror a role across every server you link and, if you allow it, share moderation with them too</li>
+                        <li>Appeal channels hosted in a separate server, so punished members can appeal without rejoining yours</li>
+                        <li>Per-command permission grants, hand a single command to a trainee role without touching Discord's permissions</li>
+                        <li>Built-in music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters and an equalizer</li>
+                        <li>Custom-built voice recorder that writes a separate track per speaker</li>
+                        <li>Fully customizable ticketing system</li>
+                        <li>Custom forums with detailed access control</li>
+                        <li>Join-to-create voice channels, and private voice channels with their own limit, bitrate and region</li>
+                        <li>Fully customizable embeds, self-clearing channels on a timer and reminders Relaxy! pings you for</li>
+                    </ul>
+                    <ul class="feature-list feature-page" data-feature-page="2">
+                        <li>Multiple heartboards (a.k.a starboards) with extensive customization</li>
+                        <li>Live reaction control panel for messages, plus reaction roles</li>
+                        <li>Levelling with rank cards, leaderboards and automatic role rewards per tier</li>
+                        <li>Economy and profiles: dailies, a shop, inventories, reputation and player-to-player trading</li>
+                        <li>Built-in games, counting channels, snake, minesweeper, tic-tac-toe and polls</li>
+                        <li>Customizable welcome / leave channels with generated cards, plus custom boost messages</li>
+                        <li>Image manipulation and file saving to user/server storage</li>
+                    </ul>
+                </div>
+                <div class="feature-pager-nav">
+                    <span class="feature-pager-hint">Click the tile to flip to the other page</span> <span class="feature-dots">
+                        <button aria-label="Show features, page 1" class="feature-dot is-active" data-feature-goto="1" type="button">1</button>
+                        <button aria-label="Show features, page 2" class="feature-dot" data-feature-goto="2" type="button">2</button>
+                    </span>
+                </div>
+            </div>
         </section>
     </div>
 
@@ -684,6 +696,7 @@
 <script defer src="/dist/js/main/mobilenav.js"></script>
 <script defer src="/dist/js/main/art.js"></script>
 <script defer src="/dist/js/main/hero-stats.js"></script>
+<script defer src="/dist/js/main/feature-pager.js"></script>
 </body>
 
 </html>
