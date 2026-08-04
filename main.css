@@ -3696,6 +3696,19 @@ body:has(#scrollToTop) .relaxy-coach {
     image-rendering: auto;
 }
 
+.footer-links {
+    margin-top: var(--space-2);
+    font-size: 0.85rem;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
 html.js .reveal {
     opacity: 1;
     transform: none;
