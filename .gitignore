@@ -2,3 +2,5 @@ dist
 .idea
 status.json
 health.json
+uptime.json
+*.tmp

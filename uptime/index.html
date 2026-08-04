@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>Service status</title>
+
+    <meta content="Live and historical uptime for every Relaxy! service." name="description">
+    <meta content="#ff69b4" name="theme-color">
+    <link href="https://uptime.relaxy.xyz/" rel="canonical">
+
+    <meta content="Relaxy! Status" property="og:title">
+    <meta content="Live and historical uptime for every Relaxy! service." property="og:description">
+    <meta content="website" property="og:type">
+    <meta content="https://uptime.relaxy.xyz/" property="og:url">
+
+    <script>
+        try
+        {
+            const stored = localStorage.getItem('theme');
+
+            if (stored === 'light' || (!stored && window.matchMedia
+                && window.matchMedia('(prefers-color-scheme: light)').matches))
+            {
+                document.documentElement.classList.add('light-mode');
+            }
+        }
+        catch (e)
+        {
+            // Storage unavailable
+        }
+    </script>
+
+    <link href="uptime.css" rel="stylesheet">
+</head>
+<body>
+<header class="topbar">
+    <div class="shell topbar-inner">
+        <a class="brand" href="https://relaxy.xyz">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>Relaxy!<span class="brand-sub">status</span></span>
+        </a>
+
+        <nav class="topbar-actions">
+            <a class="link" href="https://relaxy.xyz">Back to site</a>
+            <button aria-pressed="false" class="theme-button" id="themeButton" type="button">Light Mode</button>
+        </nav>
+    </div>
+</header>
+
+<main class="shell">
+    <section aria-live="polite" class="banner is-loading" id="banner">
+        <div class="banner-icon" aria-hidden="true"></div>
+        <div class="banner-copy">
+            <h1 class="banner-title" id="bannerTitle">Checking current status…</h1>
+            <p class="banner-sub" id="bannerSub">Fetching the latest report from the Pi.</p>
+        </div>
+    </section>
+
+    <section class="active-incidents" hidden id="activeIncidents"></section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2 class="panel-title">Services</h2>
+            <p class="panel-note"><span id="windowLabel">90</span> days &middot; each bar is one day, UTC</p>
+        </div>
+
+        <div id="services">
+            <p class="empty">Loading service history…</p>
+        </div>
+
+        <div class="legend">
+            <span class="legend-item"><i class="swatch is-up"></i>No downtime</span>
+            <span class="legend-item"><i class="swatch is-partial"></i>Brief outage</span>
+            <span class="legend-item"><i class="swatch is-down"></i>Significant outage</span>
+            <span class="legend-item"><i class="swatch is-nodata"></i>Not monitored</span>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2 class="panel-title">Incident history</h2>
+            <p class="panel-note" id="incidentCount"></p>
+        </div>
+
+        <div id="incidents">
+            <p class="empty">Loading incidents…</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer shell">
+    <p id="stamp">&nbsp;</p>
+    <p class="footer-note">
+        Uptime is measured by the Pi probing each service directly, every 20 seconds.
+        Periods where the monitor itself was not running are shown as "not monitored"
+        rather than counted as uptime.
+    </p>
+</footer>
+
+<script src="uptime.js"></script>
+</body>
+</html>

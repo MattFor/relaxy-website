@@ -1,0 +1,614 @@
+/**
+ * Grr stop looking here all is available at
+ * @link https://codeberg.org/MattFor/relaxy-website
+ */
+
+
+:root {
+    --bg: #131417;
+    --bg-surface: #1a1c21;
+    --bg-elevated: #212530;
+    --bg-inset: #0f1013;
+
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+
+    --text: #e9eaec;
+    --text-muted: #9aa0a9;
+
+    --accent: #ff69b4;
+    --accent-soft: rgba(255, 105, 180, 0.12);
+
+    --up: #3fb950;
+    --up-soft: rgba(63, 185, 80, 0.14);
+    --warn: #d29922;
+    --warn-soft: rgba(210, 153, 34, 0.14);
+    --down: #f85149;
+    --down-soft: rgba(248, 81, 73, 0.14);
+    --nodata: rgba(255, 255, 255, 0.10);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+
+    --radius-sm: 10px;
+    --radius: 16px;
+    --radius-pill: 999px;
+
+    --maxw: 1000px;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --t-fast: 0.18s var(--ease);
+
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    color-scheme: dark;
+}
+
+:root.light-mode {
+    --bg: #f4f5f8;
+    --bg-surface: #ffffff;
+    --bg-elevated: #ffffff;
+    --bg-inset: #eceef2;
+
+    --border: rgba(17, 20, 26, 0.10);
+    --border-strong: rgba(17, 20, 26, 0.18);
+
+    --text: #181a1f;
+    --text-muted: #5a616b;
+
+    --accent-soft: rgba(255, 105, 180, 0.14);
+
+    /* Darker than the dark-mode greens and reds: the same hues that read as vivid on
+       #131417 turn washed out and low-contrast on white. */
+    --up: #1a7f37;
+    --up-soft: rgba(26, 127, 55, 0.12);
+    --warn: #9a6700;
+    --warn-soft: rgba(154, 103, 0, 0.12);
+    --down: #cf222e;
+    --down-soft: rgba(207, 34, 46, 0.12);
+    --nodata: rgba(17, 20, 26, 0.10);
+
+    --shadow-sm: 0 1px 2px rgba(17, 20, 26, 0.08);
+    --shadow-md: 0 8px 24px rgba(17, 20, 26, 0.10);
+
+    color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+    width: min(100% - 2.5rem, var(--maxw));
+    margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Top bar
+   -------------------------------------------------------------------------- */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.9rem;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+}
+
+.brand-mark {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.brand-sub {
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-left: 0.4rem;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color var(--t-fast);
+}
+
+.link:hover {
+    color: var(--accent);
+}
+
+.theme-button {
+    background: var(--bg-elevated);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 0.9rem;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color var(--t-fast), color var(--t-fast);
+}
+
+.theme-button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Status banner
+   -------------------------------------------------------------------------- */
+
+.banner {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    margin-block: 2.5rem 1.5rem;
+    padding: 1.5rem 1.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-md);
+}
+
+.banner-icon {
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--nodata);
+}
+
+.banner-icon::after {
+    content: "";
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: var(--text-muted);
+}
+
+.banner.is-ok {
+    border-color: color-mix(in srgb, var(--up) 40%, var(--border));
+    background: linear-gradient(180deg, var(--up-soft), transparent 70%), var(--bg-surface);
+}
+
+.banner.is-ok .banner-icon {
+    background: var(--up-soft);
+}
+
+.banner.is-ok .banner-icon::after {
+    background: var(--up);
+}
+
+.banner.is-partial {
+    border-color: color-mix(in srgb, var(--warn) 40%, var(--border));
+    background: linear-gradient(180deg, var(--warn-soft), transparent 70%), var(--bg-surface);
+}
+
+.banner.is-partial .banner-icon {
+    background: var(--warn-soft);
+}
+
+.banner.is-partial .banner-icon::after {
+    background: var(--warn);
+}
+
+.banner.is-major {
+    border-color: color-mix(in srgb, var(--down) 45%, var(--border));
+    background: linear-gradient(180deg, var(--down-soft), transparent 70%), var(--bg-surface);
+}
+
+.banner.is-major .banner-icon {
+    background: var(--down-soft);
+}
+
+.banner.is-major .banner-icon::after {
+    background: var(--down);
+}
+
+/* Down and ongoing: the one state worth spending motion on. */
+.banner.is-major .banner-icon::after,
+.banner.is-partial .banner-icon::after {
+    animation: pulse 2s var(--ease) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.55; transform: scale(0.82); }
+}
+
+.banner-title {
+    margin: 0;
+    font-size: clamp(1.25rem, 3.2vw, 1.6rem);
+    letter-spacing: -0.02em;
+}
+
+.banner-sub {
+    margin: 0.25rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+/* --------------------------------------------------------------------------
+   Panels
+   -------------------------------------------------------------------------- */
+
+.panel {
+    margin-bottom: 1.5rem;
+    padding: 1.4rem 1.6rem 1.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+}
+
+.panel-title {
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+.panel-note {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.empty {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 1rem 0;
+}
+
+/* --------------------------------------------------------------------------
+   Service rows and the day strip
+   -------------------------------------------------------------------------- */
+
+.service {
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--border);
+}
+
+.service:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.service-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+}
+
+.service-name {
+    font-weight: 600;
+    font-size: 0.98rem;
+}
+
+.service-cat {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+.service-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.service-state .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--text-muted);
+}
+
+.service-state.is-up { color: var(--up); }
+.service-state.is-up .dot { background: var(--up); }
+.service-state.is-down { color: var(--down); }
+.service-state.is-down .dot { background: var(--down); }
+
+/*
+ * The 90-day strip.
+ *
+ * flex with min-width rather than a fixed bar width: on a phone 90 fixed bars would
+ * either overflow the card or need a horizontal scroller, and a status page you have
+ * to scroll sideways to read is a status page nobody reads. The bars simply get
+ * thinner, down to a 2px floor where they stop being legible and the oldest days are
+ * dropped instead (see the media queries below).
+ */
+.strip {
+    display: flex;
+    gap: 2px;
+    align-items: stretch;
+    height: 34px;
+}
+
+.bar {
+    flex: 1 1 0;
+    min-width: 2px;
+    border-radius: 2px;
+    background: var(--nodata);
+    transition: transform var(--t-fast), filter var(--t-fast);
+    position: relative;
+}
+
+.bar.is-up { background: var(--up); }
+.bar.is-partial { background: var(--warn); }
+.bar.is-down { background: var(--down); }
+
+.bar:hover,
+.bar:focus-visible {
+    transform: scaleY(1.12);
+    filter: brightness(1.25);
+    outline: none;
+}
+
+/* Tooltip. Pure CSS so it costs nothing and cannot break if the JS feed is stale. */
+.bar[data-tip]:hover::after,
+.bar[data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    padding: 0.45rem 0.65rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-elevated);
+    color: var(--text);
+    box-shadow: var(--shadow-md);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    white-space: pre;
+    pointer-events: none;
+}
+
+.strip-foot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.45rem;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+}
+
+.strip-foot .uptime {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--mono);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.4rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.swatch {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 2px;
+    background: var(--nodata);
+}
+
+.swatch.is-up { background: var(--up); }
+.swatch.is-partial { background: var(--warn); }
+.swatch.is-down { background: var(--down); }
+
+/* --------------------------------------------------------------------------
+   Incidents
+   -------------------------------------------------------------------------- */
+
+.active-incidents {
+    margin-bottom: 1.5rem;
+}
+
+.incident {
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--border);
+}
+
+.incident:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.incident-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.incident-title {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+
+.chip {
+    display: inline-block;
+    padding: 0.1rem 0.55rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+}
+
+.chip.is-minor { background: var(--warn-soft); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.chip.is-major { background: var(--down-soft); color: var(--down); border-color: color-mix(in srgb, var(--down) 30%, transparent); }
+.chip.is-critical { background: var(--down); color: #fff; }
+.chip.is-maintenance { background: var(--accent-soft); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.chip.is-ongoing { background: var(--down); color: #fff; }
+
+.incident-meta {
+    margin: 0.3rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.incident-body {
+    margin: 0.7rem 0 0;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--border-strong);
+}
+
+.incident-line {
+    margin: 0 0 0.45rem;
+    font-size: 0.88rem;
+}
+
+.incident-line:last-child {
+    margin-bottom: 0;
+}
+
+.incident-label {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: block;
+}
+
+/* Anything the operator wrote by hand, marked so it is never confused with the
+   automatic explanation sitting directly above it. */
+.incident-line.is-manual {
+    border-left: 2px solid var(--accent);
+    margin-left: -0.9rem;
+    padding-left: 0.8rem;
+}
+
+.incident-day {
+    margin: 1.6rem 0 0.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.incident-day:first-child {
+    margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+.footer {
+    padding-block: 1rem 3rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.footer p {
+    margin: 0 0 0.5rem;
+}
+
+.footer-note {
+    max-width: 64ch;
+    opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   --------------------------------------------------------------------------
+   How many days fit is decided in uptime.js, not here. Hiding bars with
+   :nth-child would leave the "90 days" label claiming a window the page is no
+   longer showing, and a status page that overstates its own coverage is worse
+   than one that shows less. The JS shortens the window and relabels it together.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+    .banner {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
