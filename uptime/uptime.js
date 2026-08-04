@@ -161,13 +161,31 @@ const renderStrip = (service, windowDays) =>
         </div>`;
 };
 
+const SERVICE_ORDER = {
+    "Relaxy! bot": 0,
+    "Relaxy! Dashboard": 1,
+    "Website": 2,
+    "The CDN": 3,
+    "Matrix (Continuwuity)": 4,
+    "Matrix registration API": 5,
+    "IRC (ngIRCd)": 6,
+    "Minecraft server": 7,
+};
+
 const renderServices = (data) =>
 {
     const windowDays = visibleDays(data.windowDays);
 
     el('windowLabel').textContent = String(windowDays);
 
-    el('services').innerHTML = data.services.map((service) =>
+    const services = [...data.services].sort((a, b) =>
+    {
+        const orderA = SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER;
+        const orderB = SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER;
+        return orderA - orderB;
+    });
+
+    el('services').innerHTML = services.map((service) =>
     {
         const isUp = service.online === true;
         const isDown = service.online === false;

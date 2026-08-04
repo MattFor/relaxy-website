@@ -598,7 +598,7 @@ body {
 }
 
 .footer-note {
-    max-width: 64ch;
+    max-width: 256ch;
     opacity: 0.85;
 }
 
