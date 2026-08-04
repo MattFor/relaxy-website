@@ -13,7 +13,7 @@ const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#39;'
+    '\'': '&#39;'
 }[character]));
 
 const el = (id) => document.getElementById(id);
@@ -21,7 +21,9 @@ const el = (id) => document.getElementById(id);
 const formatDate = (iso, options) => new Date(iso).toLocaleString(undefined, options);
 
 const dayLabel = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString(undefined, {
-    month: 'short', day: 'numeric', year: 'numeric'
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
 });
 
 const relative = (iso) =>
@@ -71,7 +73,9 @@ const duration = (seconds) =>
 
     const hours = Math.floor(minutes / 60);
 
-    return minutes % 60 ? `${hours}h ${minutes % 60}m` : `${hours}h`;
+    return minutes % 60
+        ? `${hours}h ${minutes % 60}m`
+        : `${hours}h`;
 };
 
 const visibleDays = (available) =>
@@ -131,7 +135,9 @@ const renderStrip = (service, windowDays) =>
 
     const bars = days.map((day) =>
     {
-        const cssState = day.state === 'nodata' ? '' : ` is-${day.state}`;
+        const cssState = day.state === 'nodata'
+            ? ''
+            : ` is-${day.state}`;
 
         const tip = day.state === 'nodata'
             ? `${dayLabel(day.date)}\nNot monitored`
@@ -166,8 +172,16 @@ const renderServices = (data) =>
         const isUp = service.online === true;
         const isDown = service.online === false;
 
-        const stateCss = isUp ? 'is-up' : isDown ? 'is-down' : '';
-        const stateText = isUp ? 'Operational' : isDown ? 'Down' : 'Unknown';
+        const stateCss = isUp
+            ? 'is-up'
+            : isDown
+                ? 'is-down'
+                : '';
+        const stateText = isUp
+            ? 'Operational'
+            : isDown
+                ? 'Down'
+                : 'Unknown';
 
         return `
             <article class="service">
@@ -197,7 +211,10 @@ const incidentCard = (incident) =>
     chips.push(`<span class="chip is-${escapeHtml(incident.impact)}">${escapeHtml(incident.impact)}</span>`);
 
     const started = formatDate(incident.startedAt, {
-        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
     });
 
     const meta = incident.ongoing
@@ -264,8 +281,9 @@ const renderIncidents = (data) =>
 
     if (!past.length)
     {
-        el('incidents').innerHTML = `<p class="empty">No incidents recorded${
-            active.length ? ' before the active one above' : ` in the last ${data.windowDays} days`}. </p>`;
+        el('incidents').innerHTML = `<p class="empty">No incidents recorded${active.length
+            ? ' before the active one above'
+            : ` in the last ${data.windowDays} days`}. </p>`;
 
         return;
     }
@@ -295,8 +313,10 @@ const render = (data) =>
     renderServices(data);
     renderIncidents(data);
 
-    el('stamp').textContent = `Last checked ${relative(data.generatedAt)} · ${
-        formatDate(data.generatedAt, { hour: '2-digit', minute: '2-digit' })}`;
+    el('stamp').textContent = `Last checked ${relative(data.generatedAt)} · ${formatDate(data.generatedAt, {
+        hour: '2-digit',
+        minute: '2-digit'
+    })}`;
 };
 
 const showFailure = () =>
@@ -305,8 +325,7 @@ const showFailure = () =>
 
     banner.className = 'banner is-partial';
     el('bannerTitle').textContent = 'Status feed unavailable';
-    el('bannerSub').textContent =
-        'This page could not load its data. That usually means the monitor on the Pi is not running - which is itself worth knowing.';
+    el('bannerSub').textContent = 'This page could not load its data. That usually means the monitor on the Pi is not running - which is itself worth knowing.';
 
     el('services').innerHTML = '<p class="empty">No service history to show.</p>';
     el('incidents').innerHTML = '<p class="empty">No incidents to show.</p>';
@@ -315,7 +334,9 @@ const showFailure = () =>
 let latest = null;
 
 const load = () => fetch(FEED, { cache: 'no-store' })
-.then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+.then((response) => (response.ok
+    ? response.json()
+    : Promise.reject(response.status)))
 .then((data) =>
 {
     latest = data;
@@ -334,7 +355,9 @@ const syncThemeButton = () =>
     const button = el('themeButton');
     const isLight = document.documentElement.classList.contains('light-mode');
 
-    button.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+    button.textContent = isLight
+        ? 'Dark Mode'
+        : 'Light Mode';
     button.setAttribute('aria-pressed', String(isLight));
 };
 
@@ -344,7 +367,9 @@ el('themeButton').addEventListener('click', () =>
 
     try
     {
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        localStorage.setItem('theme', isLight
+            ? 'light'
+            : 'dark');
     }
     catch (error)
     {

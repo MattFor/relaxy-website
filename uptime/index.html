@@ -20,8 +20,7 @@
         {
             const stored = localStorage.getItem('theme');
 
-            if (stored === 'light' || (!stored && window.matchMedia
-                && window.matchMedia('(prefers-color-scheme: light)').matches))
+            if (stored === 'light' || (!stored && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches))
             {
                 document.documentElement.classList.add('light-mode');
             }
@@ -32,15 +31,12 @@
         }
     </script>
 
-    <link href="uptime.css" rel="stylesheet">
+    <link href="dist/uptime.css" rel="stylesheet">
 </head>
 <body>
 <header class="topbar">
     <div class="shell topbar-inner">
-        <a class="brand" href="https://relaxy.xyz">
-            <span class="brand-mark" aria-hidden="true"></span>
-            <span>Relaxy!<span class="brand-sub">status</span></span>
-        </a>
+        <a class="brand" href="https://relaxy.xyz"> <span class="brand-mark" aria-hidden="true"></span> <span>Relaxy!<span class="brand-sub">status</span></span> </a>
 
         <nav class="topbar-actions">
             <a class="link" href="https://relaxy.xyz">Back to site</a>
@@ -71,10 +67,8 @@
         </div>
 
         <div class="legend">
-            <span class="legend-item"><i class="swatch is-up"></i>No downtime</span>
-            <span class="legend-item"><i class="swatch is-partial"></i>Brief outage</span>
-            <span class="legend-item"><i class="swatch is-down"></i>Significant outage</span>
-            <span class="legend-item"><i class="swatch is-nodata"></i>Not monitored</span>
+            <span class="legend-item"><i class="swatch is-up"></i>No downtime</span> <span class="legend-item"><i class="swatch is-partial"></i>Brief outage</span> <span class="legend-item"><i
+                class="swatch is-down"></i>Significant outage</span> <span class="legend-item"><i class="swatch is-nodata"></i>Not monitored</span>
         </div>
     </section>
 
@@ -93,10 +87,7 @@
 <footer class="footer shell">
     <p id="stamp">&nbsp;</p>
     <p class="footer-note">
-        Uptime is measured by the Pi probing each service directly, every 20 seconds.
-        Periods where the monitor itself was not running are shown as "not monitored"
-        rather than counted as uptime.
-    </p>
+        Uptime is measured by the Pi probing each service directly, every 20 seconds. Periods where the monitor itself was not running are shown as "not monitored" rather than counted as uptime. </p>
 </footer>
 
 <script src="uptime.js"></script>

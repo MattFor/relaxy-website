@@ -40,7 +40,7 @@
     --t-fast: 0.18s var(--ease);
 
     --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-        Arial, sans-serif;
+    Arial, sans-serif;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
     color-scheme: dark;
@@ -60,8 +60,6 @@
 
     --accent-soft: rgba(255, 105, 180, 0.14);
 
-    /* Darker than the dark-mode greens and reds: the same hues that read as vivid on
-       #131417 turn washed out and low-contrast on white. */
     --up: #1a7f37;
     --up-soft: rgba(26, 127, 55, 0.12);
     --warn: #9a6700;
@@ -96,10 +94,6 @@ body {
     width: min(100% - 2.5rem, var(--maxw));
     margin-inline: auto;
 }
-
-/* --------------------------------------------------------------------------
-   Top bar
-   -------------------------------------------------------------------------- */
 
 .topbar {
     position: sticky;
@@ -176,10 +170,6 @@ body {
     color: var(--accent);
 }
 
-/* --------------------------------------------------------------------------
-   Status banner
-   -------------------------------------------------------------------------- */
-
 .banner {
     display: flex;
     align-items: center;
@@ -249,15 +239,20 @@ body {
     background: var(--down);
 }
 
-/* Down and ongoing: the one state worth spending motion on. */
 .banner.is-major .banner-icon::after,
 .banner.is-partial .banner-icon::after {
     animation: pulse 2s var(--ease) infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: 0.55; transform: scale(0.82); }
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.55;
+        transform: scale(0.82);
+    }
 }
 
 .banner-title {
@@ -271,10 +266,6 @@ body {
     color: var(--text-muted);
     font-size: 0.92rem;
 }
-
-/* --------------------------------------------------------------------------
-   Panels
-   -------------------------------------------------------------------------- */
 
 .panel {
     margin-bottom: 1.5rem;
@@ -312,10 +303,6 @@ body {
     margin: 0;
     padding: 1rem 0;
 }
-
-/* --------------------------------------------------------------------------
-   Service rows and the day strip
-   -------------------------------------------------------------------------- */
 
 .service {
     padding-block: 1.05rem;
@@ -363,20 +350,22 @@ body {
     background: var(--text-muted);
 }
 
-.service-state.is-up { color: var(--up); }
-.service-state.is-up .dot { background: var(--up); }
-.service-state.is-down { color: var(--down); }
-.service-state.is-down .dot { background: var(--down); }
+.service-state.is-up {
+    color: var(--up);
+}
 
-/*
- * The 90-day strip.
- *
- * flex with min-width rather than a fixed bar width: on a phone 90 fixed bars would
- * either overflow the card or need a horizontal scroller, and a status page you have
- * to scroll sideways to read is a status page nobody reads. The bars simply get
- * thinner, down to a 2px floor where they stop being legible and the oldest days are
- * dropped instead (see the media queries below).
- */
+.service-state.is-up .dot {
+    background: var(--up);
+}
+
+.service-state.is-down {
+    color: var(--down);
+}
+
+.service-state.is-down .dot {
+    background: var(--down);
+}
+
 .strip {
     display: flex;
     gap: 2px;
@@ -393,9 +382,17 @@ body {
     position: relative;
 }
 
-.bar.is-up { background: var(--up); }
-.bar.is-partial { background: var(--warn); }
-.bar.is-down { background: var(--down); }
+.bar.is-up {
+    background: var(--up);
+}
+
+.bar.is-partial {
+    background: var(--warn);
+}
+
+.bar.is-down {
+    background: var(--down);
+}
 
 .bar:hover,
 .bar:focus-visible {
@@ -404,7 +401,6 @@ body {
     outline: none;
 }
 
-/* Tooltip. Pure CSS so it costs nothing and cannot break if the JS feed is stale. */
 .bar[data-tip]:hover::after,
 .bar[data-tip]:focus-visible::after {
     content: attr(data-tip);
@@ -462,13 +458,17 @@ body {
     background: var(--nodata);
 }
 
-.swatch.is-up { background: var(--up); }
-.swatch.is-partial { background: var(--warn); }
-.swatch.is-down { background: var(--down); }
+.swatch.is-up {
+    background: var(--up);
+}
 
-/* --------------------------------------------------------------------------
-   Incidents
-   -------------------------------------------------------------------------- */
+.swatch.is-partial {
+    background: var(--warn);
+}
+
+.swatch.is-down {
+    background: var(--down);
+}
 
 .active-incidents {
     margin-bottom: 1.5rem;
@@ -508,11 +508,33 @@ body {
     border: 1px solid transparent;
 }
 
-.chip.is-minor { background: var(--warn-soft); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
-.chip.is-major { background: var(--down-soft); color: var(--down); border-color: color-mix(in srgb, var(--down) 30%, transparent); }
-.chip.is-critical { background: var(--down); color: #fff; }
-.chip.is-maintenance { background: var(--accent-soft); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
-.chip.is-ongoing { background: var(--down); color: #fff; }
+.chip.is-minor {
+    background: var(--warn-soft);
+    color: var(--warn);
+    border-color: color-mix(in srgb, var(--warn) 35%, transparent);
+}
+
+.chip.is-major {
+    background: var(--down-soft);
+    color: var(--down);
+    border-color: color-mix(in srgb, var(--down) 30%, transparent);
+}
+
+.chip.is-critical {
+    background: var(--down);
+    color: #fff;
+}
+
+.chip.is-maintenance {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.chip.is-ongoing {
+    background: var(--down);
+    color: #fff;
+}
 
 .incident-meta {
     margin: 0.3rem 0 0;
@@ -544,8 +566,6 @@ body {
     display: block;
 }
 
-/* Anything the operator wrote by hand, marked so it is never confused with the
-   automatic explanation sitting directly above it. */
 .incident-line.is-manual {
     border-left: 2px solid var(--accent);
     margin-left: -0.9rem;
@@ -567,10 +587,6 @@ body {
     margin-top: 0;
 }
 
-/* --------------------------------------------------------------------------
-   Footer
-   -------------------------------------------------------------------------- */
-
 .footer {
     padding-block: 1rem 3rem;
     color: var(--text-muted);
@@ -585,15 +601,6 @@ body {
     max-width: 64ch;
     opacity: 0.85;
 }
-
-/* --------------------------------------------------------------------------
-   Narrow screens
-   --------------------------------------------------------------------------
-   How many days fit is decided in uptime.js, not here. Hiding bars with
-   :nth-child would leave the "90 days" label claiming a window the page is no
-   longer showing, and a status page that overstates its own coverage is worse
-   than one that shows less. The JS shortens the window and relabels it together.
-   -------------------------------------------------------------------------- */
 
 @media (max-width: 480px) {
     .banner {
