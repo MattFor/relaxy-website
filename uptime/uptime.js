@@ -193,7 +193,9 @@ const sparkline = (samples) =>
 
     const closeGap = (until) =>
     {
-        gaps += `M${at(gapFrom === 0 ? 0 : gapFrom - 0.5)} ${SPARK_FLOOR}L${at(until)} ${SPARK_FLOOR}`;
+        gaps += `M${at(gapFrom === 0
+            ? 0
+            : gapFrom - 0.5)} ${SPARK_FLOOR}L${at(until)} ${SPARK_FLOOR}`;
         gapFrom = null;
     };
 
@@ -301,8 +303,12 @@ const renderStats = (data) =>
 
     const shortSpans = spans
         ? [
-            spans.today != null ? `Today ${formatUptimeShort(spans.today)}` : null,
-            spans.days7 != null ? `7 days ${formatUptimeShort(spans.days7)}` : null
+            spans.today != null
+                ? `Today ${formatUptimeShort(spans.today)}`
+                : null,
+            spans.days7 != null
+                ? `7 days ${formatUptimeShort(spans.days7)}`
+                : null
         ].filter(Boolean).join(' · ')
         : '';
 
@@ -315,7 +321,7 @@ const renderStats = (data) =>
         const measured = data.services.filter((service) => service.uptimePercent != null);
 
         const downSeconds = measured.map((service) => service.days
-        .reduce((sum, day) => sum + (day.downSeconds ?? 0), 0));
+                                                             .reduce((sum, day) => sum + (day.downSeconds ?? 0), 0));
 
         const averageDown = downSeconds.length
             ? downSeconds.reduce((sum, value) => sum + value, 0) / downSeconds.length
@@ -347,7 +353,9 @@ const renderStats = (data) =>
 
     el('statServices').textContent = `${up} / ${data.overall.servicesTotal}`;
     el('statServicesNote').textContent = data.overall.servicesDown
-        ? `${data.overall.servicesDown} not responding${unknown ? `, ${unknown} unknown` : ''}`
+        ? `${data.overall.servicesDown} not responding${unknown
+            ? `, ${unknown} unknown`
+            : ''}`
         : unknown
             ? `${unknown} could not be checked`
             : 'Everything is answering';
@@ -414,10 +422,22 @@ const renderTiming = (service) =>
 const renderSpans = (service) =>
 {
     const SPANS = [
-        ['today', 'Today'],
-        ['days7', '7 days'],
-        ['days30', '30 days'],
-        ['window', '90 days']
+        [
+            'today',
+            'Today'
+        ],
+        [
+            'days7',
+            '7 days'
+        ],
+        [
+            'days30',
+            '30 days'
+        ],
+        [
+            'window',
+            '90 days'
+        ]
     ];
 
     const uptime = service.uptime
@@ -449,13 +469,26 @@ const renderSpans = (service) =>
 
     const timing = latency
         ? [
-            fact('p50', latency.p50RecentMs != null ? formatMs(latency.p50RecentMs) : null),
-            fact('p95', latency.p95RecentMs != null ? formatMs(latency.p95RecentMs) : null),
-            fact('p99', latency.p99RecentMs != null ? formatMs(latency.p99RecentMs) : null),
-            fact('jitter', latency.jitterRecentMs != null ? `±${formatMs(latency.jitterRecentMs)}` : null),
-            fact('range', latency.minWindowMs != null && latency.maxWindowMs != null
-                ? `${formatMs(latency.minWindowMs)}–${formatMs(latency.maxWindowMs)}`
-                : null)
+            fact('p50',
+                latency.p50RecentMs != null
+                    ? formatMs(latency.p50RecentMs)
+                    : null),
+            fact('p95',
+                latency.p95RecentMs != null
+                    ? formatMs(latency.p95RecentMs)
+                    : null),
+            fact('p99',
+                latency.p99RecentMs != null
+                    ? formatMs(latency.p99RecentMs)
+                    : null),
+            fact('jitter',
+                latency.jitterRecentMs != null
+                    ? `±${formatMs(latency.jitterRecentMs)}`
+                    : null),
+            fact('range',
+                latency.minWindowMs != null && latency.maxWindowMs != null
+                    ? `${formatMs(latency.minWindowMs)}–${formatMs(latency.maxWindowMs)}`
+                    : null)
         ].join('')
         : '';
 
@@ -511,7 +544,9 @@ const renderAvailability = (service) =>
 
     if (stats.outages > 0)
     {
-        parts.push(`${stats.outages} ${stats.outages === 1 ? 'outage' : 'outages'}`);
+        parts.push(`${stats.outages} ${stats.outages === 1
+            ? 'outage'
+            : 'outages'}`);
         parts.push(`longest ${duration(stats.longestOutageSeconds)}`);
 
         if (stats.meanRecoverySeconds != null)
@@ -541,19 +576,25 @@ const renderMeta = (service) =>
 
     if (meta.machines != null)
     {
-        parts.push(`${meta.machines} ${meta.machines === 1 ? 'machine' : 'machines'}`);
+        parts.push(`${meta.machines} ${meta.machines === 1
+            ? 'machine'
+            : 'machines'}`);
     }
 
     if (meta.shards != null)
     {
-        parts.push(`${meta.shards} ${meta.shards === 1 ? 'shard' : 'shards'}`);
+        parts.push(`${meta.shards} ${meta.shards === 1
+            ? 'shard'
+            : 'shards'}`);
     }
 
     if (meta.clusters != null)
     {
         parts.push(meta.clustersReady != null && meta.clustersReady !== meta.clusters
             ? `${meta.clustersReady}/${meta.clusters} clusters ready`
-            : `${meta.clusters} ${meta.clusters === 1 ? 'cluster' : 'clusters'}`);
+            : `${meta.clusters} ${meta.clusters === 1
+                ? 'cluster'
+                : 'clusters'}`);
     }
 
     if (meta.guilds != null)
@@ -582,7 +623,9 @@ const renderMeta = (service) =>
 
         if (Number.isFinite(seconds) && seconds > 0)
         {
-            parts.push(`${service.online === false ? 'ran' : 'running'} for ${duration(seconds)}`);
+            parts.push(`${service.online === false
+                ? 'ran'
+                : 'running'} for ${duration(seconds)}`);
         }
     }
 
@@ -591,10 +634,18 @@ const renderMeta = (service) =>
         parts.push(escapeHtml(meta.version));
     }
 
-    return parts.length ? `<p class="facts is-meta">${parts.join(' &middot; ')}</p>` : '';
+    return parts.length
+        ? `<p class="facts is-meta">${parts.join(' &middot; ')}</p>`
+        : '';
 };
 
-const CATEGORY_ORDER = ['Bot', 'Web', 'Chat', 'Apps', 'Games'];
+const CATEGORY_ORDER = [
+    'Bot',
+    'Web',
+    'Chat',
+    'Apps',
+    'Games'
+];
 
 const SERVICE_ORDER = {
     'Relaxy! bot':             0,
@@ -672,16 +723,16 @@ const renderServices = (data) =>
         const orderA = CATEGORY_ORDER.indexOf(a);
         const orderB = CATEGORY_ORDER.indexOf(b);
 
-        return (orderA < 0 ? CATEGORY_ORDER.length : orderA)
-            - (orderB < 0 ? CATEGORY_ORDER.length : orderB)
-            || a.localeCompare(b);
+        return (orderA < 0
+            ? CATEGORY_ORDER.length
+            : orderA) - (orderB < 0
+            ? CATEGORY_ORDER.length
+            : orderB) || a.localeCompare(b);
     });
 
     el('services').innerHTML = categories.map((category) =>
     {
-        const services = groups.get(category).sort((a, b) =>
-            (SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER)
-            - (SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER));
+        const services = groups.get(category).sort((a, b) => (SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER) - (SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER));
 
         return `
             <section class="group">
