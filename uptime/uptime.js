@@ -7,20 +7,6 @@
 
 const FEED = 'uptime.json';
 
-/**
- * How often to ask for a fresh feed.
- *
- * The publisher rebuilds uptime.json once a minute, and every 30 seconds while
- * something is actually broken, so polling faster than that mostly finds the same
- * file again. That is exactly why it is affordable: the request goes out with
- * `cache: 'no-cache'`, which is a REVALIDATION rather than a refetch, so a poll that
- * finds nothing new costs a 304 with no body instead of 58KB. The one that does find
- * something new is the one worth having arrive quickly.
- *
- * Polling stops entirely while the tab is in the background, and backs off on failure,
- * so a status page left open in a pinned tab for a week does not quietly become a load
- * generator aimed at a Raspberry Pi.
- */
 const REFRESH_MS = 15000;
 const BACKOFF_MAX_MS = 120000;
 
@@ -136,6 +122,21 @@ const formatUptime = (value) =>
     return `${whole}.${decimals.padEnd(2, '0')}%`;
 };
 
+const formatUptimeShort = (value) =>
+{
+    if (value == null)
+    {
+        return '—';
+    }
+
+    if (value >= 100)
+    {
+        return '100%';
+    }
+
+    return `${(Math.floor(value * 100) / 100).toFixed(2)}%`;
+};
+
 const formatMs = (value) =>
 {
     if (value == null)
@@ -170,6 +171,8 @@ const visibleDays = (available) =>
     return available;
 };
 
+const SPARK_FLOOR = 23;
+
 const sparkline = (samples) =>
 {
     if (!Array.isArray(samples) || samples.length < 2)
@@ -178,17 +181,21 @@ const sparkline = (samples) =>
     }
 
     const values = samples.filter((sample) => typeof sample === 'number');
-
-    if (values.length < 2)
-    {
-        return '';
-    }
-
     const peak = Math.max(...values, 1);
     const step = 100 / (samples.length - 1);
 
-    let path = '';
+    const at = (index) => Math.min(100, Math.max(0, index * step)).toFixed(2);
+
+    let live = '';
+    let gaps = '';
     let drawing = false;
+    let gapFrom = null;
+
+    const closeGap = (until) =>
+    {
+        gaps += `M${at(gapFrom === 0 ? 0 : gapFrom - 0.5)} ${SPARK_FLOOR}L${at(until)} ${SPARK_FLOOR}`;
+        gapFrom = null;
+    };
 
     samples.forEach((sample, index) =>
     {
@@ -196,38 +203,69 @@ const sparkline = (samples) =>
         {
             drawing = false;
 
+            if (gapFrom === null)
+            {
+                gapFrom = index;
+            }
+
             return;
         }
 
-        const x = (index * step).toFixed(2);
-        const y = (23 - (sample / peak) * 22).toFixed(2);
+        if (gapFrom !== null)
+        {
+            closeGap(index - 0.5);
+        }
 
-        path += `${drawing
+        live += `${drawing
             ? 'L'
-            : 'M'}${x} ${y}`;
+            : 'M'}${at(index)} ${(23 - (sample / peak) * 22).toFixed(2)}`;
         drawing = true;
     });
 
-    return `<svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><path d="${path}"/></svg>`;
+    if (gapFrom !== null)
+    {
+        closeGap(samples.length - 1);
+    }
+
+    if (!live && !gaps)
+    {
+        return '';
+    }
+
+    return `<svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">${gaps
+        ? `<path class="spark-gap" d="${gaps}"/>`
+        : ''}${live
+        ? `<path d="${live}"/>`
+        : ''}</svg>`;
+};
+
+const respondingText = (data) =>
+{
+    const unknown = data.overall.servicesUnknown ?? 0;
+    const total = data.overall.servicesTotal;
+
+    return unknown
+        ? `${total - unknown - data.overall.servicesDown} of ${total} services are responding; ${unknown} could not be checked.`
+        : `All ${total} services are responding.`;
 };
 
 const BANNER = {
     operational: {
         css:   'is-ok',
         title: 'Everything\'s fine!',
-        sub:   (data) => `All ${data.overall.servicesTotal} services are responding.`
+        sub:   respondingText
     },
     maintenance: {
         css:   'is-maintenance',
         title: 'Under Maintenance',
-        sub:   (data) => `All ${data.overall.servicesTotal} services are responding. Planned work is in progress.`
+        sub:   (data) => `${respondingText(data)} Planned work is in progress.`
     },
     partial:     {
         css:   'is-partial',
         title: 'Partial Outage',
         sub:   (data) => (data.overall.servicesDown
             ? `${data.overall.servicesDown} of ${data.overall.servicesTotal} services are not responding.`
-            : `All ${data.overall.servicesTotal} services are responding, but an incident is open.`)
+            : `${respondingText(data)} An incident is open.`)
     },
     major:       {
         css:   'is-major',
@@ -250,7 +288,6 @@ const renderBanner = (data) =>
 
 const renderStats = (data) =>
 {
-    const measured = data.services.filter((service) => service.uptimePercent != null);
     const window = data.windowDays;
 
     document.querySelectorAll('.stat-window').forEach((node) =>
@@ -260,18 +297,36 @@ const renderStats = (data) =>
 
     el('statUptime').textContent = formatUptime(data.overall.uptimePercent);
 
-    const downSeconds = measured.map((service) => service.days
-                                                         .reduce((sum, day) => sum + (day.downSeconds ?? 0), 0));
+    const spans = data.overall.uptime;
 
-    const averageDown = downSeconds.length
-        ? downSeconds.reduce((sum, value) => sum + value, 0) / downSeconds.length
-        : null;
+    const shortSpans = spans
+        ? [
+            spans.today != null ? `Today ${formatUptimeShort(spans.today)}` : null,
+            spans.days7 != null ? `7 days ${formatUptimeShort(spans.days7)}` : null
+        ].filter(Boolean).join(' · ')
+        : '';
 
-    el('statUptimeNote').textContent = averageDown == null
-        ? 'No history yet'
-        : averageDown < 1
-            ? 'No downtime recorded'
-            : `${duration(averageDown)} down per service`;
+    if (shortSpans)
+    {
+        el('statUptimeNote').textContent = shortSpans;
+    }
+    else
+    {
+        const measured = data.services.filter((service) => service.uptimePercent != null);
+
+        const downSeconds = measured.map((service) => service.days
+        .reduce((sum, day) => sum + (day.downSeconds ?? 0), 0));
+
+        const averageDown = downSeconds.length
+            ? downSeconds.reduce((sum, value) => sum + value, 0) / downSeconds.length
+            : null;
+
+        el('statUptimeNote').textContent = averageDown == null
+            ? 'No history yet'
+            : averageDown < 1
+                ? 'No downtime recorded'
+                : `${duration(averageDown)} down per service`;
+    }
 
     const timed = data.services.filter((service) => service.latency?.avgWindowMs != null);
 
@@ -287,17 +342,15 @@ const renderStats = (data) =>
         ? `Fastest: ${fastest.name} at ${formatMs(fastest.latency.avgWindowMs)}`
         : 'Not measured yet';
 
-    const up = data.overall.servicesTotal - data.overall.servicesDown;
+    const unknown = data.overall.servicesUnknown ?? 0;
+    const up = data.overall.servicesTotal - data.overall.servicesDown - unknown;
 
     el('statServices').textContent = `${up} / ${data.overall.servicesTotal}`;
     el('statServicesNote').textContent = data.overall.servicesDown
-        ? `${data.overall.servicesDown} not responding`
-        : 'Everything is answering';
-
-    el('statIncidents').textContent = String(data.overall.activeIncidents);
-    el('statIncidentsNote').textContent = data.overall.activeIncidents
-        ? 'See below for updates'
-        : `${data.incidents.length} in the last ${window} days`;
+        ? `${data.overall.servicesDown} not responding${unknown ? `, ${unknown} unknown` : ''}`
+        : unknown
+            ? `${unknown} could not be checked`
+            : 'Everything is answering';
 };
 
 const renderStrip = (service, windowDays) =>
@@ -318,7 +371,9 @@ const renderStrip = (service, windowDays) =>
             ? `${dayLabel(day.date)}\nNot monitored`
             : day.downSeconds === 0
                 ? `${dayLabel(day.date)}\nNo downtime${timing}`
-                : `${dayLabel(day.date)}\n${duration(day.downSeconds)} of downtime\n${formatUptime(day.uptimePercent)} up${timing}`;
+                : day.state === 'restart'
+                    ? `${dayLabel(day.date)}\n${duration(day.downSeconds)} restarting\n${formatUptime(day.uptimePercent)} up${timing}`
+                    : `${dayLabel(day.date)}\n${duration(day.downSeconds)} of downtime\n${formatUptime(day.uptimePercent)} up${timing}`;
 
         return `<div class="bar${cssState}" data-tip="${escapeHtml(tip)}" tabindex="0" role="img" aria-label="${escapeHtml(tip.replace(/\n/g, ', '))}"></div>`;
     }).join('');
@@ -347,37 +402,249 @@ const renderTiming = (service) =>
 
     const current = latency.currentMs ?? latency.avgRecentMs;
 
-    const facts = [
-        latency.p95RecentMs != null
-            ? `<span class="timing-fact"><span class="timing-key">p95</span>${formatMs(latency.p95RecentMs)}</span>`
-            : '',
-        latency.avgWindowMs != null
-            ? `<span class="timing-fact"><span class="timing-key">avg</span>${formatMs(latency.avgWindowMs)}</span>`
-            : '',
-        latency.minWindowMs != null && latency.maxWindowMs != null
-            ? `<span class="timing-fact"><span class="timing-key">range</span>${formatMs(latency.minWindowMs)}&ndash;${formatMs(latency.maxWindowMs)}</span>`
-            : ''
-    ].join('');
-
     return `
         <div class="timing">
             <span class="timing-now">${current != null
         ? formatMs(current)
         : '—'}</span>
             ${sparkline(latency.samples)}
-            <span class="timing-facts">${facts}</span>
         </div>`;
 };
+
+const renderSpans = (service) =>
+{
+    const SPANS = [
+        ['today', 'Today'],
+        ['days7', '7 days'],
+        ['days30', '30 days'],
+        ['window', '90 days']
+    ];
+
+    const uptime = service.uptime
+        ? SPANS.map(([key, label]) =>
+        {
+            const value = service.uptime[key]?.uptimePercent;
+
+            const css = value == null
+                ? ' is-empty'
+                : value >= 99.9
+                    ? ' is-up'
+                    : value >= 99
+                        ? ' is-partial'
+                        : ' is-down';
+
+            return `
+                <span class="span${css}">
+                    <span class="span-key">${label}</span>
+                    <span class="span-value">${formatUptimeShort(value)}</span>
+                </span>`;
+        }).join('')
+        : '';
+
+    const latency = service.latency;
+
+    const fact = (key, value) => (value == null
+        ? ''
+        : `<span class="span is-timing"><span class="span-key">${key}</span><span class="span-value">${value}</span></span>`);
+
+    const timing = latency
+        ? [
+            fact('p50', latency.p50RecentMs != null ? formatMs(latency.p50RecentMs) : null),
+            fact('p95', latency.p95RecentMs != null ? formatMs(latency.p95RecentMs) : null),
+            fact('p99', latency.p99RecentMs != null ? formatMs(latency.p99RecentMs) : null),
+            fact('jitter', latency.jitterRecentMs != null ? `±${formatMs(latency.jitterRecentMs)}` : null),
+            fact('range', latency.minWindowMs != null && latency.maxWindowMs != null
+                ? `${formatMs(latency.minWindowMs)}–${formatMs(latency.maxWindowMs)}`
+                : null)
+        ].join('')
+        : '';
+
+    if (!uptime && !timing)
+    {
+        return '';
+    }
+
+    const age = latency?.measuredAt
+        ? (Date.now() - Date.parse(latency.measuredAt)) / 1000
+        : null;
+
+    const stamp = age != null && age >= 5
+        ? `<span class="span-age" title="This service reports its own latency rather than being probed from here.">${duration(age)} ago</span>`
+        : '';
+
+    return `
+        <div class="spans">
+            ${uptime}
+            <span class="spans-gap"></span>
+            ${timing}${stamp}
+        </div>`;
+};
+
+const renderAvailability = (service) =>
+{
+    const stats = service.availability;
+
+    if (!stats)
+    {
+        return '';
+    }
+
+    const parts = [];
+
+    if (service.online === false)
+    {
+        parts.push('<strong>Down right now</strong>');
+    }
+    else if (stats.streakSeconds != null)
+    {
+        parts.push(`${duration(stats.streakSeconds)} without downtime`);
+    }
+    else if (!stats.downtimeSeconds && !stats.outages)
+    {
+        parts.push('No downtime ever recorded');
+    }
+
+    if (stats.downtimeSeconds > 0)
+    {
+        parts.push(`${duration(stats.downtimeSeconds)} down in 90 days`);
+    }
+
+    if (stats.outages > 0)
+    {
+        parts.push(`${stats.outages} ${stats.outages === 1 ? 'outage' : 'outages'}`);
+        parts.push(`longest ${duration(stats.longestOutageSeconds)}`);
+
+        if (stats.meanRecoverySeconds != null)
+        {
+            parts.push(`usually back in ${duration(stats.meanRecoverySeconds)}`);
+        }
+    }
+
+    if (stats.observedPercent != null && stats.observedPercent < 99.5)
+    {
+        parts.push(`monitored ${Math.round(stats.observedPercent)}% of the window`);
+    }
+
+    return `<p class="facts">${parts.join(' &middot; ')}</p>`;
+};
+
+const renderMeta = (service) =>
+{
+    const meta = service.meta;
+
+    if (!meta)
+    {
+        return '';
+    }
+
+    const parts = [];
+
+    if (meta.machines != null)
+    {
+        parts.push(`${meta.machines} ${meta.machines === 1 ? 'machine' : 'machines'}`);
+    }
+
+    if (meta.shards != null)
+    {
+        parts.push(`${meta.shards} ${meta.shards === 1 ? 'shard' : 'shards'}`);
+    }
+
+    if (meta.clusters != null)
+    {
+        parts.push(meta.clustersReady != null && meta.clustersReady !== meta.clusters
+            ? `${meta.clustersReady}/${meta.clusters} clusters ready`
+            : `${meta.clusters} ${meta.clusters === 1 ? 'cluster' : 'clusters'}`);
+    }
+
+    if (meta.guilds != null)
+    {
+        parts.push(`${meta.guilds.toLocaleString()} servers`);
+    }
+
+    if (meta.worstShardMs != null)
+    {
+        parts.push(`worst shard ${formatMs(meta.worstShardMs)}`);
+    }
+
+    if (meta.databaseMs != null)
+    {
+        parts.push(`database ${formatMs(meta.databaseMs)}`);
+    }
+
+    if (meta.heartbeatMs != null)
+    {
+        parts.push(`clusters ${formatMs(meta.heartbeatMs)}`);
+    }
+
+    if (meta.startedAt)
+    {
+        const seconds = (Date.now() - Date.parse(meta.startedAt)) / 1000;
+
+        if (Number.isFinite(seconds) && seconds > 0)
+        {
+            parts.push(`${service.online === false ? 'ran' : 'running'} for ${duration(seconds)}`);
+        }
+    }
+
+    if (meta.version)
+    {
+        parts.push(escapeHtml(meta.version));
+    }
+
+    return parts.length ? `<p class="facts is-meta">${parts.join(' &middot; ')}</p>` : '';
+};
+
+const CATEGORY_ORDER = ['Bot', 'Web', 'Chat', 'Apps', 'Games'];
 
 const SERVICE_ORDER = {
     'Relaxy! bot':             0,
     'Relaxy! Dashboard':       1,
-    'Website':                 2,
-    'The CDN':                 3,
-    'Matrix (Continuwuity)':   4,
-    'Matrix registration API': 5,
-    'IRC (ngIRCd)':            6,
-    'Minecraft server':        7
+    'Database':                2,
+    'Website':                 3,
+    'The CDN':                 4,
+    'Matrix (Continuwuity)':   5,
+    'Matrix registration API': 6,
+    'IRC (ngIRCd)':            7,
+    'Minecraft server':        8
+};
+
+const serviceCard = (service, windowDays) =>
+{
+    const isUp = service.online === true;
+    const isRestarting = service.restarting === true && !isUp;
+    const isDown = service.online === false && !isRestarting;
+
+    const stateCss = isUp
+        ? 'is-up'
+        : isRestarting
+            ? 'is-restart'
+            : isDown
+                ? 'is-down'
+                : '';
+    const stateText = isUp
+        ? 'Operational'
+        : isRestarting
+            ? 'Restarting'
+            : isDown
+                ? 'Down'
+                : 'Unknown';
+
+    return `
+        <article class="service">
+            <div class="service-head">
+                <div>
+                    <span class="service-name">${escapeHtml(service.name)}</span>
+                </div>
+                <span class="service-state ${stateCss}">
+                    <span class="dot" aria-hidden="true"></span>${stateText}
+                </span>
+            </div>
+            ${renderTiming(service)}
+            ${renderMeta(service)}
+            ${renderSpans(service)}
+            ${renderStrip(service, windowDays)}
+            ${renderAvailability(service)}
+        </article>`;
 };
 
 const renderServices = (data) =>
@@ -386,43 +653,43 @@ const renderServices = (data) =>
 
     el('windowLabel').textContent = String(windowDays);
 
-    const services = [...data.services].sort((a, b) =>
+    const groups = new Map();
+
+    for (const service of data.services)
     {
-        const orderA = SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER;
-        const orderB = SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER;
-        return orderA - orderB;
+        const category = service.category ?? 'Other';
+
+        if (!groups.has(category))
+        {
+            groups.set(category, []);
+        }
+
+        groups.get(category).push(service);
+    }
+
+    const categories = [...groups.keys()].sort((a, b) =>
+    {
+        const orderA = CATEGORY_ORDER.indexOf(a);
+        const orderB = CATEGORY_ORDER.indexOf(b);
+
+        return (orderA < 0 ? CATEGORY_ORDER.length : orderA)
+            - (orderB < 0 ? CATEGORY_ORDER.length : orderB)
+            || a.localeCompare(b);
     });
 
-    el('services').innerHTML = services.map((service) =>
+    el('services').innerHTML = categories.map((category) =>
     {
-        const isUp = service.online === true;
-        const isDown = service.online === false;
-
-        const stateCss = isUp
-            ? 'is-up'
-            : isDown
-                ? 'is-down'
-                : '';
-        const stateText = isUp
-            ? 'Operational'
-            : isDown
-                ? 'Down'
-                : 'Unknown';
+        const services = groups.get(category).sort((a, b) =>
+            (SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER)
+            - (SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER));
 
         return `
-            <article class="service">
-                <div class="service-head">
-                    <div>
-                        <span class="service-name">${escapeHtml(service.name)}</span>
-                        <span class="service-cat">${escapeHtml(service.category)}</span>
-                    </div>
-                    <span class="service-state ${stateCss}">
-                        <span class="dot" aria-hidden="true"></span>${stateText}
-                    </span>
+            <section class="group">
+                <div class="group-head">
+                    <h3 class="group-name">${escapeHtml(category)}</h3>
                 </div>
-                ${renderTiming(service)}
-                ${renderStrip(service, windowDays)}
-            </article>`;
+                ${services.map((service) => serviceCard(service, windowDays)).join('')}
+            </section>`;
     }).join('');
 };
 
@@ -445,6 +712,28 @@ const updateTimeline = (updates) =>
     return `<ol class="updates">${items}</ol>`;
 };
 
+const incidentChildren = (children) =>
+{
+    if (!Array.isArray(children) || !children.length)
+    {
+        return '';
+    }
+
+    const rows = children.map((child) => `
+        <li class="child">
+            <span class="child-name">${escapeHtml(child.name)}</span>
+            <span class="child-time">${child.ongoing
+        ? 'still down'
+        : escapeHtml(child.durationText)}</span>
+        </li>`).join('');
+
+    return `
+        <div class="incident-group" tabindex="0" role="group" aria-label="${children.length} affected services">
+            <span class="group-toggle">${children.length} affected &middot; hover to expand</span>
+            <div class="children"><ul class="child-list">${rows}</ul></div>
+        </div>`;
+};
+
 const incidentCard = (incident) =>
 {
     const chips = [];
@@ -455,6 +744,11 @@ const incidentCard = (incident) =>
     }
 
     chips.push(`<span class="chip is-${escapeHtml(incident.impact)}">${escapeHtml(incident.impact)}</span>`);
+
+    if (incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog')
+    {
+        chips.push('<span class="chip is-restart">Restart</span>');
+    }
 
     if (incident.manual)
     {
@@ -493,15 +787,20 @@ const incidentCard = (incident) =>
         </p>`);
     }
 
+    const restart = incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog';
+
     return `
         <article class="incident${incident.ongoing
         ? ' is-live'
+        : ''}${restart
+        ? ' is-restart'
         : ''}">
             <div class="incident-head">
                 <h3 class="incident-title">${escapeHtml(incident.title)}</h3>
                 ${chips.join('')}
             </div>
             <p class="incident-meta">${meta}</p>
+            ${incidentChildren(incident.children)}
             <div class="incident-body">${lines.join('')}</div>
             ${updateTimeline(incident.updates)}
         </article>`;

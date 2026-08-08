@@ -27,6 +27,11 @@
     --down-soft: rgba(248, 81, 73, 0.14);
     --nodata: rgba(255, 255, 255, 0.10);
 
+    --restart: #58a6ff;
+    --restart-soft: rgba(88, 166, 255, 0.16);
+
+    --silence: #ff0000;
+
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
     --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
 
@@ -67,6 +72,9 @@
     --down: #cf222e;
     --down-soft: rgba(207, 34, 46, 0.12);
     --nodata: rgba(17, 20, 26, 0.10);
+
+    --restart: #0969da;
+    --restart-soft: rgba(9, 105, 218, 0.12);
 
     --shadow-sm: 0 1px 2px rgba(17, 20, 26, 0.08);
     --shadow-md: 0 8px 24px rgba(17, 20, 26, 0.10);
@@ -386,11 +394,28 @@ body {
     font-size: 0.98rem;
 }
 
-.service-cat {
+.group + .group {
+    margin-top: 1.7rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+}
+
+.group-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.9rem;
+}
+
+.group-name {
+    margin: 0;
     color: var(--text-muted);
-    font-weight: 400;
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .service-state {
@@ -423,6 +448,21 @@ body {
 
 .service-state.is-down .dot {
     background: var(--down);
+}
+
+.service-state.is-restart {
+    color: var(--restart);
+}
+
+.service-state.is-restart .dot {
+    background: var(--restart);
+    animation: restart-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes restart-pulse {
+    50% {
+        opacity: 0.35;
+    }
 }
 
 .timing {
@@ -461,25 +501,11 @@ body {
     opacity: 0.85;
 }
 
-.timing-facts {
-    flex: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    font-family: var(--mono);
-    font-variant-numeric: tabular-nums;
-}
-
-.timing-fact {
-    white-space: nowrap;
-}
-
-.timing-key {
-    margin-right: 0.3rem;
-    opacity: 0.6;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.68rem;
+.spark path.spark-gap {
+    stroke: var(--silence);
+    stroke-width: 2;
+    stroke-linecap: butt;
+    opacity: 1;
 }
 
 .timing.is-absent {
@@ -498,6 +524,97 @@ body {
         order: 3;
         flex-basis: 100%;
     }
+}
+
+.spans {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.8rem;
+}
+
+.spans-gap {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.span {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--bg-inset);
+}
+
+.span.is-timing {
+    border-color: transparent;
+    background: transparent;
+    padding-inline: 0.2rem;
+}
+
+.span.is-timing .span-value {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.span-age {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0.55;
+}
+
+.span-key {
+    color: var(--text-muted);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.span-value {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.span.is-up .span-value {
+    color: var(--up);
+}
+
+.span.is-partial .span-value {
+    color: var(--warn);
+}
+
+.span.is-down .span-value {
+    color: var(--down);
+}
+
+.span.is-empty {
+    opacity: 0.45;
+}
+
+.facts {
+    margin: 0.6rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    line-height: 1.5;
+}
+
+.facts strong {
+    color: var(--down);
+    font-weight: 700;
+}
+
+.facts.is-meta {
+    margin: 0 0 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    opacity: 0.85;
 }
 
 .strip {
@@ -526,6 +643,10 @@ body {
 
 .bar.is-down {
     background: var(--down);
+}
+
+.bar.is-restart {
+    background: var(--restart);
 }
 
 .bar:hover,
@@ -604,6 +725,10 @@ body {
     background: var(--down);
 }
 
+.swatch.is-restart {
+    background: var(--restart);
+}
+
 .active-incidents {
     margin-bottom: 1.5rem;
 }
@@ -676,8 +801,99 @@ body {
     border-color: var(--border-strong);
 }
 
+.chip.is-restart {
+    background: var(--restart-soft);
+    color: var(--restart);
+    border-color: color-mix(in srgb, var(--restart) 35%, transparent);
+}
+
 .incident.is-live .incident-title {
     color: var(--down);
+}
+
+.incident.is-restart.is-live .incident-title {
+    color: var(--restart);
+}
+
+.incident-group {
+    margin-top: 0.55rem;
+    border-radius: var(--radius-sm);
+    outline: none;
+}
+
+.group-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.12rem 0.55rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-pill);
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: default;
+    transition: color var(--t-fast), border-color var(--t-fast);
+}
+
+.incident-group:hover .group-toggle,
+.incident-group:focus-within .group-toggle,
+.incident-group:focus .group-toggle {
+    color: var(--restart);
+    border-color: color-mix(in srgb, var(--restart) 45%, transparent);
+    border-style: solid;
+}
+
+.children {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows var(--t-fast), opacity var(--t-fast);
+}
+
+.incident-group:hover .children,
+.incident-group:focus-within .children,
+.incident-group:focus .children {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.children > .child-list {
+    min-height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.child {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.22rem 0;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.child:last-child {
+    border-bottom: 0;
+}
+
+.child:first-child {
+    margin-top: 0.5rem;
+}
+
+.child-name {
+    color: var(--text);
+}
+
+.child-time {
+    flex: none;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
 }
 
 .incident-meta {

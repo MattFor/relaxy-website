@@ -74,11 +74,6 @@
             <p class="stat-value" id="statServices">&mdash;</p>
             <p class="stat-note" id="statServicesNote">&nbsp;</p>
         </div>
-        <div class="stat">
-            <p class="stat-label">Active incidents</p>
-            <p class="stat-value" id="statIncidents">&mdash;</p>
-            <p class="stat-note" id="statIncidentsNote">&nbsp;</p>
-        </div>
     </section>
 
     <section class="active-incidents" hidden id="activeIncidents"></section>
@@ -95,7 +90,8 @@
 
         <div class="legend">
             <span class="legend-item"><i class="swatch is-up"></i>No downtime</span> <span class="legend-item"><i class="swatch is-partial"></i>Brief outage</span> <span class="legend-item"><i
-                class="swatch is-down"></i>Significant outage</span> <span class="legend-item"><i class="swatch is-nodata"></i>Not monitored</span>
+                class="swatch is-down"></i>Significant outage</span> <span class="legend-item"><i class="swatch is-restart"></i>Host restart</span> <span class="legend-item"><i
+                class="swatch is-nodata"></i>Not monitored</span>
         </div>
     </section>
 
@@ -114,8 +110,8 @@
 <footer class="footer shell">
     <p id="stamp">&nbsp;</p>
     <p class="footer-note">
-        Uptime and response times are measured by the host probing each service directly every 10 seconds. Periods where the monitor itself was not running are shown as "not
-        monitored".</p>
+        Uptime and response times are measured by the host probing each service directly every 10 seconds. Periods where
+        the monitor itself was not running are shown as "not monitored".</p>
 </footer>
 
 <script src="dist/uptime.js"></script>
