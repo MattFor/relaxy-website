@@ -137,8 +137,8 @@
 
             nodes.push({
                 r,
-                x: clamp(hub.x + Math.cos(angle) * rnd(62, 92), r + 2, VIEW_W - r - 2),
-                y: clamp(hub.y + Math.sin(angle) * rnd(32, 48), r + 2, VIEW_H - r - 2),
+                x:    clamp(hub.x + Math.cos(angle) * rnd(62, 92), r + 2, VIEW_W - r - 2),
+                y:    clamp(hub.y + Math.sin(angle) * rnd(32, 48), r + 2, VIEW_H - r - 2),
                 blue: Math.random() < 0.35
             });
         }
@@ -174,26 +174,26 @@
             linksG.appendChild(make('line', {
                 'data-a': 'h',
                 'data-b': String(i),
-                x1: hub.x,
-                y1: hub.y,
-                x2: n.x.toFixed(2),
-                y2: n.y.toFixed(2)
+                x1:       hub.x,
+                y1:       hub.y,
+                x2:       n.x.toFixed(2),
+                y2:       n.y.toFixed(2)
             }));
 
             nodesG.appendChild(make('circle', {
                 'data-node': String(i),
-                class: classes.join(' '),
-                cx: n.x.toFixed(2),
-                cy: n.y.toFixed(2),
-                r: n.r
+                class:       classes.join(' '),
+                cx:          n.x.toFixed(2),
+                cy:          n.y.toFixed(2),
+                r:           n.r
             }));
 
             grabsG.appendChild(make('circle', {
-                class: 'ma-grab',
+                class:       'ma-grab',
                 'data-grab': String(i),
-                cx: n.x.toFixed(2),
-                cy: n.y.toFixed(2),
-                r: 13
+                cx:          n.x.toFixed(2),
+                cy:          n.y.toFixed(2),
+                r:           13
             }));
         });
 
@@ -208,13 +208,13 @@
 
             extra += 1;
             linksG.appendChild(make('line', {
-                class: 'b',
+                class:    'b',
                 'data-a': String(i),
                 'data-b': String(j),
-                x1: nodes[i].x.toFixed(2),
-                y1: nodes[i].y.toFixed(2),
-                x2: nodes[j].x.toFixed(2),
-                y2: nodes[j].y.toFixed(2)
+                x1:       nodes[i].x.toFixed(2),
+                y1:       nodes[i].y.toFixed(2),
+                x2:       nodes[j].x.toFixed(2),
+                y2:       nodes[j].y.toFixed(2)
             }));
         }
     };
@@ -263,18 +263,18 @@
             const r = parseFloat(el.getAttribute('r'));
             return {
                 el,
-                grab: grabs[i],
+                grab:  grabs[i],
                 r,
-                pad: r + 1,
-                hx: parseFloat(el.getAttribute('cx')),
-                hy: parseFloat(el.getAttribute('cy')),
-                ox: 0,
-                oy: 0,
-                x: parseFloat(el.getAttribute('cx')),
-                y: parseFloat(el.getAttribute('cy')),
+                pad:   r + 1,
+                hx:    parseFloat(el.getAttribute('cx')),
+                hy:    parseFloat(el.getAttribute('cy')),
+                ox:    0,
+                oy:    0,
+                x:     parseFloat(el.getAttribute('cx')),
+                y:     parseFloat(el.getAttribute('cy')),
                 phase: Math.random() * Math.PI * 2,
-                ampX: 1.5 + Math.random() * 1.7,
-                ampY: 1.3 + Math.random() * 1.7,
+                ampX:  1.5 + Math.random() * 1.7,
+                ampY:  1.3 + Math.random() * 1.7,
                 speed: 0.45 + Math.random() * 0.5
             };
         });
@@ -402,40 +402,40 @@
 
             bindDrag(grab, {
                 start: () =>
-                {
-                    dragging = i;
-                    lastDragged = i;
-                    svg.classList.add('is-dragging');
-                },
+                       {
+                           dragging = i;
+                           lastDragged = i;
+                           svg.classList.add('is-dragging');
+                       },
 
                 move: (e) =>
-                {
-                    const p = svgPoint(svg, e.clientX, e.clientY);
-                    if (!p)
-                    {
-                        return;
-                    }
+                      {
+                          const p = svgPoint(svg, e.clientX, e.clientY);
+                          if (!p)
+                          {
+                              return;
+                          }
 
-                    let dx = p.x - nodes[i].hx;
-                    let dy = p.y - nodes[i].hy;
-                    const len = Math.hypot(dx, dy);
+                          let dx = p.x - nodes[i].hx;
+                          let dy = p.y - nodes[i].hy;
+                          const len = Math.hypot(dx, dy);
 
-                    if (len > MAX_DRAG)
-                    {
-                        dx *= MAX_DRAG / len;
-                        dy *= MAX_DRAG / len;
-                    }
+                          if (len > MAX_DRAG)
+                          {
+                              dx *= MAX_DRAG / len;
+                              dy *= MAX_DRAG / len;
+                          }
 
-                    dragOx = dx;
-                    dragOy = dy;
-                },
+                          dragOx = dx;
+                          dragOy = dy;
+                      },
 
                 end: () =>
-                {
-                    dragging = -1;
-                    settleUntil = performance.now() + SETTLE_MS;
-                    svg.classList.remove('is-dragging');
-                }
+                     {
+                         dragging = -1;
+                         settleUntil = performance.now() + SETTLE_MS;
+                         svg.classList.remove('is-dragging');
+                     }
             });
         });
 
@@ -530,55 +530,55 @@
         {
             bindDrag(row, {
                 start: (e) =>
-                {
-                    const p = svgPoint(svg, e.clientX, e.clientY);
-                    grabOffset = p
-                        ? p.y - SLOT_Y[order.indexOf(i)]
-                        : 0;
-                    row.classList.add('is-dragging');
-                    window.clearTimeout(resetTimer);
-                },
+                       {
+                           const p = svgPoint(svg, e.clientX, e.clientY);
+                           grabOffset = p
+                               ? p.y - SLOT_Y[order.indexOf(i)]
+                               : 0;
+                           row.classList.add('is-dragging');
+                           window.clearTimeout(resetTimer);
+                       },
 
                 move: (e) =>
-                {
-                    const p = svgPoint(svg, e.clientX, e.clientY);
-                    if (!p)
-                    {
-                        return;
-                    }
+                      {
+                          const p = svgPoint(svg, e.clientX, e.clientY);
+                          if (!p)
+                          {
+                              return;
+                          }
 
-                    const first = SLOT_Y[0] - 12;
-                    const last = SLOT_Y[SLOT_Y.length - 1] + 12;
-                    const y = Math.max(first, Math.min(p.y - grabOffset, last));
-                    place(i, y.toFixed(2));
+                          const first = SLOT_Y[0] - 12;
+                          const last = SLOT_Y[SLOT_Y.length - 1] + 12;
+                          const y = Math.max(first, Math.min(p.y - grabOffset, last));
+                          place(i, y.toFixed(2));
 
-                    let best = 0;
-                    let bestGap = Infinity;
-                    SLOT_Y.forEach((slotY, slot) =>
-                    {
-                        const gap = Math.abs(slotY - y);
-                        if (gap < bestGap)
-                        {
-                            bestGap = gap;
-                            best = slot;
-                        }
-                    });
+                          let best = 0;
+                          let bestGap = Infinity;
+                          SLOT_Y.forEach((slotY, slot) =>
+                          {
+                              const gap = Math.abs(slotY - y);
+                              if (gap < bestGap)
+                              {
+                                  bestGap = gap;
+                                  best = slot;
+                              }
+                          });
 
-                    const current = order.indexOf(i);
-                    if (best !== current)
-                    {
-                        order.splice(current, 1);
-                        order.splice(best, 0, i);
-                        layout(i);
-                    }
-                },
+                          const current = order.indexOf(i);
+                          if (best !== current)
+                          {
+                              order.splice(current, 1);
+                              order.splice(best, 0, i);
+                              layout(i);
+                          }
+                      },
 
                 end: () =>
-                {
-                    row.classList.remove('is-dragging');
-                    layout(-1);
-                    scheduleReset();
-                }
+                     {
+                         row.classList.remove('is-dragging');
+                         layout(-1);
+                         scheduleReset();
+                     }
             });
         });
 
@@ -646,55 +646,55 @@
         {
             bindDrag(bar, {
                 start: (e) =>
-                {
-                    const p = svgPoint(svg, e.clientX, e.clientY);
-                    grabOffset = p
-                        ? p.x - SLOT_X[order.indexOf(i)]
-                        : 0;
-                    bar.classList.add('is-dragging');
-                    window.clearTimeout(resetTimer);
-                },
+                       {
+                           const p = svgPoint(svg, e.clientX, e.clientY);
+                           grabOffset = p
+                               ? p.x - SLOT_X[order.indexOf(i)]
+                               : 0;
+                           bar.classList.add('is-dragging');
+                           window.clearTimeout(resetTimer);
+                       },
 
                 move: (e) =>
-                {
-                    const p = svgPoint(svg, e.clientX, e.clientY);
-                    if (!p)
-                    {
-                        return;
-                    }
+                      {
+                          const p = svgPoint(svg, e.clientX, e.clientY);
+                          if (!p)
+                          {
+                              return;
+                          }
 
-                    const first = SLOT_X[0] - 16;
-                    const last = SLOT_X[SLOT_X.length - 1] + 16;
-                    const x = Math.max(first, Math.min(p.x - grabOffset, last));
-                    place(i, x.toFixed(2));
+                          const first = SLOT_X[0] - 16;
+                          const last = SLOT_X[SLOT_X.length - 1] + 16;
+                          const x = Math.max(first, Math.min(p.x - grabOffset, last));
+                          place(i, x.toFixed(2));
 
-                    let best = 0;
-                    let bestGap = Infinity;
-                    SLOT_X.forEach((slotX, slot) =>
-                    {
-                        const gap = Math.abs(slotX - x);
-                        if (gap < bestGap)
-                        {
-                            bestGap = gap;
-                            best = slot;
-                        }
-                    });
+                          let best = 0;
+                          let bestGap = Infinity;
+                          SLOT_X.forEach((slotX, slot) =>
+                          {
+                              const gap = Math.abs(slotX - x);
+                              if (gap < bestGap)
+                              {
+                                  bestGap = gap;
+                                  best = slot;
+                              }
+                          });
 
-                    const current = order.indexOf(i);
-                    if (best !== current)
-                    {
-                        order.splice(current, 1);
-                        order.splice(best, 0, i);
-                        layout(i);
-                    }
-                },
+                          const current = order.indexOf(i);
+                          if (best !== current)
+                          {
+                              order.splice(current, 1);
+                              order.splice(best, 0, i);
+                              layout(i);
+                          }
+                      },
 
                 end: () =>
-                {
-                    bar.classList.remove('is-dragging');
-                    layout(-1);
-                    scheduleReset();
-                }
+                     {
+                         bar.classList.remove('is-dragging');
+                         layout(-1);
+                         scheduleReset();
+                     }
             });
         });
 

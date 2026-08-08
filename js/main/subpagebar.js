@@ -7,63 +7,63 @@
 {
     const pages = [
         {
-            name: 'Home',
+            name:  'Home',
             short: 'Home',
-            link: '/'
+            link:  '/'
         },
         {
-            name: 'Matrix',
+            name:  'Matrix',
             short: 'Matrix',
-            link: '/subpages/matrix',
-            nav: true
+            link:  '/subpages/matrix',
+            nav:   true
         },
         {
-            name: 'CDN',
+            name:  'CDN',
             short: 'CDN',
-            link: '/subpages/cdn',
-            nav: true
+            link:  '/subpages/cdn',
+            nav:   true
         },
         {
-            name: 'Minecraft',
+            name:  'Minecraft',
             short: 'Minecraft',
-            link: '/subpages/minecraft',
-            nav: true
+            link:  '/subpages/minecraft',
+            nav:   true
         },
         {
-            name: 'Dashboard',
+            name:  'Dashboard',
             short: 'Dashboard',
-            link: '/subpages/dashboard',
-            nav: true
+            link:  '/subpages/dashboard',
+            nav:   true
         },
         {
-            name: 'Terms of Service',
+            name:  'Terms of Service',
             short: 'Terms',
-            link: '/subpages/terms-of-service'
+            link:  '/subpages/terms-of-service'
         },
         {
-            name: 'Privacy Policy',
+            name:  'Privacy Policy',
             short: 'Privacy',
-            link: '/subpages/privacy-policy'
+            link:  '/subpages/privacy-policy'
         },
         {
-            name: 'Changelog',
+            name:  'Changelog',
             short: 'Changelog',
-            link: '/subpages/changelog'
+            link:  '/subpages/changelog'
         },
         {
-            name: 'Devlog',
+            name:  'Devlog',
             short: 'Devlog',
-            link: '/subpages/devlog'
+            link:  '/subpages/devlog'
         },
         {
-            name: 'Credits',
+            name:  'Credits',
             short: 'Credits',
-            link: '/subpages/credits'
+            link:  '/subpages/credits'
         },
         {
-            name: 'Technical Breakdown',
+            name:  'Technical Breakdown',
             short: 'Technical',
-            link: '/subpages/technical'
+            link:  '/subpages/technical'
         }
     ];
 
@@ -79,8 +79,8 @@
     if (bottom)
     {
         bottom.innerHTML = others
-        .map((p) => `<a href="${p.link}">${p.name}</a>`)
-        .join(' <span aria-hidden="true">|</span> ');
+            .map((p) => `<a href="${p.link}">${p.name}</a>`)
+            .join(' <span aria-hidden="true">|</span> ');
     }
 
     const top = document.getElementById('topnav');
@@ -181,7 +181,7 @@
         const spillsOntoTwoLines = () =>
         {
             const tallest = Array.from(top.children)
-            .reduce((max, el) => Math.max(max, el.offsetHeight), 0);
+                                 .reduce((max, el) => Math.max(max, el.offsetHeight), 0);
 
             return tallest > 0 && top.offsetHeight > tallest * 1.5;
         };

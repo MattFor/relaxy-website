@@ -12,7 +12,7 @@
     let count = 0;
 
     const esc = (s) => String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     const parseListing = (html, baseUrl) =>
     {
@@ -101,8 +101,8 @@
             count += 1;
 
             const node = {
-                name: entry.name,
-                isDir: entry.isDir,
+                name:     entry.name,
+                isDir:    entry.isDir,
                 children: []
             };
 
@@ -136,9 +136,10 @@
 
             if (node.children && node.children.length)
             {
-                out += render(node.children, prefix + (last
-                    ? '    '
-                    : '│   '));
+                out += render(node.children,
+                    prefix + (last
+                        ? '    '
+                        : '│   '));
             }
         });
 

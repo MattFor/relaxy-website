@@ -25,18 +25,18 @@
     };
 
     const tick = () => fetch(ENDPOINT, { cache: 'no-store' })
-    .then((res) => (res.ok
-        ? res.json()
-        : Promise.reject(res.status)))
-    .then((data) =>
-    {
-        put(users, data && data.bot && data.bot.totalUsers);
-        put(guilds, data && data.bot && data.bot.totalGuilds);
-    })
-    .catch(() =>
-    {
-        // Keep whatever was here before
-    });
+        .then((res) => (res.ok
+            ? res.json()
+            : Promise.reject(res.status)))
+        .then((data) =>
+        {
+            put(users, data && data.bot && data.bot.totalUsers);
+            put(guilds, data && data.bot && data.bot.totalGuilds);
+        })
+        .catch(() =>
+        {
+            // Keep whatever was here before
+        });
 
     tick();
     window.setInterval(tick, REFRESH_MS);

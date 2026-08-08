@@ -30,7 +30,7 @@
             });
         }, {
             rootMargin: '0px 0px -8% 0px',
-            threshold: 0.12
+            threshold:  0.12
         });
 
         revealables.forEach((el) => revealObserver.observe(el));
@@ -45,8 +45,8 @@
         ]));
 
         const sections = navLinks
-        .map((a) => document.getElementById(a.getAttribute('href').slice(1)))
-        .filter(Boolean);
+            .map((a) => document.getElementById(a.getAttribute('href').slice(1)))
+            .filter(Boolean);
 
         const setActive = (id) =>
         {
@@ -68,15 +68,15 @@
         const navObserver = new IntersectionObserver((entries) =>
         {
             const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                .filter((e) => e.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
             if (visible && byId.has(visible.target.id))
             {
                 setActive(visible.target.id);
             }
         }, {
             rootMargin: '-45% 0px -45% 0px',
-            threshold: [
+            threshold:  [
                 0,
                 0.25,
                 0.5,
@@ -93,11 +93,11 @@
     if (data && grid)
     {
         const catLabels = {
-            fun: 'Fun',
-            image: 'Image',
+            fun:           'Fun',
+            image:         'Image',
             miscellaneous: 'Miscellaneous',
-            moderation: 'Moderation',
-            music: 'Music'
+            moderation:    'Moderation',
+            music:         'Music'
         };
 
         const byCategory = new Map();
@@ -182,15 +182,15 @@
         });
 
         const escapeHtml = (s) => String(s)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
         const renderInline = (s) => escapeHtml(s)
-        .replace(/\[([^\]]+)]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/__([^_]+)__/g, '<u>$1</u>')
-        .replace(/~~([^~]+)~~/g, '<s>$1</s>')
-        .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+            .replace(/\[([^\]]+)]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/__([^_]+)__/g, '<u>$1</u>')
+            .replace(/~~([^~]+)~~/g, '<s>$1</s>')
+            .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
 
         const renderCode = (lang, content) =>
         {
@@ -309,7 +309,7 @@
 
         const metaFields = [
             {
-                keys: [
+                keys:  [
                     'p',
                     'perms',
                     'permissions'
@@ -318,7 +318,7 @@
                 pills: true
             },
             {
-                keys: [
+                keys:  [
                     'up',
                     'userPermissions'
                 ],
@@ -326,7 +326,7 @@
                 pills: true
             },
             {
-                keys: [
+                keys:  [
                     'bp',
                     'botPermissions'
                 ],
@@ -334,20 +334,20 @@
                 pills: true
             },
             {
-                keys: [
+                keys:     [
                     'cd',
                     'cooldown'
                 ],
-                label: 'Cooldown',
+                label:    'Cooldown',
                 cooldown: true
             },
             {
-                keys: [
+                keys:  [
                     'e',
                     'examples'
                 ],
                 label: 'Examples',
-                code: true
+                code:  true
             }
         ];
         const firstDefined = (info, keys) =>
@@ -396,7 +396,7 @@
                 else if (f.code)
                 {
                     valHtml = toArray(v)
-                    .map((x) => '<code>' + escapeHtml(String(x)) + '</code>').join('<br>');
+                        .map((x) => '<code>' + escapeHtml(String(x)) + '</code>').join('<br>');
                 }
                 else
                 {
@@ -421,7 +421,7 @@
             if (info.a && info.a.length)
             {
                 html += field('Aliases', info.a
-                .map((a) => '<code>=' + escapeHtml(a) + '</code>').join(' '));
+                                             .map((a) => '<code>=' + escapeHtml(a) + '</code>').join(' '));
             }
             if (full && withCategory)
             {
@@ -444,31 +444,31 @@
             renderFull: (name) => (data[name]
                 ? buildBody(name, data[name], true, true)
                 : ''),
-            resolve: (q) => lookup[String(q).trim().toLowerCase().replace(/^=/, '')],
-            suggest: (q) =>
-            {
-                const s = String(q).trim().toLowerCase().replace(/^=/, '');
-                if (!s)
-                {
-                    return [];
-                }
+            resolve:    (q) => lookup[String(q).trim().toLowerCase().replace(/^=/, '')],
+            suggest:    (q) =>
+                        {
+                            const s = String(q).trim().toLowerCase().replace(/^=/, '');
+                            if (!s)
+                            {
+                                return [];
+                            }
 
-                const starts = [];
-                const contains = [];
-                for (const item of suggestSource)
-                {
-                    if (item.name.startsWith(s))
-                    {
-                        starts.push(item.name);
-                    }
-                    else if (item.hay.indexOf(s) > -1)
-                    {
-                        contains.push(item.name);
-                    }
-                }
+                            const starts = [];
+                            const contains = [];
+                            for (const item of suggestSource)
+                            {
+                                if (item.name.startsWith(s))
+                                {
+                                    starts.push(item.name);
+                                }
+                                else if (item.hay.indexOf(s) > -1)
+                                {
+                                    contains.push(item.name);
+                                }
+                            }
 
-                return starts.concat(contains).slice(0, 8);
-            }
+                            return starts.concat(contains).slice(0, 8);
+                        }
         };
 
         let pinned = null;
@@ -912,8 +912,8 @@
             }
 
             suggestBox.innerHTML = names
-            .map((n) => '<li class="relaxy-coach-suggest-item" role="option" data-name="' + n + '">=' + n + '</li>')
-            .join('');
+                .map((n) => '<li class="relaxy-coach-suggest-item" role="option" data-name="' + n + '">=' + n + '</li>')
+                .join('');
             suggestBox.classList.add('is-open');
 
             setActiveSuggest(0);

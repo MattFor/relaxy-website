@@ -1454,7 +1454,7 @@ main > .grid-2:first-child {
 
 .host-machine-head {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr auto;
     align-items: center;
     gap: var(--space-3);
     padding-bottom: var(--space-3);
@@ -1463,10 +1463,6 @@ main > .grid-2:first-child {
 
 .host-machine-head .host-machine-id {
     justify-self: start;
-}
-
-.host-machine-head #piStatus {
-    justify-self: end;
 }
 
 .host-machine-id {
@@ -1480,13 +1476,13 @@ main > .grid-2:first-child {
 }
 
 .host-readout-link {
-    justify-self: center;
+    justify-self: end;
     align-self: center;
-    text-align: center;
+    text-align: right;
     font-family: "OCR A Std", "OCR A Extended", "Consolas", "Courier New", monospace;
-    font-size: 0.74rem;
+    font-size: 0.86rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
     white-space: nowrap;
@@ -1503,10 +1499,10 @@ main > .grid-2:first-child {
         justify-items: start;
     }
 
-    .host-machine-head .host-readout-link,
-    .host-machine-head #piStatus {
+    .host-machine-head .host-readout-link {
         justify-self: start;
         text-align: left;
+        white-space: normal;
     }
 }
 

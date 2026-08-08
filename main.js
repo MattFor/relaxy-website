@@ -24,9 +24,10 @@ const toggleTheme = () =>
     const isLight = document.documentElement.classList.toggle('light-mode');
     try
     {
-        localStorage.setItem('theme', isLight
-            ? 'light'
-            : 'dark');
+        localStorage.setItem('theme',
+            isLight
+                ? 'light'
+                : 'dark');
     }
     catch (e)
     {
@@ -800,28 +801,28 @@ const KONAMI = [
 
 const LOVE_WORDS = [
     {
-        word: 'iloverelaxy',
-        hearts: 46,
+        word:     'iloverelaxy',
+        hearts:   46,
         confetti: true,
-        toast: 'Relaxy! loves you MORE. 💞'
+        toast:    'Relaxy! loves you MORE. 💞'
     },
     {
-        word: 'iloveyou',
-        hearts: 46,
+        word:     'iloveyou',
+        hearts:   46,
         confetti: true,
-        toast: 'Relaxy! loves you MORE. 💞'
+        toast:    'Relaxy! loves you MORE. 💞'
     },
     {
-        word: 'relaxy',
-        hearts: 20,
+        word:     'relaxy',
+        hearts:   20,
         confetti: false,
-        toast: 'Relaxy! loves you too.'
+        toast:    'Relaxy! loves you too.'
     },
     {
-        word: 'love',
-        hearts: 10,
+        word:     'love',
+        hearts:   10,
         confetti: false,
-        toast: 'Aww. Love you too. 💗'
+        toast:    'Aww. Love you too. 💗'
     }
 ];
 
@@ -971,41 +972,41 @@ const fmtUptime = (seconds) =>
 };
 
 const piFields = {
-    os: (d) => d.os,
+    os:     (d) => d.os,
     kernel: (d) => d.kernel,
-    arch: (d) => d.arch,
-    cores: (d) => (d.cpu && d.cpu.cores != null
+    arch:   (d) => d.arch,
+    cores:  (d) => (d.cpu && d.cpu.cores != null
         ? d.cpu.cores + ' cores'
         : null),
-    load: (d) => (d.cpu && typeof d.cpu.load === 'number'
+    load:   (d) => (d.cpu && typeof d.cpu.load === 'number'
         ? d.cpu.load.toFixed(0) + '%'
         : null),
-    mem: (d) => (d.memory && d.memory.usedGb != null && d.memory.totalGb != null
+    mem:    (d) => (d.memory && d.memory.usedGb != null && d.memory.totalGb != null
         ? d.memory.usedGb + ' / ' + d.memory.totalGb + ' GB'
         : null),
     uptime: (d) => (typeof d.uptimeSeconds === 'number'
         ? fmtUptime(d.uptimeSeconds)
         : null),
-    temp: (d) => (typeof d.temperatureC === 'number'
+    temp:   (d) => (typeof d.temperatureC === 'number'
         ? d.temperatureC.toFixed(1) + ' °C'
         : null),
 
     botHost: (d) =>
-    {
-        if (!d.bot)
-        {
-            return 'Unknown';
-        }
+             {
+                 if (!d.bot)
+                 {
+                     return 'Unknown';
+                 }
 
-        if (!d.bot.online || !d.bot.primary)
-        {
-            return 'Offline';
-        }
+                 if (!d.bot.online || !d.bot.primary)
+                 {
+                     return 'Offline';
+                 }
 
-        return d.bot.hostCount > 1
-            ? d.bot.primary + ' (+' + (d.bot.hostCount - 1) + ' more)'
-            : d.bot.primary;
-    },
+                 return d.bot.hostCount > 1
+                     ? d.bot.primary + ' (+' + (d.bot.hostCount - 1) + ' more)'
+                     : d.bot.primary;
+             },
 
     botGuilds: (d) => (d.bot && d.bot.online && typeof d.bot.totalGuilds === 'number'
         ? d.bot.totalGuilds.toLocaleString()
@@ -1022,40 +1023,6 @@ const piFields = {
         : '-')
 };
 
-const PI_ONLINE_ENDPOINT = 'https://on.relaxy.xyz/';
-
-const setPiStatus = (badge, state, label) =>
-{
-    badge.classList.remove('is-up', 'is-down', 'is-checking');
-    badge.classList.add(state);
-    badge.querySelector('.status-text').textContent = label;
-};
-
-const checkPiOnline = () =>
-{
-    const badge = document.getElementById('piStatus');
-    if (!badge || !('fetch' in window))
-    {
-        return;
-    }
-
-    setPiStatus(badge, 'is-checking', 'Checking');
-
-    fetch(PI_ONLINE_ENDPOINT, { cache: 'no-store' })
-    .then((res) => res.text())
-    .then((body) => body.trim() === '1')
-    .catch(() => fetch(PI_ONLINE_ENDPOINT, {
-        cache: 'no-store',
-        mode: 'no-cors'
-    }).then(() => true))
-    .then((up) => setPiStatus(badge, up
-        ? 'is-up'
-        : 'is-down', up
-        ? 'Online'
-        : 'Offline'))
-    .catch(() => setPiStatus(badge, 'is-down', 'Offline'));
-};
-
 const loadPiStats = () =>
 {
     const card = document.getElementById('hostMachine');
@@ -1065,55 +1032,55 @@ const loadPiStats = () =>
     }
 
     fetch('/status.json', { cache: 'no-store' })
-    .then((res) => (res.ok
-        ? res.json()
-        : Promise.reject(res.status)))
-    .then((data) =>
-    {
-        Object.keys(piFields).forEach((key) =>
+        .then((res) => (res.ok
+            ? res.json()
+            : Promise.reject(res.status)))
+        .then((data) =>
         {
-            const cell = card.querySelector('[data-pi="' + key + '"]');
-            const value = piFields[key](data);
-            if (cell && value != null && value !== '')
+            Object.keys(piFields).forEach((key) =>
             {
-                cell.textContent = value;
-            }
-        });
+                const cell = card.querySelector('[data-pi="' + key + '"]');
+                const value = piFields[key](data);
+                if (cell && value != null && value !== '')
+                {
+                    cell.textContent = value;
+                }
+            });
 
-        card.classList.add('is-live');
-    })
-    .catch(() =>
-    {
-        // Feed is down
-    });
+            card.classList.add('is-live');
+        })
+        .catch(() =>
+        {
+            // Feed is down
+        });
 };
 
 const SERVICE_STATE = {
-    true: {
-        css: 'is-up',
+    true:    {
+        css:   'is-up',
         label: 'Online'
     },
-    false: {
-        css: 'is-down',
+    false:   {
+        css:   'is-down',
         label: 'Offline'
     },
     unknown: {
-        css: 'is-checking',
+        css:   'is-checking',
         label: 'Unknown'
     }
 };
 
 const NODE_STATE = {
-    true: {
-        css: '',
+    true:    {
+        css:   '',
         label: 'online!'
     },
-    false: {
-        css: 'is-down',
+    false:   {
+        css:   'is-down',
         label: 'offline!'
     },
     unknown: {
-        css: 'is-unknown',
+        css:   'is-unknown',
         label: 'unknown'
     }
 };
@@ -1164,49 +1131,49 @@ const loadServiceHealth = () =>
     }
 
     fetch('/health.json', { cache: 'no-store' })
-    .then((res) => (res.ok
-        ? res.json()
-        : Promise.reject(res.status)))
-    .then((data) =>
-    {
-        const services = data.services || [];
-
-        if (!services.length)
+        .then((res) => (res.ok
+            ? res.json()
+            : Promise.reject(res.status)))
+        .then((data) =>
         {
-            return;
-        }
+            const services = data.services || [];
 
-        paintNodeCards(services);
+            if (!services.length)
+            {
+                return;
+            }
 
-        if (!grid)
+            paintNodeCards(services);
+
+            if (!grid)
+            {
+                return;
+            }
+
+            grid.innerHTML = services.map((service) =>
+            {
+                const state = SERVICE_STATE[service.online === null
+                    ? 'unknown'
+                    : String(service.online)];
+
+                return '<div class="host-card service-health-row">' + '<span class="service-health-name">' + service.name + '</span>' + '<span class="status-badge ' + state.css + '">' + '<span class="dot" aria-hidden="true"></span>' + '<span class="status-text">' + state.label + '</span>' + '</span>' + '</div>';
+            }).join('');
+
+            const stamp = document.getElementById('service-health-stamp');
+
+            if (stamp)
+            {
+                const online = services.filter((service) => service.online === true).length;
+
+                stamp.textContent = online + ' of ' + services.length + ' services responding.';
+            }
+
+            grid.closest('section').hidden = false;
+        })
+        .catch(() =>
         {
-            return;
-        }
-
-        grid.innerHTML = services.map((service) =>
-        {
-            const state = SERVICE_STATE[service.online === null
-                ? 'unknown'
-                : String(service.online)];
-
-            return '<div class="host-card service-health-row">' + '<span class="service-health-name">' + service.name + '</span>' + '<span class="status-badge ' + state.css + '">' + '<span class="dot" aria-hidden="true"></span>' + '<span class="status-text">' + state.label + '</span>' + '</span>' + '</div>';
-        }).join('');
-
-        const stamp = document.getElementById('service-health-stamp');
-
-        if (stamp)
-        {
-            const online = services.filter((service) => service.online === true).length;
-
-            stamp.textContent = online + ' of ' + services.length + ' services responding.';
-        }
-
-        grid.closest('section').hidden = false;
-    })
-    .catch(() =>
-    {
-        // Feed is down
-    });
+            // Feed is down
+        });
 };
 
 window.toggleTheme = toggleTheme;
@@ -1228,12 +1195,6 @@ const initPage = () =>
     if (document.getElementById('service-health'))
     {
         window.setInterval(loadServiceHealth, 60000);
-    }
-
-    if (document.getElementById('piStatus'))
-    {
-        checkPiOnline();
-        window.setInterval(checkPiOnline, 60000);
     }
 };
 

@@ -39,9 +39,10 @@
             const active = i === current;
 
             page.classList.toggle('is-active', active);
-            page.setAttribute('aria-hidden', active
-                ? 'false'
-                : 'true');
+            page.setAttribute('aria-hidden',
+                active
+                    ? 'false'
+                    : 'true');
         });
 
         dots.forEach((dot, i) =>
@@ -49,9 +50,10 @@
             const active = i === current;
 
             dot.classList.toggle('is-active', active);
-            dot.setAttribute('aria-current', active
-                ? 'true'
-                : 'false');
+            dot.setAttribute('aria-current',
+                active
+                    ? 'true'
+                    : 'false');
         });
     };
 
@@ -90,12 +92,14 @@
         }
     });
 
-    pages.forEach((page, i) => page.setAttribute('aria-hidden', i === 0
-        ? 'false'
-        : 'true'));
-    dots.forEach((dot, i) => dot.setAttribute('aria-current', i === 0
-        ? 'true'
-        : 'false'));
+    pages.forEach((page, i) => page.setAttribute('aria-hidden',
+        i === 0
+            ? 'false'
+            : 'true'));
+    dots.forEach((dot, i) => dot.setAttribute('aria-current',
+        i === 0
+            ? 'true'
+            : 'false'));
 
     pager.classList.add('is-ready');
 })();

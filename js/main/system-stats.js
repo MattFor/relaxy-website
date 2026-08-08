@@ -34,60 +34,60 @@
     const tileDefs = [
         {
             label: 'Uptime',
-            get: (d) => (typeof d.uptimeSeconds === 'number'
+            get:   (d) => (typeof d.uptimeSeconds === 'number'
                 ? fmtUptime(d.uptimeSeconds)
                 : null)
         },
         {
             label: 'CPU load',
-            get: (d) => (d.cpu && num(d.cpu.load) != null
+            get:   (d) => (d.cpu && num(d.cpu.load) != null
                 ? num(d.cpu.load) + '%'
                 : null)
         },
         {
             label: 'CPU temp',
-            get: (d) => (num(d.temperatureC) != null
+            get:   (d) => (num(d.temperatureC) != null
                 ? num(d.temperatureC) + '°C'
                 : null)
         },
         {
             label: 'Memory',
-            get: (d) => (d.memory && num(d.memory.percent) != null
+            get:   (d) => (d.memory && num(d.memory.percent) != null
                 ? num(d.memory.percent) + '%'
                 : null)
         },
         {
             label: 'RAM used',
-            get: (d) => (d.memory && num(d.memory.usedGb, 1) != null
+            get:   (d) => (d.memory && num(d.memory.usedGb, 1) != null
                 ? num(d.memory.usedGb, 1) + ' / ' + num(d.memory.totalGb, 1) + ' GB'
                 : null)
         },
         {
             label: 'Cores',
-            get: (d) => (d.cpu && d.cpu.cores != null
+            get:   (d) => (d.cpu && d.cpu.cores != null
                 ? String(d.cpu.cores)
                 : null)
         },
         {
             label: 'Architecture',
-            get: (d) => (d.arch || null)
+            get:   (d) => (d.arch || null)
         },
         {
             label: 'Kernel',
-            get: (d) => (d.kernel || null)
+            get:   (d) => (d.kernel || null)
         },
         {
             label: 'Host',
-            get: (d) => (d.host || d.hostname || null)
+            get:   (d) => (d.host || d.hostname || null)
         },
         {
             label: 'OS',
-            get: (d) => (d.os || null)
+            get:   (d) => (d.os || null)
         }
     ];
 
     const esc = (s) => String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     const setStamp = (text) =>
     {
@@ -186,10 +186,10 @@
 
         swarmSection.hidden = false;
         swarmGrid.innerHTML = bot.hosts
-        .slice()
-        .sort((a, b) => (b.shards || []).length - (a.shards || []).length || b.clusters - a.clusters)
-        .map((h) => hostTile(h, h.id === bot.primary))
-        .join('');
+                                 .slice()
+                                 .sort((a, b) => (b.shards || []).length - (a.shards || []).length || b.clusters - a.clusters)
+                                 .map((h) => hostTile(h, h.id === bot.primary))
+                                 .join('');
 
         if (swarmStamp)
         {
@@ -226,11 +226,11 @@
     const tick = () =>
     {
         fetch(ENDPOINT, { cache: 'no-store' })
-        .then((res) => (res.ok
-            ? res.json()
-            : Promise.reject(res.status)))
-        .then(render)
-        .catch(renderOffline);
+            .then((res) => (res.ok
+                ? res.json()
+                : Promise.reject(res.status)))
+            .then(render)
+            .catch(renderOffline);
     };
 
     tick();

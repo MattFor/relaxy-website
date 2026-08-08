@@ -6,7 +6,7 @@
 const scrollToTop = () =>
 {
     window.scrollTo({
-        top: 0,
+        top:      0,
         behavior: 'smooth'
     });
 };
@@ -14,7 +14,7 @@ const scrollToTop = () =>
 const scrollToBottom = () =>
 {
     window.scrollTo({
-        top: document.body.scrollHeight,
+        top:      document.body.scrollHeight,
         behavior: 'smooth'
     });
 };

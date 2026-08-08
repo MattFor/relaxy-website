@@ -6,12 +6,12 @@
 
     <title>Service status</title>
 
-    <meta content="Live and historical uptime for every Relaxy! service." name="description">
+    <meta content="Live and historical uptime for every service on this host." name="description">
     <meta content="#ff69b4" name="theme-color">
     <link href="https://uptime.relaxy.xyz/" rel="canonical">
 
-    <meta content="Relaxy! Status" property="og:title">
-    <meta content="Live and historical uptime for every Relaxy! service." property="og:description">
+    <meta content="Service status" property="og:title">
+    <meta content="Live and historical uptime for every service on this host." property="og:description">
     <meta content="website" property="og:type">
     <meta content="https://uptime.relaxy.xyz/" property="og:url">
 
@@ -36,10 +36,14 @@
 <body>
 <header class="topbar">
     <div class="shell topbar-inner">
-        <a class="brand" href="https://relaxy.xyz"> <span class="brand-mark" aria-hidden="true"></span> <span>Relaxy!<span class="brand-sub">status</span></span> </a>
+        <a class="back-button" href="https://relaxy.xyz">
+            <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 12H5"/>
+                <path d="m12 19-7-7 7-7"/>
+            </svg>
+            Back to relaxy.xyz </a>
 
         <nav class="topbar-actions">
-            <a class="link" href="https://relaxy.xyz">Back to site</a>
             <button aria-pressed="false" class="theme-button" id="themeButton" type="button">Light Mode</button>
         </nav>
     </div>
@@ -50,7 +54,30 @@
         <div class="banner-icon" aria-hidden="true"></div>
         <div class="banner-copy">
             <h1 class="banner-title" id="bannerTitle">Checking current status…</h1>
-            <p class="banner-sub" id="bannerSub">Fetching the latest report from the Pi.</p>
+            <p class="banner-sub" id="bannerSub">Fetching the latest report from the host.</p>
+        </div>
+    </section>
+
+    <section class="stats" id="stats">
+        <div class="stat">
+            <p class="stat-label">Average uptime &middot; <span class="stat-window">90</span> days</p>
+            <p class="stat-value is-wide" id="statUptime">&mdash;</p>
+            <p class="stat-note" id="statUptimeNote">&nbsp;</p>
+        </div>
+        <div class="stat">
+            <p class="stat-label">Average response</p>
+            <p class="stat-value" id="statResponse">&mdash;</p>
+            <p class="stat-note" id="statResponseNote">&nbsp;</p>
+        </div>
+        <div class="stat">
+            <p class="stat-label">Services responding</p>
+            <p class="stat-value" id="statServices">&mdash;</p>
+            <p class="stat-note" id="statServicesNote">&nbsp;</p>
+        </div>
+        <div class="stat">
+            <p class="stat-label">Active incidents</p>
+            <p class="stat-value" id="statIncidents">&mdash;</p>
+            <p class="stat-note" id="statIncidentsNote">&nbsp;</p>
         </div>
     </section>
 
@@ -87,7 +114,8 @@
 <footer class="footer shell">
     <p id="stamp">&nbsp;</p>
     <p class="footer-note">
-        Uptime is measured by the Pi probing each service directly every 20 seconds. Periods where the monitor itself was not running are shown as "not monitored". </p>
+        Uptime and response times are measured by the host probing each service directly every 10 seconds. Periods where the monitor itself was not running are shown as "not
+        monitored".</p>
 </footer>
 
 <script src="dist/uptime.js"></script>
