@@ -202,6 +202,7 @@
 
 <section class="hero">
     <picture>
+        <!--suppress HtmlUnknownTarget -->
         <source srcset="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.webp" type="image/webp">
         <img draggable="false" alt="The Relaxy! mascot, relaxing" class="hero-logo" decoding="async" fetchpriority="high" height="180" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.gif"
              width="180">
@@ -228,15 +229,15 @@
             <p class="eyebrow">About</p>
             <h2 style="text-align:left">Totally Free. Reliable. Yours.</h2>
             <p>Relaxy! is a bot made to combat the aggressive monetization of big multi-functional bots. Every feature is free and will never be pay-walled. Updates happen daily and suggestions in the
-                support server are added over time. Relaxy! is function over form which means it can be hard to use, however, once mastered it's infinitely flexible.</p>
+                support server are added over time. Relaxy! is function over form which means it can be hard to use (which is why I made the dashboard), however, once mastered it's infinitely flexible.</p>
             <p>I offer full real time support for free to every server owner that uses Relaxy! Every server owner with more than 100 users can request anything they want into the bot as long as it
                 will benefit every user of Relaxy!</p>
             <p>Relaxy!'s internals feature a real time monitoring system to ensure as little downtime as possible. The bot and its whole toolkit are self-hosted on a Raspberry Pi sitting on my desk;
                 no cloud, no rented boxes, no monthly bills. Just hardware I entirely own, running around the clock.</p>
             <p>I've created this entire ecosystem to make sure there's always a fallback for people to rely on, I will absolutely never change the way things are ran, there are only going to be
-                additions that benefit everyone. I have some ambitious plans, if only I weren't so bad at marketing. lol</p>
+                additions that benefit everyone. I have some ambitious plans, if only I weren't so bad at marketing lol</p>
             <p>I offer my infinite gratitude to anyone who supports this and my other projects financially, if you ever decide to do so, I'll add in anything you request, as long as it benefits every
-                user and isn't a completely whack idea. (but then again, those are fun, might give it a go)</p>
+                user and isn't a completely whack idea. (but then again, those are fun, might give it a go, already replicated an entire ticket bot within 1 command)</p>
 
         </section>
 
@@ -250,8 +251,7 @@
                 <div class="feature-stage">
                     <ul class="feature-list has-icons feature-page is-active" data-feature-page="1">
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path
-                                d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 9h10"/><path d="M7 13h7"/></svg></span>Highly advanced censoring, including OCR that
-                            reads scam text straight out of users' images
+                                d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 9h10"/><path d="M7 13h7"/></svg></span>Highly advanced censoring which can also perform OCR (reading text from the image f.e for Mr. Beast scams)
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path
                                 d="M12 9v4"/><path d="M12 17h.01"/></svg></span>Advanced warning ladder with tiers, autobanning and a per-member case dossier
@@ -264,20 +264,20 @@
                                                                                                                                                                                              width="8"
                                                                                                                                                                                              x="8"
                                                                                                                                                                                              y="2"/><path
-                                d="M9 12h6"/><path d="M9 16h4"/></svg></span>Comprehensive moderator log tracking over 32 events
+                                d="M9 12h6"/><path d="M9 16h4"/></svg></span>Easy to understand moderator log tracking over 35 events
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path
                                 d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg></span>Cross-server links, mirror a role across every server you link and, if you allow it, share
                             moderation with them too
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 4v17"/><path d="M8 21h8"/><path d="M5 8h14"/><path d="m5 8-3 6h6z"/><path
-                                d="m19 8-3 6h6z"/></svg></span>Appeal channels hosted in a separate server, so punished members can appeal without rejoining yours
+                                d="m19 8-3 6h6z"/></svg></span>Appeal channels hosted in a separate server, punished members can appeal without rejoining the original one
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path
-                                d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>Per-command permission grants, hand a single command to a role/user without touching Discord's permissions
+                                d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>Per-command permission grants, hand a single command to a role/user without touching thier Discord permissions
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Built-in
-                            music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters and an equalizer
+                            music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters, history and more!
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><rect height="12" rx="3" width="6" x="9" y="2"/><path d="M19 11v1a7 7 0 0 1-14 0v-1"/><path
                                 d="M12 19v3"/><path d="M8 22h8"/></svg></span>Custom-built voice recorder that writes a separate track per speaker
@@ -287,13 +287,12 @@
                                 d="M13 17v2"/></svg></span>Fully customizable ticketing system
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path
-                                d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>Custom forums with detailed access control
+                                d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>Custom forums with detailed access control and post moderation
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path
-                                d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>Join-to-create voice channels, and private voice channels with their own limit, bitrate and region
+                                d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>Join-to-create and private voice channels, and private voice channels with their own limit, bitrate and region
                         </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Fully customizable embeds,
-                            self-clearing channels on a timer and reminders Relaxy! pings you for
+                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Fully customizable embeds, self-clearing channels on a timer, and reminders that Relaxy! automatically DMs you about.
                         </li>
                     </ul>
                     <ul class="feature-list has-icons feature-page" data-feature-page="2">
@@ -302,17 +301,16 @@
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path
                                 d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></span>Advanced message purging, up to 10 000 at once. Works for
-                            messages older than 2 weeks as well
+                            messages older than 2 weeks as well, however it's a bit slower in that case
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path
                                 d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Multiple heartboards (a.k.a
                             starboards) with extensive customization
                         </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>Reminds
-                            - Relaxy! will notify you about something after some time has passed
+                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>Customizable reaction role embeds, they also use restrictors, if you have one role you can't have another!
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5s1.2 1.8 3.5 1.8 3.5-1.8 3.5-1.8"/><path
-                                d="M9 9.5h.01"/><path d="M15 9.5h.01"/></svg></span>Live reaction control panel for messages, plus reaction roles
+                                d="M9 9.5h.01"/><path d="M15 9.5h.01"/></svg></span>Live reaction control panel for messages
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21v-7"/><path d="M12 21V4"/><path d="M18 21v-11"/></svg></span>Levelling
                             with rank cards, leaderboards and automatic role rewards per tier
@@ -335,7 +333,7 @@
                     </ul>
                 </div>
                 <div class="feature-pager-nav">
-                    <span class="feature-pager-hint">Click the tile to flip to the other page</span> <span class="feature-dots">
+                    <span class="feature-pager-hint">Click the tile (not here, up there) to flip to the other page</span> <span class="feature-dots">
                         <button aria-label="Show features, page 1" class="feature-dot is-active" data-feature-goto="1" type="button">1</button>
                         <button aria-label="Show features, page 2" class="feature-dot" data-feature-goto="2" type="button">2</button>
                     </span>
@@ -371,7 +369,7 @@
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></span>
                 <h3>Rolling re-cluster</h3>
-                <p>Updates roll out shard-by-shard in real time, without a global restart, no interruption to your server.</p>
+                <p>Updates roll out shard-by-shard in real time, without a global restart (total outage), no interruption to your server.</p>
             </article>
             <article class="card card-hover eng-card reveal">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12"
@@ -379,20 +377,20 @@
                                                                                                                                                                                               rx="9"
                                                                                                                                                                                               ry="3"/><path
                         d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
-                <h3>Batched persistence</h3>
-                <p>Database writes are queued and flushed in 200&nbsp;ms batches on a dedicated worker thread. No updates will be lost, as there is a robust and extensive local cache in place.</p>
+                <h3>Database Resilience</h3>
+                <p>Writes are queued and saved periodically on separate worker threads. No updates will be lost as there is an extensive multi-shard / dashboard cache system in place.</p>
             </article>
             <article class="card card-hover eng-card reveal" data-reveal-delay="60">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
                 <h3>Hot reloading</h3>
-                <p>Modules reload from source on the fly, so I can deliver fixes and features without taking the bot offline.</p>
+                <p>Modules reload from source on the fly, so I can deliver fixes and features without taking the bot, or the dashboard offline.</p>
             </article>
             <article class="card card-hover eng-card reveal" data-reveal-delay="120">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span>
                 <h3>Real-time monitoring</h3>
-                <p>A live monitoring system tracks module health and uptime so downtime stays minimal, all self-hosted.</p>
+                <p>A live monitoring system tracks module health and uptime so downtime stays minimal, <a href="https://uptime.relaxy.xyz">click to check it out</a>.</p>
             </article>
             <article class="card card-hover eng-card reveal">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="16"
@@ -401,28 +399,28 @@
                                                                                                                                                                                            x="4" y="4"/><rect
                         height="6" width="6" x="9" y="9"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path
                         d="M9 20v2"/></svg></span>
-                <h3>Worker-thread offloading</h3>
-                <p>Heavy database, file and processing work runs on dedicated worker threads, so the gateway never blocks on disk or I/O. Commands won't slow down.</p>
+                <h3>System level optimizations</h3>
+                <p>I've tuned the machine everything is running on specifically for the bot, it has total I/O and network priority. Helps with music / command response times.</p>
             </article>
             <article class="card card-hover eng-card reveal" data-reveal-delay="60">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
                 <h3>Custom rate limiter</h3>
-                <p>Discord.js's in-built limiter was not enough. I've built my own that synchronises across shards, it can actually be used for any limitable action.</p>
+                <p>Discord.js's in-built limiter was not enough. I've built my own that synchronizes across shards, it can actually be used for any limitable action, pretty handy.</p>
             </article>
             <article class="card card-hover eng-card reveal" data-reveal-delay="120">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path
                         d="m9 12 2 2 4-4"/></svg></span>
                 <h3>Anti-evasion censoring</h3>
-                <p>The censor normalizes look-alike characters, spacing tricks and zero-width junk with natural-language tooling, so filter-dodging still gets caught, even on edited messages.</p>
+                <p>The censor normalizes look-alike characters, spacing tricks and zero-width junk with NLP, so filter-dodging still gets caught, even on edited messages and images as well!</p>
             </article>
             <article class="card card-hover eng-card reveal">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
                 <h3>Full music engine</h3>
-                <p>Built on discord-player v4, updated by me since then. Drop in a YouTube link, type plain search keywords or queue an entire playlist, SoundCloud and Spotify resolve too. A live
-                    queue, audio filters and an equalizer, with smart buffering for clean playback.</p>
+                <p>Built on discord-player v4, updated by me since then. Request a YouTube link, type plain search keywords or queue an entire playlist, SoundCloud and Spotify resolve too. A live
+                    queue, audio filters, history, with smart buffering for a faster playback.</p>
             </article>
             <article class="card card-hover eng-card reveal" data-reveal-delay="60">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="18"
@@ -437,7 +435,7 @@
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></span>
                 <h3>Voice recording</h3>
-                <p>Per-user voice capture writes separate streams for each speaker, so recordings stay clean and individually usable, also entirely written by me.</p>
+                <p>Per-user voice capture writes separate streams for each speaker, so recordings stay clean and individually usable.</p>
             </article>
         </div>
     </section>
@@ -445,9 +443,8 @@
     <section class="section" id="ecosystem">
         <div class="section-head">
             <p class="eyebrow">Self-hosted</p>
-            <h2>Single RaspberryPI server, whole network of services</h2>
-            <p>No cloud, no rented servers; Relaxy! and everything within the ecosystem runs on a single board computer on my desk. Here's the stack I keep online for the community, all under the
-                relaxy.xyz roof.</p>
+            <h2>Single RaspberryPI runs it all</h2>
+            <p>No "cloud", no rented servers; Relaxy! and everything within the ecosystem runs on a single board computer on my desk. Here's the stack I keep online for the community.</p>
         </div>
 
         <div class="host-machine" id="hostMachine">
@@ -507,7 +504,7 @@
                     <dd data-pi="botClusters">-</dd>
                 </div>
                 <div class="host-spec is-bot-host">
-                    <dt>Voice players</dt>
+                    <dt>Music queues</dt>
                     <dd data-pi="botPlayers">-</dd>
                 </div>
             </dl>
@@ -524,7 +521,7 @@
                     height="14" rx="2" width="20" x="2" y="3"/><path d="M8 21h8M12 17v4"/></svg></span>
                 <h3 class="node-name">The website</h3>
                 <p class="node-domain">relaxy.xyz</p>
-                <p class="node-desc">This page you're on right now, served straight off the Pi. Built to be as fast as possible. (I hate modern frameworks)</p>
+                <p class="node-desc">This page you're on right now. Built to load as fast as possible, still won't beat the original one hahaha. (I hate modern bloated frameworks)</p>
                 <span class="node-go">How it's built</span> </a>
 
             <a class="node-card" data-health="matrix" draggable="false" href="/subpages/matrix"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none" stroke="currentColor"
@@ -557,7 +554,7 @@
                     d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 12 21 7M12 12v10M12 12 3 7"/><path d="M3 10 12 15 21 10"/></svg></span>
                 <h3 class="node-name">Minecraft</h3>
                 <p class="node-domain">minecraft.relaxy.xyz</p>
-                <p class="node-desc">A Minecraft Beta 1.7.3 server running the Beta Unleashed 2.0 modpack. Old-school simple survival and building.</p>
+                <p class="node-desc">A Minecraft Beta 1.7.3 server running the Beta Unleashed 2.0 modpack. Old-school simple survival and building :)</p>
                 <span class="node-go">How to join</span> </a>
 
             <a class="node-card" data-health="dashboard" draggable="false" href="/subpages/dashboard"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none"
@@ -579,7 +576,7 @@
         <div class="section-head reveal">
             <p class="eyebrow">Commands</p>
             <h2>What Relaxy! can do</h2>
-            <p><span id="cmd-total">145</span> commands across five categories. Most work as both the = prefix and / slash commands. You can also set your own prefixes if you like.</p>
+            <p><span id="cmd-total">...not loaded</span> commands across five categories. Most work as both the = prefix and / slash commands. You can also set your own prefixes if you like.</p>
         </div>
         <div class="card reveal" id="cmd-grid"></div>
     </section>
@@ -604,7 +601,7 @@
         <div class="section-head reveal">
             <p class="eyebrow">Community Stuff</p>
             <h2>Have questions, need help, or just want to talk 'n' hang out?</h2>
-            <p>Hop into the Discord or my own Matrix server for real-time help, or check Relaxy! out on top.gg.</p>
+            <p>Hop into the Discord or my own Matrix server for real-time help, or check Relaxy! out on top.gg / DBL.</p>
         </div>
         <div class="support-topgg-container reveal">
             <section class="card support-section">
@@ -654,7 +651,7 @@
                     </g>
                 </svg>
                 <h2>Chat on my Matrix server</h2>
-                <p>A self-hosted, end-to-end encrypted homeserver - no big tech in the middle, no ads, no tracking. (unlike Discord...)</p>
+                <p>A self-hosted, end-to-end encrypted homeserver. No big tech in the middle, no ads, no tracking. (unlike Discord...)</p>
                 <a class="invite-button" href="https://matrix.relaxy.xyz/login" rel="noopener" style="font-size:1.1rem" target="_blank">Join Relaxy!'s Matrix</a> <a href="/subpages/matrix"
                                                                                                                                                                      style="font-weight:600">Learn more
                 about it</a>
@@ -708,7 +705,7 @@
                 <a class="botlist-link" href="https://discordbotlist.com/bots/relaxy" rel="noopener" target="_blank">
                     <h2>Find Relaxy! on Discord Bot List</h2>
                 </a>
-                <p>Another place to vote - every upvote helps people find Relaxy!</p>
+                <p>Another place to vote. Every upvote helps people find Relaxy!</p>
                 <svg class="botlist-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
                     <g class="bl-row is-top" data-row="0" transform="translate(0 14)">
                         <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>

@@ -121,8 +121,8 @@
             <p class="eyebrow">At a quick glance</p>
             <h2 style="text-align:left">What Relaxy! is, technically</h2>
         </div>
-        <p class="prose" style="margin:0 0 var(--space-5)">Relaxy! is a multipurpose Discord bot first written by me in 2019. It is a pure <strong>Node.js</strong> program written in modern <strong>JavaScript
-            (ES Modules)</strong> with <strong>JSDoc + TypeScript declaration files</strong> for type-checking. There is <em>no build step</em>, the bot runs directly from source. It is sharded and
+        <p class="prose" style="margin:0 0 var(--space-5)">Relaxy! is a multipurpose Discord bot first written by me in early 2019. It is a pure <strong>Node.js</strong> program written in modern <strong>JavaScript
+            (ES6 Modules)</strong> with <strong>JSDocs + TypeScript files</strong> for type-checking. There is <em>no build step</em>, the bot runs directly from source. It is sharded and
             clustered so it can easily scale horizontally across multiple machines.</p>
         <div class="tech-stat-grid">
             <div class="tech-stat"><span class="num">173</span><span class="label">command modules</span></div>
@@ -151,7 +151,7 @@
     <section class="card section" id="live">
         <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
             <p class="eyebrow">Live from the hardware</p>
-            <h2 style="text-align:left">The Pi, right now</h2>
+            <h2 style="text-align:left">How the Pi is looking right now</h2>
             <p style="margin:0" id="system-stats-stamp">Reading live status straight off the Pi…</p>
         </div>
         <div class="tech-stat-grid" id="system-stats">
@@ -162,7 +162,7 @@
     <section class="card section" hidden id="services">
         <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
             <p class="eyebrow">Live from the hardware</p>
-            <h2 style="text-align:left">What's up right now</h2>
+            <h2 style="text-align:left">Current health of hosted services</h2>
             <p style="margin:0" id="service-health-stamp">Asking the Pi…</p>
         </div>
         <div class="eng-grid" id="service-health"></div>
@@ -171,7 +171,7 @@
     <section class="card section" hidden id="fleet">
         <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
             <p class="eyebrow">Live from the fleet</p>
-            <h2 style="text-align:left">Where Relaxy! is running</h2>
+            <h2 style="text-align:left">What machine's Relaxy!'s hosted on</h2>
             <p style="margin:0" id="fleet-stamp">Asking the fleet…</p>
         </div>
         <div class="host-live-grid" id="fleet-hosts"></div>
@@ -186,8 +186,8 @@
         <div class="eng-grid">
             <div class="host-card">
                 <h3>Sandbox</h3>
-                <p><code>_main</code>. Nothing starts Node directly. The launcher wraps the whole fleet in a <strong>bubblewrap</strong> sandbox: the system directories come in read-only, the bot's
-                    own directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC and UTS namespaces are unshared. It then execs <code>./start</code> inside.</p>
+                <p><code>_main</code>. Nothing starts Node directly. The launcher wraps the whole program in a <strong>bubblewrap</strong> sandbox: the system directories come in read-only, the bot's
+                    own directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC and UTS namespaces are unshared. It then execs <code>./start</code> from the inside.</p>
             </div>
             <div class="host-card">
                 <h3>Manager</h3>
@@ -200,26 +200,27 @@
                     connections to Discord, where commands and events are handled.</p>
             </div>
             <div class="host-card">
-                <h3>IPC &amp; heartbeats</h3>
-                <p>Manager and clusters talk over Node IPC. Spawn hand-off is the <code>CLIENT_PROCESS_SPAWNED</code> message; liveness uses a <strong>push heartbeat</strong> - each cluster reports in
-                    every 5s and is respawned after 12 missed beats (60s of silence), so the manager only ever watches for silence instead of polling for it.</p>
+                <h3>IPC &amp; Heartbeats</h3>
+                <p>Manager and clusters talk over Node IPC. Spawn hand-off is the <code>CLIENT_PROCESS_SPAWNED</code> message; liveness uses a <strong>push heartbeat</strong>. Each cluster reports in
+                    every 5s and is respawned after 12 missed beats (60s of silence).</p>
             </div>
             <div class="host-card">
-                <h3>Self-repair &amp; hot-patch</h3>
-                <p>A <code>SelfRepair</code> module provides hot-reloading of modules/commands and an internet watchdog; the <code>ModuleLoader</code> + <code>HotPatch</code> system loads every module
+                <h3>Self-repair &amp; Hot-patch</h3>
+                <p>A <code>SelfRepair</code> module provides hot-reloading of modules/commands and an internet watchdog that catches network outages and prevents database/file corruptions; the <code>ModuleLoader</code> + <code>HotPatch</code> system loads every module
                     from a manifest and can swap them at runtime without a restart.</p>
             </div>
-            <!--            <div class="host-card">-->
-            <!--                <h3>CDN & storage</h3>-->
-            <!--            </div>-->
+                        <div class="host-card">
+                            <h3>Database Link</h3>
+                            <p>A local http server is started alongside the bot, every database interaction goes through it directly into the bot to ensure that it's using the most up-to-date info, with the safeguards already built-in.</p>
+                        </div>
         </div>
         <h3 style="color:var(--accent);margin-top:var(--space-5)">Boot sequence</h3>
         <p class="prose" style="margin:0 0 var(--space-4)">Three hand-offs, <code>_main</code> builds the sandbox, <code>start</code> picks the entry point and the Node flags, and
             <code>bot/Manager.js</code> brings up the fleet. </p>
         <ul class="feature-list">
             <li><code>_main</code> execs <strong>bwrap</strong>. System paths (<code>/usr</code>, <code>/lib</code>, <code>/bin</code>, <code>/etc/ssl</code>, the nvm directory) are bound read-only
-                and the bot's directory is the only writable one. Two of those binds are load-bearing rather than cosmetic: the <strong>CDN tree</strong> at <code>~/cdn</code>, without which the bot
-                silently re-downloads every font, sound and overlay over HTTPS on each cold start; and <code>/etc/fonts</code>, without which fontconfig cannot start and every rank and welcome card
+                and the bot's directory is the only writable one. Two of those binds are load-bearing: the <strong>CDN tree</strong> at <code>~/cdn</code>, without which the bot
+                silently re-downloads every font, sound and overlay over HTTPS on each cold start and <code>/etc/fonts</code>, without which fontconfig cannot start and every rank and welcome card
                 quietly ignores <code>registerFont()</code> and falls back to a built-in face. <code>$HOME</code> is deliberately not bound, so <code>XDG_CACHE_HOME</code> is pointed at the sandbox's
                 own tmpfs instead.
             </li>
@@ -228,18 +229,18 @@
                 point: <code>bot/Manager.js</code> normally, <code>bot/Client.js</code> under <code>--client</code>, <code>bot/Bridge.js</code> under <code>--bridge</code>.
             </li>
             <li>The Manager creates every directory the fleet writes to, then does two things <em>before</em> a single cluster is forked. It overlays the operator-mutable settings (version, owners,
-                status lines) from MongoDB onto the <code>.env</code> seeds, so a value changed from another host's console wins; and it warms the CDN text and file caches, so a shard that boots into
-                a CDN outage still finds its word lists on disk. Neither is fatal if it fails, so an unreachable database falls back to the seed values and the fleet still boots.
+                status lines) from MongoDB onto the <code>.env</code> seeds, so a value changed from another host's console wins. It also warms the CDN text and file caches, so a shard that boots into
+                a CDN outage still finds its word lists on disk.
             </li>
             <li>Clusters are then spawned in turn, 7s apart, each with a <strong>push heartbeat</strong> every 5s. Each client loads its modules in parallel, connects to MongoDB, spawns the database
                 worker, registers its commands and logs into the gateway. The music extractors load <em>afterwards</em>, deliberately off the critical path so that the bot can execute commands before
-                yt-dlp is even ready.
+                the music engine is even fully ready.
             </li>
             <li>Only once every shard it owns is actually connected does a cluster report ready, at which point the feature intervals start: mutes, reminders, ticket systems, forums, clearing
                 channels. Readiness is counted off each cluster's own <code>ready</code> event.
             </li>
-            <li>A watchdog guards against a startup that stalls silently. The budget scales with the fleet (<code>totalClusters × 7s + 60s</code>, floor of 5 minutes); once it elapses the Manager
-                keeps naming the clusters that are still not ready, every 60s, until they recover or an operator steps in.
+            <li>A watchdog guards against a startup that stalls silently. The budget scales with the fleet (<code>totalClusters × 7s + 60s</code>, floor of 5 minutes). Once it elapses the Manager
+                keeps naming the clusters that are still not ready, every 60s, until they recover or I step in.
             </li>
         </ul>
     </section>
@@ -279,13 +280,11 @@
         <div class="tech-stack-group">
             <h3>Music &amp; voice</h3>
             <div class="chip-grid">
-                <span class="tech-tag">yt-dlp</span> <span class="tech-tag">discord-player 7 (vendored fork)</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-soundcloud</span>
+                <span class="tech-tag">yt-dlp</span> <span class="tech-tag">discord-player 7 (my own fork)</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-soundcloud</span>
                 <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">prism-media</span> <span class="tech-tag">ffmpeg-static</span> <span
                     class="tech-tag">LrcLib (synced lyrics)</span>
             </div>
-            <p class="prose" style="margin:var(--space-3) 0 0"><strong>yt-dlp is the only YouTube path.</strong> The old in-process stack (youtubei / BotGuard-in-JSDOM) was removed because it broke
-                every time YouTube rotated its PO-token and SABR scheme, and generating those tokens pinned the Pi's CPU at boot. yt-dlp tracks that churn upstream so the bot does not have to.</p>
-            <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>custom fork</strong> of discord-player. Its TypeScript, rewritten into this codebase's style, with local
+           <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>custom fork</strong> of discord-player. Its TypeScript, rewritten into basic JavaScript in this codebase's style, with local
                 fixes on top. It carries its own stream interceptor and a biquad/DSP equalizer. A small pipeline (<code>scripts/music/</code>) diffs it against upstream and builds merge bundles.</p>
         </div>
 
@@ -363,20 +362,19 @@
         </div>
         <div class="host-grid">
             <div class="host-card">
-                <h3>Void PC <span class="host-tag">IS_VOID</span></h3>
-                <p>The primary host is a Void Linux desktop. Carries the bulk of the clusters and shards.</p>
+                <h3>Raspberry Pi <span class="host-tag">IS_VOID + IS_RASPBERRY_PI</span></h3>
+                <p>The primary host. An always-on board running Void. Runs all the Relaxy! ecosystem services. Keeps a slice of the fleet alive around the clock on low-performance tuning.</p>
             </div>
             <div class="host-card">
-                <h3>Raspberry Pi <span class="host-tag">IS_VOID + IS_RASPBERRY_PI</span></h3>
-                <p>An always-on board running Void, so it answers to both flags. Identified from <code>/proc/device-tree/model</code>, falling back to <code>/proc/cpuinfo</code> and only when the
-                    sandbox hides both it falls back to the old ARM architecture guess. Keeps a slice of the fleet alive around the clock on low-performance tuning.</p>
+                <h3>Void PC <span class="host-tag">IS_VOID</span></h3>
+                <p>My personal Void Linux desktop. Only used occasionally as it's pretty expensive to run 24/7.</p>
             </div>
             <div class="host-card">
                 <h3>Laptop <span class="host-tag">IS_LINUX</span></h3>
-                <p>A Linux secondary / development host. Used for debugging single shards (<code>./start --client</code>) and to add capacity when needed.</p>
+                <p>A Linux secondary / development host. Used mainly for debugging when I have no access to my PC.</p>
             </div>
         </div>
-        <p class="prose" style="margin:var(--space-4) 0 0">Every read in <code>detect_os.js</code> is best-effort on purpose. Under bwrap, parts of <code>/proc</code> and <code>/sys</code> may not be
+        <p class="prose" style="margin:var(--space-4) 0 0">Every read in <code>detect_os.js</code> is best-effort, under bwrap, parts of <code>/proc</code> and <code>/sys</code> may not be
             mounted at all, and a sandboxed host has to degrade to "plain Linux" rather than throw at import time and take the whole process down with it. That caused some headaches...</p>
     </section>
 

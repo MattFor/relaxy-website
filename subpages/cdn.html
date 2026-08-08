@@ -112,8 +112,7 @@
     <p class="eyebrow">Self-hosted assets</p>
     <h1>The Relaxy! CDN</h1>
     <span class="status-badge is-up"><span class="dot" aria-hidden="true"></span> cdn.relaxy.xyz · online</span>
-    <p class="tagline">Every image, asset and file the bot and this site use is served from here - a content delivery network I run myself, straight off the Pi. No third-party host, no per-request
-        bill. And if you'd want me to host your important file, then feel free to ask :)</p>
+    <p class="tagline">Every image, asset and file the bot and this site use is served from here. A content delivery network I also host myself.  And if you'd want me to host your important file, then feel free to ask :)</p>
     <a class="invite-button" href="https://cdn.relaxy.xyz" rel="noopener" target="_blank">Browse the CDN</a>
     <p class="byline">Base URL: <code>https://cdn.relaxy.xyz</code></p>
 </section>
@@ -122,33 +121,33 @@
     <section class="card section">
         <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
             <p class="eyebrow">What it serves</p>
-            <h2 style="text-align:left">One place for everything static</h2>
-            <p style="margin:0;max-width:none">Instead of shipping assets with every project, they all live in one tidy, cacheable spot.</p>
+            <h2 style="text-align:left">A single place for every static asset</h2>
+            <p style="margin:0;max-width:none">Instead of polluting all of my projects with the dreaded assets/ folder I wanted a simple way to have everything in once place (with static internet links!).</p>
         </div>
         <div class="eng-grid">
             <div class="host-card">
                 <h3>Website assets</h3>
-                <p>The mascot art, icons, social images and markdown content for this very site are all grouped under <code>/relaxy/website</code>.</p>
+                <p>The mascot art, icons, social images and Markdown content for this very site are all grouped under <code>/relaxy/website</code>.</p>
             </div>
             <div class="host-card">
                 <h3>Bot assets</h3>
-                <p>Shared images the Discord bot renders and reuses live under <code>/relaxy/common</code>, fetched on demand.</p>
+                <p>Shared images the Discord bot renders and reuses live under <code>/relaxy/bot</code>.</p>
             </div>
             <div class="host-card">
-                <h3>Music &amp; media</h3>
-                <p>Audio and media files the music engine leans on are kept under <code>/relaxy/music</code>, close to the bot.</p>
+                <h3>Scam censoring flags</h3>
+                <p>The bot directly uses <code>/relaxy/bot/text/scams.txt</code> to determine whether messages/images are scams, if you've found a new scam, please report it and I'll add it here!</p>
             </div>
         </div>
     </section>
 
     <section class="card section">
         <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">How it's laid out</p>
+            <p class="eyebrow">How it's all laid out</p>
             <h2 style="text-align:left">The directory tree</h2>
-            <p style="margin:0">Read live from the CDN itself. This is walked straight off <code>cdn.relaxy.xyz</code>, so that it never falls out of date.</p>
+            <p style="margin:0">This is read straight off <code>cdn.relaxy.xyz</code>, handy real-time guide.</p>
         </div>
         <pre class="tech-tree" id="cdn-tree"><span class="dir">cdn.relaxy.xyz/</span>
-├── favicon.ico
+├── THIS IS A PLACEHOLDER, THE CDN COULD NOT BE REACHED
 └── <span class="dir">relaxy/</span>
     ├── <span class="dir">website/</span>            <span class="cmt"># everything this site uses</span>
     │   ├── <span class="dir">icons/</span>          <span class="cmt"># favicon</span>

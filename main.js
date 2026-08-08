@@ -261,8 +261,10 @@ const buildBackgroundFx = () =>
         {
             break;
         }
+
         const dur = (2.6 + Math.random() * 2.6).toFixed(1);
         const del = (-Math.random() * 3).toFixed(1);
+
         parts.push('<circle class="bg-fx-pad bg-fx-pulse' + n[2] + '" style="animation-duration:' + dur + 's;animation-delay:' + del + 's" cx="' + n[0] + '" cy="' + n[1] + '" r="6"/>');
     }
 
@@ -273,27 +275,33 @@ const buildBackgroundFx = () =>
         const tailR = 2.4;
         const spacing = 3.4;
         const trailPx = 230;
+
         for (let i = 0; i < nRider; i++)
         {
             const f = flows[rint(0, flows.length - 1)];
             const len = f[2];
+
             if (len < 80)
             {
                 continue;
             }
+
             const dur = (6 + Math.random() * 6).toFixed(1);
             const base = -Math.random() * parseFloat(dur);
             const span = Math.min(trailPx, len * 0.75);
             const count = clamp(Math.round(span / spacing), 8, 70);
             const step = (spacing / len) * parseFloat(dur);
+
             let g = '<g class="bg-fx-rider' + f[1] + '">';
             for (let k = count - 1; k >= 0; k--)
             {
                 const r = (headR - (headR - tailR) * (k / (count - 1))).toFixed(2);
                 const op = (0.85 * Math.pow(1 - k / count, 1.15)).toFixed(3);
                 const begin = (base + k * step).toFixed(3);
+
                 g += '<circle r="' + r + '" fill="currentColor" opacity="' + op + '"><animateMotion dur="' + dur + 's" begin="' + begin + 's" repeatCount="indefinite" rotate="0" path="' + f[0] + '"/></circle>';
             }
+
             g += '</g>';
             parts.push(g);
         }
@@ -406,6 +414,7 @@ const heartBurst = (count) =>
         ? Math.ceil(count / 2)
         : count;
     const n = Math.min(wanted, MAX_LIVE_HEARTS - liveHearts);
+
     if (n < 1)
     {
         return;
@@ -427,6 +436,7 @@ const heartBurst = (count) =>
 
         const dur = rand(1.6, 3.1);
         const delay = rand(0, 0.7);
+
         heart.style.animationDuration = dur.toFixed(2) + 's';
         heart.style.animationDelay = delay.toFixed(2) + 's';
 
@@ -470,6 +480,7 @@ const dropConfetti = (count) =>
         ? Math.ceil(count / 2)
         : count;
     const n = Math.min(wanted, MAX_LIVE_CONFETTI - liveConfetti);
+
     if (n < 1)
     {
         return;
@@ -488,14 +499,17 @@ const dropConfetti = (count) =>
     for (let i = 0; i < n; i++)
     {
         const bit = document.createElement('span');
+
         bit.className = 'egg-confetti-bit';
         bit.style.left = rand(0, 100).toFixed(2) + '%';
         bit.style.background = pick(CONFETTI_COLORS);
+
         bit.style.setProperty('--drift', Math.round(rand(-160, 160)) + 'px');
         bit.style.setProperty('--spin', Math.round(rand(-900, 900)) + 'deg');
 
         const dur = rand(2.4, 4.6);
         const delay = rand(0, 0.6);
+
         bit.style.animationDuration = dur.toFixed(2) + 's';
         bit.style.animationDelay = delay.toFixed(2) + 's';
 
@@ -611,6 +625,7 @@ const attachOwnerCard = () =>
     const inner = flip && flip.querySelector('.owner-flip-inner');
     const front = flip && flip.querySelector('.owner-front');
     const back = flip && flip.querySelector('.owner-back');
+
     if (!flip || !inner || !front || !back)
     {
         return;
@@ -676,6 +691,7 @@ const attachOwnerCard = () =>
 
     let frontIndex = currentIndex;
     let backIndex = draw(currentIndex);
+
     front.src = urls[frontIndex];
     back.src = urls[backIndex];
 
@@ -688,6 +704,7 @@ const attachOwnerCard = () =>
         {
             return;
         }
+
         busy = true;
 
         flipped = !flipped;
@@ -705,6 +722,7 @@ const attachOwnerCard = () =>
             {
                 return;
             }
+
             done = true;
             inner.removeEventListener('transitionend', onEnd);
 
@@ -869,6 +887,7 @@ const attachKeyboardEggs = () =>
             eggToast(on
                 ? 'Party mode! Relaxy! is dancing.'
                 : 'Party over. Back to work.');
+
             return;
         }
 
