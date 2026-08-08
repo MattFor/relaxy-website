@@ -214,7 +214,7 @@ const sparkline = (samples) =>
 const BANNER = {
     operational: {
         css:   'is-ok',
-        title: 'All Systems Operational',
+        title: 'Everything\'s fine!',
         sub:   (data) => `All ${data.overall.servicesTotal} services are responding.`
     },
     maintenance: {
