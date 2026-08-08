@@ -121,9 +121,9 @@
             <p class="eyebrow">At a quick glance</p>
             <h2 style="text-align:left">What Relaxy! is, technically</h2>
         </div>
-        <p class="prose" style="margin:0 0 var(--space-5)">Relaxy! is a multipurpose Discord bot first written by me in early 2019. It is a pure <strong>Node.js</strong> program written in modern <strong>JavaScript
-            (ES6 Modules)</strong> with <strong>JSDocs + TypeScript files</strong> for type-checking. There is <em>no build step</em>, the bot runs directly from source. It is sharded and
-            clustered so it can easily scale horizontally across multiple machines.</p>
+        <p class="prose" style="margin:0 0 var(--space-5)">Relaxy! is a multipurpose Discord bot first written by me in early 2019. It is a pure <strong>Node.js</strong> program written in modern
+            <strong>JavaScript (ES6 Modules)</strong> with <strong>JSDocs + TypeScript files</strong> for type-checking. There is <em>no build step</em>, the bot runs directly from source. It is
+            sharded and clustered so it can easily scale horizontally across multiple machines.</p>
         <div class="tech-stat-grid">
             <div class="tech-stat"><span class="num">173</span><span class="label">command modules</span></div>
             <div class="tech-stat"><span class="num">151</span><span class="label">public commands</span></div>
@@ -187,7 +187,8 @@
             <div class="host-card">
                 <h3>Sandbox</h3>
                 <p><code>_main</code>. Nothing starts Node directly. The launcher wraps the whole program in a <strong>bubblewrap</strong> sandbox: the system directories come in read-only, the bot's
-                    own directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC and UTS namespaces are unshared. It then execs <code>./start</code> from the inside.</p>
+                    own directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC and UTS namespaces are unshared. It then execs <code>./start</code> from the
+                    inside.</p>
             </div>
             <div class="host-card">
                 <h3>Manager</h3>
@@ -206,23 +207,23 @@
             </div>
             <div class="host-card">
                 <h3>Self-repair &amp; Hot-patch</h3>
-                <p>A <code>SelfRepair</code> module provides hot-reloading of modules/commands and an internet watchdog that catches network outages and prevents database/file corruptions; the <code>ModuleLoader</code> + <code>HotPatch</code> system loads every module
-                    from a manifest and can swap them at runtime without a restart.</p>
+                <p>A <code>SelfRepair</code> module provides hot-reloading of modules/commands and an internet watchdog that catches network outages and prevents database/file corruptions; the <code>ModuleLoader</code>
+                    + <code>HotPatch</code> system loads every module from a manifest and can swap them at runtime without a restart.</p>
             </div>
-                        <div class="host-card">
-                            <h3>Database Link</h3>
-                            <p>A local http server is started alongside the bot, every database interaction goes through it directly into the bot to ensure that it's using the most up-to-date info, with the safeguards already built-in.</p>
-                        </div>
+            <div class="host-card">
+                <h3>Database Link</h3>
+                <p>A local http server is started alongside the bot, every database interaction goes through it directly into the bot to ensure that it's using the most up-to-date info, with the
+                    safeguards already built-in.</p>
+            </div>
         </div>
         <h3 style="color:var(--accent);margin-top:var(--space-5)">Boot sequence</h3>
         <p class="prose" style="margin:0 0 var(--space-4)">Three hand-offs, <code>_main</code> builds the sandbox, <code>start</code> picks the entry point and the Node flags, and
             <code>bot/Manager.js</code> brings up the fleet. </p>
         <ul class="feature-list">
             <li><code>_main</code> execs <strong>bwrap</strong>. System paths (<code>/usr</code>, <code>/lib</code>, <code>/bin</code>, <code>/etc/ssl</code>, the nvm directory) are bound read-only
-                and the bot's directory is the only writable one. Two of those binds are load-bearing: the <strong>CDN tree</strong> at <code>~/cdn</code>, without which the bot
-                silently re-downloads every font, sound and overlay over HTTPS on each cold start and <code>/etc/fonts</code>, without which fontconfig cannot start and every rank and welcome card
-                quietly ignores <code>registerFont()</code> and falls back to a built-in face. <code>$HOME</code> is deliberately not bound, so <code>XDG_CACHE_HOME</code> is pointed at the sandbox's
-                own tmpfs instead.
+                and the bot's directory is the only writable one. Two of those binds are load-bearing: the <strong>CDN tree</strong> at <code>~/cdn</code>, without which the bot silently re-downloads
+                every font, sound and overlay over HTTPS on each cold start and <code>/etc/fonts</code>, without which fontconfig cannot start and every rank and welcome card quietly ignores <code>registerFont()</code>
+                and falls back to a built-in face. <code>$HOME</code> is deliberately not bound, so <code>XDG_CACHE_HOME</code> is pointed at the sandbox's own tmpfs instead.
             </li>
             <li><code>./start</code> sources nvm if Node is not already on <code>PATH</code>, exports <code>UV_THREADPOOL_SIZE=64</code>, and execs Node under <code>nice -n -20</code> - the <em>highest</em>
                 scheduling priority with <code>--stack_size=1000</code>, <code>--trace-uncaught</code> and <code>--max-old-space-size=6144</code> (a 6&nbsp;GB V8 heap). It also chooses the entry
@@ -284,8 +285,9 @@
                 <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">prism-media</span> <span class="tech-tag">ffmpeg-static</span> <span
                     class="tech-tag">LrcLib (synced lyrics)</span>
             </div>
-           <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>custom fork</strong> of discord-player. Its TypeScript, rewritten into basic JavaScript in this codebase's style, with local
-                fixes on top. It carries its own stream interceptor and a biquad/DSP equalizer. A small pipeline (<code>scripts/music/</code>) diffs it against upstream and builds merge bundles.</p>
+            <p class="prose" style="margin:var(--space-3) 0 0">The player itself is a <strong>custom fork</strong> of discord-player. Its TypeScript, rewritten into basic JavaScript in this codebase's
+                style, with local fixes on top. It carries its own stream interceptor and a biquad/DSP equalizer. A small pipeline (<code>scripts/music/</code>) diffs it against upstream and builds
+                merge bundles.</p>
         </div>
 
         <div class="tech-stack-group">
@@ -374,8 +376,8 @@
                 <p>A Linux secondary / development host. Used mainly for debugging when I have no access to my PC.</p>
             </div>
         </div>
-        <p class="prose" style="margin:var(--space-4) 0 0">Every read in <code>detect_os.js</code> is best-effort, under bwrap, parts of <code>/proc</code> and <code>/sys</code> may not be
-            mounted at all, and a sandboxed host has to degrade to "plain Linux" rather than throw at import time and take the whole process down with it. That caused some headaches...</p>
+        <p class="prose" style="margin:var(--space-4) 0 0">Every read in <code>detect_os.js</code> is best-effort, under bwrap, parts of <code>/proc</code> and <code>/sys</code> may not be mounted at
+            all, and a sandboxed host has to degrade to "plain Linux" rather than throw at import time and take the whole process down with it. That caused some headaches...</p>
     </section>
 
 </main>
