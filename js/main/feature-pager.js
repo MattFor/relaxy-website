@@ -15,6 +15,7 @@
     const stage = pager.querySelector('.feature-stage');
     const pages = Array.from(pager.querySelectorAll('.feature-page'));
     const dots = Array.from(pager.querySelectorAll('.feature-dot'));
+    const hint = pager.querySelector('[data-feature-next]');
 
     if (!stage || pages.length < 2)
     {
@@ -77,6 +78,15 @@
             show(i);
         });
     });
+
+    if (hint)
+    {
+        hint.addEventListener('click', (event) =>
+        {
+            event.stopPropagation();
+            show(current + 1);
+        });
+    }
 
     pager.addEventListener('keydown', (event) =>
     {

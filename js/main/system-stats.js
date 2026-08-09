@@ -102,16 +102,16 @@
         grid.innerHTML = '<div class="tech-stat"><span class="num">-</span><span class="label">status feed offline</span></div>';
         setStamp('Live feed unavailable right now. The Pi is not publishing /status.json yet.');
 
-        const section = document.getElementById('fleet');
+        const section = document.getElementById('fleet-block') || document.getElementById('fleet');
         if (section)
         {
             section.hidden = true;
         }
     };
 
-    const swarmSection = document.getElementById('fleet');
-    const swarmGrid = document.getElementById('fleet-hosts');
-    const swarmStamp = document.getElementById('fleet-stamp');
+    const fleetSection = document.getElementById('fleet-block') || document.getElementById('fleet');
+    const fleetGrid = document.getElementById('fleet-hosts');
+    const fleetStamp = document.getElementById('fleet-stamp');
 
     const plural = (n, one, many) => n + ' ' + (n === 1
         ? one
@@ -161,39 +161,39 @@
 
     const renderFleet = (bot) =>
     {
-        if (!swarmSection || !swarmGrid)
+        if (!fleetSection || !fleetGrid)
         {
             return;
         }
 
         if (!bot)
         {
-            swarmSection.hidden = true;
+            fleetSection.hidden = true;
             return;
         }
 
         if (!bot.online || !bot.hosts || !bot.hosts.length)
         {
-            swarmSection.hidden = false;
-            swarmGrid.innerHTML = '<div class="host-live is-down"><div class="host-live-head"><span class="host-live-name">Nothing reporting</span></div>' + '<p class="host-live-foot">No machine has checked in for over 90 seconds. Relaxy! is offline.</p></div>';
+            fleetSection.hidden = false;
+            fleetGrid.innerHTML = '<div class="host-live is-down"><div class="host-live-head"><span class="host-live-name">Nothing reporting</span></div>' + '<p class="host-live-foot">No machine has checked in for over 90 seconds. Relaxy! is offline.</p></div>';
 
-            if (swarmStamp)
+            if (fleetStamp)
             {
-                swarmStamp.textContent = 'The database is reachable, but no machine is currently running the bot.';
+                fleetStamp.textContent = 'The database is reachable, but no machine is currently running the bot.';
             }
             return;
         }
 
-        swarmSection.hidden = false;
-        swarmGrid.innerHTML = bot.hosts
+        fleetSection.hidden = false;
+        fleetGrid.innerHTML = bot.hosts
                                  .slice()
                                  .sort((a, b) => (b.shards || []).length - (a.shards || []).length || b.clusters - a.clusters)
                                  .map((h) => hostTile(h, h.id === bot.primary))
                                  .join('');
 
-        if (swarmStamp)
+        if (fleetStamp)
         {
-            swarmStamp.textContent = bot.hostCount > 1
+            fleetStamp.textContent = bot.hostCount > 1
                 ? 'Spread across ' + plural(bot.hostCount, 'machine', 'machines') + ' · ' + bot.totalClusters + ' clusters · ' + bot.totalGuilds.toLocaleString() + ' servers'
                 : 'Running entirely on ' + bot.primary + ' · ' + plural(bot.totalClusters, 'cluster', 'clusters') + ' · ' + bot.totalGuilds.toLocaleString() + ' servers';
         }

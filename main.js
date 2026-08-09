@@ -1077,15 +1077,15 @@ const loadPiStats = () =>
 const SERVICE_STATE = {
     true:    {
         css:   'is-up',
-        label: 'Online'
+        label: 'answering'
     },
     false:   {
         css:   'is-down',
-        label: 'Offline'
+        label: 'not answering'
     },
     unknown: {
-        css:   'is-checking',
-        label: 'Unknown'
+        css:   'is-unknown',
+        label: 'no reading'
     }
 };
 
@@ -1169,13 +1169,16 @@ const loadServiceHealth = () =>
                 return;
             }
 
+            const escape = (value) => String(value)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
             grid.innerHTML = services.map((service) =>
             {
                 const state = SERVICE_STATE[service.online === null
                     ? 'unknown'
                     : String(service.online)];
 
-                return '<div class="host-card service-health-row">' + '<span class="service-health-name">' + service.name + '</span>' + '<span class="status-badge ' + state.css + '">' + '<span class="dot" aria-hidden="true"></span>' + '<span class="status-text">' + state.label + '</span>' + '</span>' + '</div>';
+                return '<div class="svc-row ' + state.css + '">' + '<span class="svc-name">' + escape(service.name) + '</span>' + '<span class="svc-line" aria-hidden="true"></span>' + '<span class="svc-state">' + state.label + '</span>' + '</div>';
             }).join('');
 
             const stamp = document.getElementById('service-health-stamp');
@@ -1184,10 +1187,15 @@ const loadServiceHealth = () =>
             {
                 const online = services.filter((service) => service.online === true).length;
 
-                stamp.textContent = online + ' of ' + services.length + ' services responding.';
+                stamp.textContent = online + ' of ' + services.length + ' services answering right now.';
             }
 
-            grid.closest('section').hidden = false;
+            const block = document.getElementById('services-block') || grid.closest('section');
+
+            if (block)
+            {
+                block.hidden = false;
+            }
         })
         .catch(() =>
         {

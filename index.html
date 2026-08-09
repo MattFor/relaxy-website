@@ -121,7 +121,7 @@
                         "Highly advanced censoring, including OCR that reads scam text straight out of users' images",
                         "Advanced warning ladder with tiers, autobanning and a per-member case dossier",
                         "Raid protection that spots bursts of fresh accounts and clears them out on its own",
-                        "Comprehensive moderator log tracking over 32 events",
+                        "Comprehensive moderator log tracking across 43 separate events, each with its own channel",
                         "Cross-server links, mirror a role across every server you link and, if you allow it, share moderation with them too",
                         "Appeal channels hosted in a separate server, so punished members can appeal without rejoining yours",
                         "Per-command permission grants, hand a single command to a role/user without touching Discord's permissions",
@@ -266,7 +266,7 @@
                                                                                                                                                                                              width="8"
                                                                                                                                                                                              x="8"
                                                                                                                                                                                              y="2"/><path
-                                d="M9 12h6"/><path d="M9 16h4"/></svg></span>Easy to understand moderator log tracking over 35 events
+                                d="M9 12h6"/><path d="M9 16h4"/></svg></span>Easy to understand moderator log tracking across 43 events, each one routable to its own channel
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path
                                 d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg></span>Cross-server links, mirror a role across every server you link and, if you allow it, share
@@ -276,7 +276,7 @@
                                 d="m19 8-3 6h6z"/></svg></span>Appeal channels hosted in a separate server, punished members can appeal without rejoining the original one
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path
-                                d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>Per-command permission grants, hand a single command to a role/user without touching thier Discord permissions
+                                d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>Per-command permission grants, hand a single command to a role/user without touching their Discord permissions
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Built-in
                             music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters, history and more!
@@ -292,7 +292,7 @@
                                 d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>Custom forums with detailed access control and post moderation
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path
-                                d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>Join-to-create and private voice channels, and private voice channels with their own limit, bitrate and region
+                                d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>Join-to-create voice channels, and private voice channels with their own limit, bitrate and region
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Fully customizable embeds,
                             self-clearing channels on a timer, and reminders that Relaxy! automatically DMs you about.
@@ -337,7 +337,8 @@
                     </ul>
                 </div>
                 <div class="feature-pager-nav">
-                    <span class="feature-pager-hint">Click the tile (not here, up there) to flip to the other page</span> <span class="feature-dots">
+                    <button class="feature-pager-hint" data-feature-next type="button">Click the feature list above, or this line, to flip to the other page</button> <span
+                        class="feature-dots">
                         <button aria-label="Show features, page 1" class="feature-dot is-active" data-feature-goto="1" type="button">1</button>
                         <button aria-label="Show features, page 2" class="feature-dot" data-feature-goto="2" type="button">2</button>
                     </span>
@@ -423,8 +424,8 @@
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
                         d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
                 <h3>Full music engine</h3>
-                <p>Built on discord-player v4, updated by me since then. Request a YouTube link, type plain search keywords or queue an entire playlist, SoundCloud and Spotify resolve too. A live
-                    queue, audio filters, history, with smart buffering for a faster playback.</p>
+                <p>Built on a custom fork of discord-player 7, rewritten into this codebase's style and maintained by me since. Request a YouTube link, type plain search keywords or queue an entire
+                    playlist, SoundCloud and Spotify resolve too. A live queue, audio filters, history, with smart buffering for a faster playback.</p>
             </article>
             <article class="card card-hover eng-card reveal" data-reveal-delay="60">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="18"
@@ -605,7 +606,7 @@
         <div class="section-head reveal">
             <p class="eyebrow">Community Stuff</p>
             <h2>Have questions, need help, or just want to talk 'n' hang out?</h2>
-            <p>Hop into the Discord or my own Matrix server for real-time help, or check Relaxy! out on top.gg / DBL.</p>
+            <p class="lead-wide">Hop into the Discord or my own Matrix server for real-time help, or check Relaxy! out on top.gg / DBL.</p>
         </div>
         <div class="support-topgg-container reveal">
             <section class="card support-section">
