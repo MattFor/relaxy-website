@@ -63,6 +63,13 @@
                     a.removeAttribute('aria-current');
                 }
             });
+
+            const sectionMenu = document.querySelector('.nav-sections');
+
+            if (sectionMenu)
+            {
+                sectionMenu.classList.toggle('is-active', !!sectionMenu.querySelector('a.is-active'));
+            }
         };
 
         const navObserver = new IntersectionObserver((entries) =>

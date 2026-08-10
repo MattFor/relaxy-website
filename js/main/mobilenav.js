@@ -27,7 +27,7 @@
             return el;
         };
 
-        const sections = topnav.querySelectorAll(':scope > a[href^="#"]');
+        const sections = topnav.querySelectorAll('a[href^="#"]');
         const pageLinks = topnav.querySelectorAll('a.nav-page');
 
         if (sections.length)

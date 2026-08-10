@@ -1077,15 +1077,15 @@ const loadPiStats = () =>
 const SERVICE_STATE = {
     true:    {
         css:   'is-up',
-        label: 'answering'
+        label: 'All is good'
     },
     false:   {
         css:   'is-down',
-        label: 'not answering'
+        label: 'Offline'
     },
     unknown: {
         css:   'is-unknown',
-        label: 'no reading'
+        label: 'Unknown?'
     }
 };
 
@@ -1178,16 +1178,55 @@ const loadServiceHealth = () =>
                     ? 'unknown'
                     : String(service.online)];
 
-                return '<div class="svc-row ' + state.css + '">' + '<span class="svc-name">' + escape(service.name) + '</span>' + '<span class="svc-line" aria-hidden="true"></span>' + '<span class="svc-state">' + state.label + '</span>' + '</div>';
+                return '<div class="svc-card ' + state.css + '">' + '<span class="svc-dot" aria-hidden="true"></span>' + '<span class="svc-name">' + escape(service.name) + '</span>' + '<span class="svc-state">' + state.label + '</span>' + '</div>';
             }).join('');
 
             const stamp = document.getElementById('service-health-stamp');
 
             if (stamp)
             {
-                const online = services.filter((service) => service.online === true).length;
+                const total = services.length;
+                const up = services.filter((service) => service.online === true).length;
+                const down = services.filter((service) => service.online === false).length;
+                const unreadable = total - up - down;
 
-                stamp.textContent = online + ' of ' + services.length + ' services answering right now.';
+                let verdict;
+                let tone;
+
+                if (down)
+                {
+                    verdict = down + ' of ' + total + ' services offline';
+                    tone = 'is-down';
+                }
+                else if (unreadable === total)
+                {
+                    verdict = 'No service could be reached for a reading';
+                    tone = '';
+                }
+                else if (unreadable)
+                {
+                    verdict = up + ' of ' + total + ' services online';
+                    tone = '';
+                }
+                else
+                {
+                    verdict = 'All ' + total + ' services online';
+                    tone = 'is-ok';
+                }
+
+                if (unreadable && unreadable !== total)
+                {
+                    verdict += ', ' + unreadable + ' with no reading';
+                }
+
+                stamp.textContent = verdict + ' · checked ' + new Date().toTimeString().slice(0, 5);
+
+                stamp.classList.remove('is-ok', 'is-down');
+
+                if (tone)
+                {
+                    stamp.classList.add(tone);
+                }
             }
 
             const block = document.getElementById('services-block') || grid.closest('section');

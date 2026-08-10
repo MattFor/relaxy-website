@@ -97,7 +97,10 @@
 
 <header class="topbar">
     <a class="brand" href="/"> <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56"> <span>Relaxy!</span> </a>
-    <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
+    <nav aria-label="Sections" class="site-nav" id="topnav">
+        <a href="#overview">Overview</a> <a href="#live">Live</a> <a href="#architecture">Runtime</a> <a href="#boot">Startup</a> <a href="#data">Database</a> <a href="#writing">Commands</a> <a
+            href="#resilience">Resilience</a> <a href="#stack">Stack</a> <a href="#structure">Layout</a> <a href="#hosting">Hosting</a>
+    </nav>
     <div class="topbar-end">
         <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
         </button>
@@ -133,8 +136,8 @@
             machines easily if needed.</p>
 
         <div class="tech-stat-grid" style="margin-top:var(--space-5)">
-            <div class="tech-stat"><span class="num">~124k</span><span class="label">lines of first-party JS</span></div>
-            <div class="tech-stat"><span class="num">422</span><span class="label">source files</span></div>
+            <div class="tech-stat"><span class="num">~85k</span><span class="label">lines of JS</span></div>
+            <div class="tech-stat"><span class="num">433</span><span class="label">source files</span></div>
             <div class="tech-stat"><span class="num">186</span><span class="label">command modules</span></div>
             <div class="tech-stat"><span class="num">27</span><span class="label">prefix only commands</span></div>
             <div class="tech-stat"><span class="num">58</span><span class="label">event handlers</span></div>
@@ -142,7 +145,7 @@
             <div class="tech-stat"><span class="num">47</span><span class="label">npm dependencies</span></div>
             <div class="tech-stat"><span class="num">16</span><span class="label">toggleable log channels</span></div>
             <div class="tech-stat"><span class="num">43</span><span class="label">loggable modlog events</span></div>
-            <div class="tech-stat"><span class="num">14</span><span class="label">internal design docs</span></div>
+            <div class="tech-stat"><span class="num">7</span><span class="label">years of development</span></div>
             <div class="tech-stat"><span class="num">~3085$</span><span class="label">estimated development cost</span></div>
             <div class="tech-stat"><span class="num">1</span><span class="label">soul perished during development</span></div>
         </div>
@@ -159,8 +162,11 @@
         </div>
 
         <div class="live-block" hidden id="services-block">
-            <h3>Services answering</h3>
-            <p class="live-sub" id="service-health-stamp">Asking the Pi…</p>
+            <div class="live-head">
+                <h3>Service health</h3>
+                <a class="live-link" href="https://uptime.relaxy.xyz" rel="noopener">Click to view current/historical uptime</a>
+            </div>
+            <p aria-live="polite" class="live-sub svc-summary" id="service-health-stamp">Checking every service…</p>
             <div class="svc-board" id="service-health"></div>
         </div>
 

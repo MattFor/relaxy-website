@@ -149,33 +149,56 @@
             return sep;
         };
 
-        const hasSections = top.querySelectorAll(':scope > a[href^="#"]').length > 0;
+        const sectionLinks = Array.from(top.querySelectorAll('a[href^="#"]'));
+        const hasSections = sectionLinks.length > 0;
 
-        const renderNav = (compact) =>
+        const buildSections = () =>
         {
-            Array.from(top.children).forEach((el) =>
-            {
-                if (!el.matches('a[href^="#"]'))
-                {
-                    el.remove();
-                }
-            });
+            const details = document.createElement('details');
+            details.className = 'nav-more nav-sections';
+
+            const summary = document.createElement('summary');
+            summary.textContent = 'Sections';
+            details.appendChild(summary);
+
+            const menu = document.createElement('div');
+            menu.className = 'nav-more-menu';
+            sectionLinks.forEach((a) => menu.appendChild(a));
+
+            details.appendChild(menu);
+            return details;
+        };
+
+        const renderNav = (level) =>
+        {
+            sectionLinks.forEach((a) => a.remove());
+            top.textContent = '';
+            top.classList.toggle('is-dense', level === 2);
 
             if (hasSections)
             {
+                if (level < 3)
+                {
+                    sectionLinks.forEach((a) => top.appendChild(a));
+                }
+                else
+                {
+                    top.appendChild(buildSections());
+                }
+
                 top.appendChild(makeSep());
             }
 
             top.appendChild(makePill(home));
 
-            if (!compact)
+            if (level === 0)
             {
                 rest.forEach((p) => top.appendChild(makePill(p)));
             }
 
-            top.appendChild(compact
-                ? buildMore(rest, services)
-                : buildMore(services));
+            top.appendChild(level === 0
+                ? buildMore(services)
+                : buildMore(rest, services));
         };
 
         const spillsOntoTwoLines = () =>
@@ -188,10 +211,26 @@
 
         const fitNav = () =>
         {
-            renderNav(false);
-            if (spillsOntoTwoLines())
+            const levels = hasSections
+                ? [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+                : [
+                    0,
+                    1
+                ];
+
+            for (let i = 0; i < levels.length; i++)
             {
-                renderNav(true);
+                renderNav(levels[i]);
+
+                if (!spillsOntoTwoLines())
+                {
+                    return;
+                }
             }
         };
 
@@ -213,20 +252,23 @@
 
         top.addEventListener('click', (e) =>
         {
-            const details = top.querySelector('.nav-more');
-            if (details && e.target.tagName === 'A')
+            if (e.target.tagName !== 'A')
             {
-                details.removeAttribute('open');
+                return;
             }
+
+            top.querySelectorAll('.nav-more').forEach((details) => details.removeAttribute('open'));
         });
 
         document.addEventListener('click', (e) =>
         {
-            const details = top.querySelector('.nav-more');
-            if (details && !details.contains(e.target))
+            top.querySelectorAll('.nav-more').forEach((details) =>
             {
-                details.removeAttribute('open');
-            }
+                if (!details.contains(e.target))
+                {
+                    details.removeAttribute('open');
+                }
+            });
         });
     }
 })();
