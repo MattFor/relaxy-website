@@ -347,6 +347,10 @@ body {
     border-color: color-mix(in srgb, var(--down) 35%, var(--border));
 }
 
+.panel.is-resolved {
+    border-color: color-mix(in srgb, var(--up) 35%, var(--border));
+}
+
 .panel-head {
     display: flex;
     align-items: baseline;
@@ -799,6 +803,12 @@ body {
     color: #fff;
 }
 
+.chip.is-resolved {
+    background: var(--up-soft);
+    color: var(--up);
+    border-color: color-mix(in srgb, var(--up) 35%, transparent);
+}
+
 .chip.is-declared {
     background: transparent;
     color: var(--text-muted);
@@ -906,14 +916,29 @@ body {
     font-size: 0.8rem;
 }
 
-.incident-body {
+/**
+ * One wrapper owns the whole rail so it runs unbroken from the first
+ * "Detected" line down to the last update. The pieces inside it (body lines,
+ * update list) must never draw a border-left of their own - two borders on two
+ * boxes cannot line up once a margin sits between them.
+ */
+.incident-detail {
+    --rail-w: 2px;
+    --rail-gap: 1rem;
+    --line-gap: 0.45rem;
+
     margin: 0.7rem 0 0;
-    padding-left: 0.9rem;
-    border-left: 2px solid var(--border-strong);
+    padding-left: var(--rail-gap);
+    border-left: var(--rail-w) solid var(--border-strong);
+}
+
+.incident-body {
+    margin: 0;
 }
 
 .incident-line {
-    margin: 0 0 0.45rem;
+    position: relative;
+    margin: 0 0 var(--line-gap);
     font-size: 0.88rem;
 }
 
@@ -930,17 +955,41 @@ body {
     display: block;
 }
 
-.incident-line.is-manual {
-    border-left: 2px solid var(--accent);
-    margin-left: -0.9rem;
-    padding-left: 0.8rem;
+/**
+ * A hand-written line recolours the rail it already sits next to rather than
+ * adding a second one beside it, which is what used to double the stroke's
+ * width from "What happened" downwards.
+ */
+.incident-line.is-manual::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(-1 * (var(--rail-gap) + var(--rail-w)));
+    width: var(--rail-w);
+    background: var(--accent);
+}
+
+.incident-line.is-manual:has(+ .incident-line.is-manual)::before {
+    bottom: calc(-1 * var(--line-gap));
+}
+
+.incident-body + .incident-line {
+    margin-top: var(--line-gap);
+}
+
+.updates + .incident-line {
+    margin-top: 0.85rem;
 }
 
 .updates {
     list-style: none;
     margin: 0.85rem 0 0;
-    padding: 0 0 0 1.1rem;
-    border-left: 1px solid var(--border-strong);
+    padding: 0;
+}
+
+.updates:first-child {
+    margin-top: 0;
 }
 
 .update {
@@ -955,11 +1004,11 @@ body {
 .update::before {
     content: "";
     position: absolute;
-    left: -1.1rem;
+    left: calc(-1 * (var(--rail-gap) + var(--rail-w) / 2));
     top: 0.42rem;
     width: 0.5rem;
     height: 0.5rem;
-    margin-left: -0.25rem;
+    transform: translateX(-50%);
     border-radius: 50%;
     background: var(--text-muted);
     box-shadow: 0 0 0 3px var(--bg-surface);

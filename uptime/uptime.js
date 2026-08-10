@@ -744,14 +744,18 @@ const renderServices = (data) =>
     }).join('');
 };
 
-const updateTimeline = (updates) =>
+const updateTimeline = (updates, ongoing) =>
 {
     if (!Array.isArray(updates) || !updates.length)
     {
         return '';
     }
 
-    const items = updates.map((update) => `
+    const ordered = [...updates].sort((a, b) => (ongoing
+        ? Date.parse(b.at) - Date.parse(a.at)
+        : Date.parse(a.at) - Date.parse(b.at)));
+
+    const items = ordered.map((update) => `
         <li class="update is-${escapeHtml(update.status)}">
             <div class="update-head">
                 <span class="update-status">${escapeHtml(update.status)}</span>
@@ -785,6 +789,28 @@ const incidentChildren = (children) =>
         </div>`;
 };
 
+const RESOLVED_LINGER = 1.75;
+
+const RESOLVED_LINGER_MIN_MS = 3600000;
+
+const recentlyResolved = (incident) =>
+{
+    if (incident.ongoing || !incident.endedAt)
+    {
+        return false;
+    }
+
+    const endedAt = Date.parse(incident.endedAt);
+    const lasted = endedAt - Date.parse(incident.startedAt);
+
+    if (!Number.isFinite(endedAt) || !Number.isFinite(lasted))
+    {
+        return false;
+    }
+
+    return Date.now() - endedAt < Math.max(RESOLVED_LINGER_MIN_MS, lasted * RESOLVED_LINGER);
+};
+
 const incidentCard = (incident) =>
 {
     const chips = [];
@@ -792,6 +818,10 @@ const incidentCard = (incident) =>
     if (incident.ongoing)
     {
         chips.push('<span class="chip is-ongoing">Ongoing</span>');
+    }
+    else if (recentlyResolved(incident))
+    {
+        chips.push('<span class="chip is-resolved">Resolved</span>');
     }
 
     chips.push(`<span class="chip is-${escapeHtml(incident.impact)}">${escapeHtml(incident.impact)}</span>`);
@@ -809,9 +839,13 @@ const incidentCard = (incident) =>
     const started = formatDate(incident.startedAt, STAMP);
     const running = duration((Date.now() - Date.parse(incident.startedAt)) / 1000);
 
+    const ended = recentlyResolved(incident)
+        ? ` &middot; resolved ${escapeHtml(relative(incident.endedAt))}`
+        : '';
+
     const meta = incident.ongoing
         ? `${escapeHtml(incident.serviceName)} &middot; started ${started} &middot; ongoing for ${escapeHtml(running)}`
-        : `${escapeHtml(incident.serviceName)} &middot; ${started} &middot; lasted ${escapeHtml(incident.durationText)}`;
+        : `${escapeHtml(incident.serviceName)} &middot; ${started} &middot; lasted ${escapeHtml(incident.durationText)}${ended}`;
 
     const lines = [];
 
@@ -831,14 +865,23 @@ const incidentCard = (incident) =>
         </p>`);
     }
 
-    if (incident.resolution)
-    {
-        lines.push(`<p class="incident-line is-manual">
-            <span class="incident-label">Resolution</span>${escapeHtml(incident.resolution)}
-        </p>`);
-    }
-
     const restart = incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog';
+
+    const body = lines.length
+        ? `<div class="incident-body">${lines.join('')}</div>`
+        : '';
+
+    const updates = updateTimeline(incident.updates, incident.ongoing);
+
+    const closing = incident.resolution
+        ? `<p class="incident-line is-manual">
+            <span class="incident-label">Resolution</span>${escapeHtml(incident.resolution)}
+        </p>`
+        : '';
+
+    const detail = body || updates || closing
+        ? `<div class="incident-detail">${body}${updates}${closing}</div>`
+        : '';
 
     return `
         <article class="incident${incident.ongoing
@@ -852,15 +895,17 @@ const incidentCard = (incident) =>
             </div>
             <p class="incident-meta">${meta}</p>
             ${incidentChildren(incident.children)}
-            <div class="incident-body">${lines.join('')}</div>
-            ${updateTimeline(incident.updates)}
+            ${detail}
         </article>`;
 };
 
 const renderIncidents = (data) =>
 {
     const active = data.incidents.filter((incident) => incident.ongoing);
-    const past = data.incidents.filter((incident) => !incident.ongoing);
+    const recent = data.incidents.filter(recentlyResolved);
+
+    const past = data.incidents.filter((incident) => !incident.ongoing && !recentlyResolved(incident));
+
     const activeHost = el('activeIncidents');
 
     if (active.length)
@@ -869,7 +914,7 @@ const renderIncidents = (data) =>
             <div class="panel is-active">
                 <div class="panel-head">
                     <h2 class="panel-title">Active incidents</h2>
-                    <p class="panel-note">Updated as we learn more</p>
+                    <p class="panel-note">Updated as more info comes to light</p>
                 </div>
                 ${active.map(incidentCard).join('')}
             </div>`;
@@ -881,15 +926,37 @@ const renderIncidents = (data) =>
         activeHost.innerHTML = '';
     }
 
+    const recentHost = el('recentlyResolved');
+
+    if (recent.length)
+    {
+        recentHost.innerHTML = `
+            <div class="panel is-resolved">
+                <div class="panel-head">
+                    <h2 class="panel-title">Recently resolved</h2>
+                    <p class="panel-note">Fixed, and kept here a while longer</p>
+                </div>
+                ${recent.map(incidentCard).join('')}
+            </div>`;
+        recentHost.hidden = false;
+    }
+    else
+    {
+        recentHost.hidden = true;
+        recentHost.innerHTML = '';
+    }
+
     el('incidentCount').textContent = data.incidents.length
         ? `${data.incidents.length} in the last ${data.windowDays} days`
         : '';
 
     if (!past.length)
     {
-        el('incidents').innerHTML = `<p class="empty">No incidents recorded${active.length
-            ? ' before the active one above'
-            : ` in the last ${data.windowDays} days`}. </p>`;
+        const above = active.length || recent.length
+            ? ' beyond the one above'
+            : ` in the last ${data.windowDays} days`;
+
+        el('incidents').innerHTML = `<p class="empty">No incidents recorded${above}. </p>`;
 
         return;
     }
