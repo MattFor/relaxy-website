@@ -118,7 +118,7 @@
                     "isAccessibleForFree": true,
                     "description": "Relaxy! is a free, self-hosted multipurpose Discord bot featuring advanced moderation, OCR scam detection, music playback, tickets, forums, levelling, an economy and many more community management tools. Every feature is free with no paywalls.",
                     "featureList": [
-                        "Highly advanced censoring, including OCR that reads scam text straight out of users' images",
+                        "Highly advanced censoring, including OCR and entropy detection that reads scam text straight out of users' images",
                         "Advanced warning ladder with tiers, autobanning and a per-member case dossier",
                         "Raid protection that spots bursts of fresh accounts and clears them out on its own",
                         "Comprehensive moderator log tracking across 43 separate events, each with its own channel",
@@ -150,6 +150,7 @@
                         "ticket bot",
                         "youtube music bot",
                         "OCR scam detection",
+                        "Image entropy scam detection",
                         "Discord moderation",
                         "Discord music",
                         "levelling",
@@ -253,7 +254,7 @@
                     <ul class="feature-list has-icons feature-page is-active" data-feature-page="1">
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path
                                 d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 9h10"/><path d="M7 13h7"/></svg></span>Highly advanced censoring which can also perform
-                            OCR (reading text from the image f.e for Mr. Beast scams)
+                            OCR and entropy-based matching (reading text from the image f.e for Mr. Beast scams)
                         </li>
                         <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path
                                 d="M12 9v4"/><path d="M12 17h.01"/></svg></span>Advanced warning ladder with tiers, autobanning and a per-member case dossier
@@ -337,8 +338,8 @@
                     </ul>
                 </div>
                 <div class="feature-pager-nav">
-                    <button class="feature-pager-hint" data-feature-next type="button">Click the feature list above, or this line, to flip to the other page</button> <span
-                        class="feature-dots">
+                    <button class="feature-pager-hint" data-feature-next type="button">Click the feature list above, or this line, to flip to the other page</button>
+                    <span class="feature-dots">
                         <button aria-label="Show features, page 1" class="feature-dot is-active" data-feature-goto="1" type="button">1</button>
                         <button aria-label="Show features, page 2" class="feature-dot" data-feature-goto="2" type="button">2</button>
                     </span>
@@ -418,7 +419,8 @@
                         d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path
                         d="m9 12 2 2 4-4"/></svg></span>
                 <h3>Anti-evasion censoring</h3>
-                <p>The censor normalizes look-alike characters, spacing tricks and zero-width junk with NLP, so filter-dodging still gets caught, even on edited messages and images as well!</p>
+                <p>The censoring system normalizes look-alike characters, spacing tricks and zero-width junk with NLP, so filter-dodging still gets caught, even on edited messages and images as well!
+                    For extreme cases tesseract-ocr (grey-scaling) and 256bit perceptual hash entropy matching is used. (f.e Mr Beast scam images)</p>
             </article>
             <article class="card card-hover eng-card reveal">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
@@ -434,7 +436,7 @@
                                                                                                                                                                                            x="3" y="3"/><circle
                         cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></span>
                 <h3>On-the-fly image generation</h3>
-                <p>Dozens of image and GIF commands are rendered locally with canvas, canvacord and sharp with no external image services involved.</p>
+                <p>Dozens of image and GIF commands are rendered locally with canvas, canvacord and sharp with no external services involved.</p>
             </article>
             <article class="card card-hover eng-card reveal">
                 <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
