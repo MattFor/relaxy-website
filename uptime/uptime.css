@@ -30,6 +30,9 @@
     --restart: #58a6ff;
     --restart-soft: rgba(88, 166, 255, 0.16);
 
+    --degraded: #e8873a;
+    --degraded-soft: rgba(232, 135, 58, 0.16);
+
     --silence: #ff0000;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
@@ -75,6 +78,9 @@
 
     --restart: #0969da;
     --restart-soft: rgba(9, 105, 218, 0.12);
+
+    --degraded: #bc4c00;
+    --degraded-soft: rgba(188, 76, 0, 0.12);
 
     --shadow-sm: 0 1px 2px rgba(17, 20, 26, 0.08);
     --shadow-md: 0 8px 24px rgba(17, 20, 26, 0.10);
@@ -821,12 +827,22 @@ body {
     border-color: color-mix(in srgb, var(--restart) 35%, transparent);
 }
 
+.chip.is-degraded {
+    background: var(--degraded-soft);
+    color: var(--degraded);
+    border-color: color-mix(in srgb, var(--degraded) 35%, transparent);
+}
+
 .incident.is-live .incident-title {
     color: var(--down);
 }
 
 .incident.is-restart.is-live .incident-title {
     color: var(--restart);
+}
+
+.incident.is-degraded.is-live .incident-title {
+    color: var(--degraded);
 }
 
 .incident-group {
@@ -856,6 +872,13 @@ body {
     color: var(--restart);
     border-color: color-mix(in srgb, var(--restart) 45%, transparent);
     border-style: solid;
+}
+
+.incident-group.is-periods:hover .group-toggle,
+.incident-group.is-periods:focus-within .group-toggle,
+.incident-group.is-periods:focus .group-toggle {
+    color: var(--degraded);
+    border-color: color-mix(in srgb, var(--degraded) 45%, transparent);
 }
 
 .children {
@@ -900,6 +923,12 @@ body {
 
 .child-name {
     color: var(--text);
+}
+
+.is-periods .child-name {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    font-variant-numeric: tabular-nums;
 }
 
 .child-time {

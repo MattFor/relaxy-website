@@ -789,6 +789,48 @@ const incidentChildren = (children) =>
         </div>`;
 };
 
+const CLOCK = {
+    hour:   '2-digit',
+    minute: '2-digit'
+};
+
+const periodWindow = (period) =>
+{
+    const opened = formatDate(period.startedAt, STAMP);
+
+    if (period.ongoing || !period.endedAt)
+    {
+        return `${opened} &rarr; now`;
+    }
+
+    const sameDay = new Date(period.startedAt).toDateString()
+        === new Date(period.endedAt).toDateString();
+
+    return `${opened} &rarr; ${formatDate(period.endedAt, sameDay ? CLOCK : STAMP)}`;
+};
+
+const incidentPeriods = (periods) =>
+{
+    if (!Array.isArray(periods) || periods.length < 2)
+    {
+        return '';
+    }
+
+    const rows = periods.map((period) => `
+        <li class="child">
+            <span class="child-name">${periodWindow(period)}</span>
+            <span class="child-time">${period.ongoing
+        ? 'still down'
+        : escapeHtml(period.durationText)}</span>
+        </li>`).join('');
+
+    return `
+        <div class="incident-group is-periods" tabindex="0" role="group" aria-label="${periods.length} separate outages">
+            <span class="group-toggle">${periods.length} outages &middot; hover to expand</span>
+            <div class="children"><ul class="child-list">${rows}</ul></div>
+        </div>`;
+};
+
 const RESOLVED_LINGER = 1.75;
 
 const RESOLVED_LINGER_MIN_MS = 3600000;
@@ -826,6 +868,11 @@ const incidentCard = (incident) =>
 
     chips.push(`<span class="chip is-${escapeHtml(incident.impact)}">${escapeHtml(incident.impact)}</span>`);
 
+    if (incident.degraded)
+    {
+        chips.push('<span class="chip is-degraded">Degraded</span>');
+    }
+
     if (incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog')
     {
         chips.push('<span class="chip is-restart">Restart</span>');
@@ -843,9 +890,17 @@ const incidentCard = (incident) =>
         ? ` &middot; resolved ${escapeHtml(relative(incident.endedAt))}`
         : '';
 
+    const spread = incident.degraded
+        ? ` across ${incident.outages} outages over ${escapeHtml(incident.spanText)}`
+        : '';
+
     const meta = incident.ongoing
-        ? `${escapeHtml(incident.serviceName)} &middot; started ${started} &middot; ongoing for ${escapeHtml(running)}`
-        : `${escapeHtml(incident.serviceName)} &middot; ${started} &middot; lasted ${escapeHtml(incident.durationText)}${ended}`;
+        ? `${escapeHtml(incident.serviceName)} &middot; started ${started} &middot; ${incident.degraded
+            ? `${escapeHtml(incident.durationText)} down${spread}`
+            : `ongoing for ${escapeHtml(running)}`}`
+        : `${escapeHtml(incident.serviceName)} &middot; ${started} &middot; ${incident.degraded
+            ? `${escapeHtml(incident.durationText)} down${spread}`
+            : `lasted ${escapeHtml(incident.durationText)}`}${ended}`;
 
     const lines = [];
 
@@ -888,6 +943,8 @@ const incidentCard = (incident) =>
         ? ' is-live'
         : ''}${restart
         ? ' is-restart'
+        : ''}${incident.degraded
+        ? ' is-degraded'
         : ''}">
             <div class="incident-head">
                 <h3 class="incident-title">${escapeHtml(incident.title)}</h3>
@@ -895,6 +952,7 @@ const incidentCard = (incident) =>
             </div>
             <p class="incident-meta">${meta}</p>
             ${incidentChildren(incident.children)}
+            ${incidentPeriods(incident.periods)}
             ${detail}
         </article>`;
 };
