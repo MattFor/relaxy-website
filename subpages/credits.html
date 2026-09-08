@@ -1,335 +1,602 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Relaxy! Credits - Contributors & Supporters</title>
-    <script>document.documentElement.classList.add('js');
-    try
-    {
-        if (localStorage.getItem('theme') === 'light')
-        {
-            document.documentElement.classList.add('light-mode');
-        }
-    }
-    catch (e)
-    {
-    }</script>
-    <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect">
-    <link href="https://cdn.relaxy.xyz" rel="dns-prefetch">
-    <link href="/dist/main.css" rel="stylesheet">
-    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
-    <meta content="#ff69b4" name="theme-color">
-    <meta content="MattFor" name="author">
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
-    <meta content="Credits and acknowledgments for everyone who has contributed to Relaxy!, the free multipurpose Discord bot - supporters, contributors and command ideas." name="description">
-    <meta content="relaxy credits, discord bot contributors, discord bot supporters" name="keywords">
-    <link href="https://www.relaxy.xyz/subpages/credits" rel="canonical">
-    <meta content="website" property="og:type">
-    <meta content="https://www.relaxy.xyz/subpages/credits" property="og:url">
-    <meta content="Relaxy! Credits - Contributors & Supporters" property="og:title">
-    <meta content="Credits and acknowledgments for those who have contributed to the development of Relaxy!, the Multipurpose Discord Bot." property="og:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image">
-    <meta content="Relaxy!" property="og:site_name">
-    <meta content="en_US" property="og:locale">
-    <meta content="600" property="og:image:width">
-    <meta content="600" property="og:image:height">
-    <meta content="Relaxy! the Discord bot mascot" property="og:image:alt">
-    <meta content="summary" name="twitter:card">
-    <meta content="Relaxy! Credits - Contributors & Supporters" name="twitter:title">
-    <meta content="Credits and acknowledgments for everyone who has contributed to Relaxy!, the free multipurpose Discord bot - supporters, contributors and command ideas." name="twitter:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image">
-    <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt">
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "WebPage",
-                    "@id": "https://www.relaxy.xyz/subpages/credits",
-                    "url": "https://www.relaxy.xyz/subpages/credits",
-                    "name": "Relaxy! Credits - Contributors & Supporters",
-                    "description": "Credits and acknowledgments for everyone who has contributed to Relaxy!, the free multipurpose Discord bot - supporters, contributors and command ideas.",
-                    "isPartOf": {
-                        "@id": "https://www.relaxy.xyz/#website"
-                    },
-                    "primaryImageOfPage": {
-                        "@type": "ImageObject",
-                        "url": "https://cdn.relaxy.xyz/relaxy.webp",
-                        "width": 600,
-                        "height": 600
-                    },
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": "Relaxy!",
-                            "item": "https://www.relaxy.xyz/"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 2,
-                            "name": "Credits",
-                            "item": "https://www.relaxy.xyz/subpages/credits"
-                        }
-                    ]
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Relaxy! Credits - Contributors & Supporters</title>
+        <script>
+            document.documentElement.classList.add('js');
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('light-mode');
                 }
-            ]
-        }
-    </script>
-</head>
+            } catch (e) {}
+        </script>
+        <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect" />
+        <link href="https://cdn.relaxy.xyz" rel="dns-prefetch" />
+        <link href="/dist/main.css" rel="stylesheet" />
+        <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon" />
+        <meta content="#ff69b4" name="theme-color" />
+        <meta content="MattFor" name="author" />
+        <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots" />
+        <meta
+            content="Credits and acknowledgments for everyone who has contributed to Relaxy!, the free multipurpose Discord bot - supporters, contributors and command ideas."
+            name="description"
+        />
+        <meta content="relaxy credits, discord bot contributors, discord bot supporters" name="keywords" />
+        <link href="https://www.relaxy.xyz/subpages/credits" rel="canonical" />
+        <meta content="website" property="og:type" />
+        <meta content="https://www.relaxy.xyz/subpages/credits" property="og:url" />
+        <meta content="Relaxy! Credits - Contributors & Supporters" property="og:title" />
+        <meta
+            content="Credits and acknowledgments for those who have contributed to the development of Relaxy!, the Multipurpose Discord Bot."
+            property="og:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image" />
+        <meta content="Relaxy!" property="og:site_name" />
+        <meta content="en_US" property="og:locale" />
+        <meta content="600" property="og:image:width" />
+        <meta content="600" property="og:image:height" />
+        <meta content="Relaxy! the Discord bot mascot" property="og:image:alt" />
+        <meta content="summary" name="twitter:card" />
+        <meta content="Relaxy! Credits - Contributors & Supporters" name="twitter:title" />
+        <meta
+            content="Credits and acknowledgments for everyone who has contributed to Relaxy!, the free multipurpose Discord bot - supporters, contributors and command ideas."
+            name="twitter:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image" />
+        <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt" />
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "WebPage",
+                        "@id": "https://www.relaxy.xyz/subpages/credits",
+                        "url": "https://www.relaxy.xyz/subpages/credits",
+                        "name": "Relaxy! Credits - Contributors & Supporters",
+                        "description": "Credits and acknowledgments for everyone who has contributed to Relaxy!, the free multipurpose Discord bot - supporters, contributors and command ideas.",
+                        "isPartOf": {
+                            "@id": "https://www.relaxy.xyz/#website"
+                        },
+                        "primaryImageOfPage": {
+                            "@type": "ImageObject",
+                            "url": "https://cdn.relaxy.xyz/relaxy.webp",
+                            "width": 600,
+                            "height": 600
+                        },
+                        "inLanguage": "en"
+                    },
+                    {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "name": "Relaxy!",
+                                "item": "https://www.relaxy.xyz/"
+                            },
+                            {
+                                "@type": "ListItem",
+                                "position": 2,
+                                "name": "Credits",
+                                "item": "https://www.relaxy.xyz/subpages/credits"
+                            }
+                        ]
+                    }
+                ]
+            }
+        </script>
+    </head>
 
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="topbar">
-    <a class="brand" href="/"> <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56"> <span>Relaxy!</span> </a>
-    <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
-    <div class="topbar-end">
-        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
-        </button>
-        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</header>
-
-<div aria-hidden="true" class="nav-drawer" id="navDrawer">
-    <div class="nav-drawer-overlay" id="navOverlay"></div>
-    <div class="nav-drawer-panel">
-        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
-        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
-    </div>
-</div>
-
-<section class="hero">
-    <p class="eyebrow">Thank you all</p>
-    <h1>Credits</h1>
-    <p class="tagline">Infinite gratitude to everyone on this page - the people who helped, supporters and donators. Plus there some of my links at the bottom.</p>
-</section>
-
-<main class="wrap" id="main">
-    <section class="card section reveal" id="patreon-supporters">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Supporters</p>
-            <h2 style="text-align:left">These people make Relaxy! work!</h2>
-            <p style="margin:0;max-width:none">Every supporter matters equally. Hover to see how they helped, or click to visit their preferred profile.</p>
-        </div>
-        <p class="tier-legend">
-            <span class="tier-key" data-tier="supporter">Supporters</span> <span class="tier-key" data-tier="previous">Previous supporters</span> <span class="tier-key"
-                                                                                                                                                        data-tier="donator">Donators</span>
-        </p>
-        <div class="supporter-grid">
-            <a class="supporter-chip" data-tier="supporter" href="https://www.youtube.com/c/FancyDev" rel="noopener" target="_blank">fancy<span class="chip-tier">Most generous supporter/donator</span></a>
-            <a class="supporter-chip" data-tier="supporter" href="https://steamcommunity.com/profiles/76561199170896820" rel="noopener" target="_blank">ikol.<span class="chip-tier">Generous previous supporter/donator</span></a>
-            <a class="supporter-chip" data-tier="supporter" href="https://www.discord.com" rel="noopener" target="_blank">thealteringcat<span class="chip-tier">Supporter</span></a> <a
-                class="supporter-chip" data-tier="supporter" href="https://www.youtube.com/channel/UCbhW-KFuHj-a1cFYA7Ntr4w" rel="noopener" target="_blank">koshkamatew<span
-                class="chip-tier">Supporter</span></a> <a class="supporter-chip" data-tier="supporter" href="https://steamcommunity.com/profiles/76561199367700318" rel="noopener" target="_blank">roystbit<span
-                class="chip-tier">Supporter</span></a>
-
-            <a class="supporter-chip" data-tier="previous" href="https://www.discord.com" rel="noopener" target="_blank">Чумачеча<span class="chip-tier">Previous</span></a> <a class="supporter-chip"
-                                                                                                                                                                                data-tier="previous"
-                                                                                                                                                                                href="https://www.discord.com"
-                                                                                                                                                                                rel="noopener"
-                                                                                                                                                                                target="_blank">sake<span
-                class="chip-tier">Previous</span></a> <a class="supporter-chip" data-tier="previous" href="https://www.discord.com" rel="noopener" target="_blank">holypenguin0<span class="chip-tier">Previous</span></a>
-            <a class="supporter-chip" data-tier="previous" href="https://steamcommunity.com/profiles/76561198084077535" rel="noopener" target="_blank">f34rmachinex<span
-                    class="chip-tier">Previous</span></a> <a class="supporter-chip" data-tier="previous" href="https://www.reddit.com/user/Simple_goat_999999/" rel="noopener" target="_blank">goaty_the_goat<span
-                class="chip-tier">Previous</span></a> <a class="supporter-chip" data-tier="previous" href="https://x.com/Shad0wlool94" rel="noopener" target="_blank">shad0w94<span class="chip-tier">Previous</span></a>
-            <a class="supporter-chip" data-tier="previous" href="https://www.discord.com" rel="noopener" target="_blank">pulk_<span class="chip-tier">Previous</span></a> <a class="supporter-chip"
-                                                                                                                                                                             data-tier="previous"
-                                                                                                                                                                             href="https://2021-johnsloan.wixsite.com/home"
-                                                                                                                                                                             rel="noopener"
-                                                                                                                                                                             target="_blank">oldmangamess<span
-                class="chip-tier">Previous</span></a> <a class="supporter-chip" data-tier="previous" href="https://www.discord.com" rel="noopener" target="_blank">ginger<span class="chip-tier">Previous</span></a>
-            <a class="supporter-chip" data-tier="donator" href="https://steamcommunity.com/profiles/76561199211891882" rel="noopener" target="_blank">snovay<span class="chip-tier">Donator</span></a>
-        </div>
-        <p class="centered-text" style="margin-top:var(--space-5)">
-            <a class="invite-button kofi-cta" href="https://ko-fi.com/mattfor" rel="noopener" style="font-size:1.1rem" target="_blank"><span class="kofi-cta-line">Want on this list?</span> <span
-                    class="kofi-cta-line">Support on Ko-fi! <span aria-hidden="true" class="kofi-heart">❤️</span></span></a>
-        </p>
-    </section>
-
-    <section class="card section reveal" data-reveal-delay="60" id="new-era">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Current era</p>
-            <h2 style="text-align:left">Requests since the true public 1.0.0 release</h2>
-        </div>
-        <ul class="request-list">
-            <li>Nothing here yet...</li>
-        </ul>
-    </section>
-
-    <section class="card section reveal" data-reveal-delay="60" id="new-era">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">New (but still old) era</p>
-            <h2 style="text-align:left">Requests since beta 1.0.0</h2>
-            <p style="margin:0">The public era features shaped by the community.</p>
-        </div>
-        <ul class="request-list">
-            <li><code>=sakify</code> <span>pulk_</span></li>
-            <li><code>More =ticketsystem customization</code> <span>edwardtheviking</span></li>
-        </ul>
-    </section>
-
-    <section class="card section reveal" data-reveal-delay="120" id="old-era">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Old era</p>
-            <h2 style="text-align:left">Requests before beta 1.0.0</h2>
-            <p style="margin:0">Public release - last private version: 12.0.1</p>
-        </div>
-        <ul class="request-list">
-            <li><code>=pskip</code> <span>Mened#5127</span></li>
-            <li><code>economy suite</code> <span>Baroncalledmetrashmaster#8408</span></li>
-            <li><code>=restrict</code> <span>TheTriforceofAwesomeness#3389</span></li>
-            <li><code>=censor, =autoban, =lockdown</code> <span>Maxel#1457</span></li>
-            <li><code>=image</code> <span>Cum#4869</span></li>
-            <li><code>=decimate, =dm</code> <span>bendy51743#4526</span></li>
-            <li><code>=8b</code> <span>Dante Sparda#7157</span></li>
-            <li><code>=execute</code> <span>Tea4_Jenkins#4071</span></li>
-            <li><code>=myman, =sus, =drip</code> <span>Onytx#6815</span></li>
-            <li><code>=delete, =shop, =preview, =buy</code> <span>Deppy#3350</span></li>
-            <li><code>! Furry ! shop title</code> <span>Duke#4614</span></li>
-            <li><code>More modlog customization</code> <span>Destiny#0701</span></li>
-        </ul>
-    </section>
-
-    <section class="card section reveal" data-reveal-delay="180" id="others">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Everyone else</p>
-            <h2 style="text-align:left">Others</h2>
-            <p style="margin:0">The people who gave Relaxy! its art, its rooms and its reason to keep going.</p>
-        </div>
-        <ul class="request-list">
-            <li><code>Femcy</code> <span>The images on the main page!</span></li>
-            <li><code>Light Nate</code> <span>Relaxy!'s banner, the page's footer image and other awesome art!</span></li>
-            <li><code>@lean.2</code> <span>Helping with heartboards</span></li>
-            <li><code>Fancy</code> <span>Giving Relaxy! a big server to expand on from</span></li>
-            <li><code>Everyone else</code> <span>For using Relaxy! on their server!!!</span></li>
-        </ul>
-    </section>
-
-    <section class="card section reveal" id="owner">
-        <div class="owner-grid">
-            <div class="owner-text">
-                <p class="eyebrow">Creator of Relaxy!</p>
-                <h2>MattFor's Information</h2>
-                <ul class="owner-links">
-                    <li>
-                        <a draggable="false" href="https://github.com/MattFor" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                            </svg>
-                            My GitHub</a>
-                    </li>
-                    <li>
-                        <a draggable="false" href="https://codeberg.org/MattFor" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"/>
-                            </svg>
-                            My Codeberg</a>
-                    </li>
-                    <li>
-                        <a draggable="false" href="https://codeberg.org/MattFor/relaxy-website" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"/>
-                            </svg>
-                            This page's source code</a>
-                    </li>
-                    <li>
-                        <a draggable="false" href="https://github.com/MattFor/relaxy-public" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                            </svg>
-                            Relaxy!'s public source (GitHub)</a>
-                    </li>
-                    <li>
-                        <a draggable="false" href="https://codeberg.org/MattFor/relaxy-public" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"/>
-                            </svg>
-                            Relaxy!'s public source (Codeberg)</a>
-                    </li>
-                    <li>
-                        <a draggable="false" href="https://github.com/MattFor/Relaxy-public-showcase" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                            </svg>
-                            Older public release (showcase)</a>
-                    </li>
-                    <li>
-                        <a draggable="false" href="https://steamcommunity.com/id/MattFor/" rel="noopener" target="_blank">
-                            <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
-                                <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/>
-                            </svg>
-                            My Steam profile</a>
-                    </li>
-                </ul>
-                <p class="owner-note">Note: Relaxy! is half open source - a good chunk of the code is public, the rest stays private. If you want to know more about any of it, just ask me.</p>
-                <address class="owner-contact">My email is: <a class="tag-item" draggable="false" href="mailto:mattfor@relaxy.xyz">
-                    <svg aria-hidden="true" class="inline-icon icon-mail" viewBox="0 0 24 24">
-                        <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                    mattfor@relaxy.xyz</a> <span aria-hidden="true" class="sep">·</span> <a class="tag-item" draggable="false" href="https://www.discord.gg/xRAGVePxk6" title="Join Relaxy!'s Requests"
-                                                                                            rel="noopener" target="_blank">
-                    <svg aria-hidden="true" class="inline-icon" viewBox="0 0 24 24">
-                        <path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
-                    </svg>
-                    <span class="sr-only">Discord:</span>mattfor</a>
-                </address>
-            </div>
-
-            <div class="owner-photo" id="ownerPhoto">
-                <button aria-label="Flip MattFor's photo" aria-pressed="false" class="owner-flip" draggable="false" type="button">
-                    <span class="owner-flip-inner">
-                        <img alt="MattFor's current profile picture" class="owner-face owner-front" decoding="async" draggable="false" height="640"
-                             src="https://cdn.relaxy.xyz/relaxy/website/img/people/owner7.webp" width="640">
-                        <img alt="A profile picture MattFor has used" class="owner-face owner-back" decoding="async" draggable="false" height="640" loading="lazy"
-                             src="https://cdn.relaxy.xyz/relaxy/website/img/people/owner1.webp" width="640">
-                    </span>
+        <header class="topbar">
+            <a class="brand" href="/">
+                <img
+                    draggable="false"
+                    alt=""
+                    decoding="async"
+                    height="56"
+                    src="https://cdn.relaxy.xyz/relaxy.webp"
+                    width="56"
+                />
+                <span>Relaxy!</span>
+            </a>
+            <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
+            <div class="topbar-end">
+                <button
+                    aria-pressed="false"
+                    class="theme-button"
+                    id="themeButton"
+                    onclick="toggleTheme()"
+                    type="button"
+                >
+                    Light Mode
                 </button>
-                <span aria-hidden="true" class="owner-hint" data-hover="Click to flip" data-touch="Tap to flip"></span>
+                <button
+                    aria-expanded="false"
+                    aria-label="Open navigation"
+                    class="nav-toggle"
+                    id="navToggle"
+                    type="button"
+                >
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </header>
+
+        <div aria-hidden="true" class="nav-drawer" id="navDrawer">
+            <div class="nav-drawer-overlay" id="navOverlay"></div>
+            <div class="nav-drawer-panel">
+                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">
+                    ✕
+                </button>
+                <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
             </div>
         </div>
-    </section>
-</main>
 
-<div id="subpages-bar"></div>
+        <section class="hero">
+            <p class="eyebrow">Thank you all</p>
+            <h1>Credits</h1>
+            <p class="tagline">
+                Infinite gratitude to everyone on this page - the people who helped, supporters and donators. Plus there
+                some of my links at the bottom.
+            </p>
+        </section>
 
-<aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
-    <div class="relaxy-coach-panel">
-        <span class="relaxy-coach-resize" aria-hidden="true"></span>
-        <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or <strong>double-click me</strong> to tuck me away.</p>
-        <div class="relaxy-coach-search">
-            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
-            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
-        </div>
-    </div>
-    <img draggable="false" class="relaxy-coach-avatar" alt="Relaxy!" title="Click to search Relaxy!'s commands - double-click to hide or show me" decoding="async" height="480" width="480"
-         src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
-</aside>
+        <main class="wrap" id="main">
+            <section class="card section reveal" id="patreon-supporters">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Supporters</p>
+                    <h2 style="text-align: left">These people make Relaxy! work!</h2>
+                    <p style="margin: 0; max-width: none">
+                        Every supporter matters equally. Hover to see how they helped, or click to visit their preferred
+                        profile.
+                    </p>
+                </div>
+                <p class="tier-legend">
+                    <span class="tier-key" data-tier="supporter">Supporters</span>
+                    <span class="tier-key" data-tier="previous">Previous supporters</span>
+                    <span class="tier-key" data-tier="donator">Donators</span>
+                </p>
+                <div class="supporter-grid">
+                    <a
+                        class="supporter-chip"
+                        data-tier="supporter"
+                        href="https://www.youtube.com/c/FancyDev"
+                        rel="noopener"
+                        target="_blank"
+                        >fancy<span class="chip-tier">Most generous supporter/donator</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="supporter"
+                        href="https://steamcommunity.com/profiles/76561199170896820"
+                        rel="noopener"
+                        target="_blank"
+                        >ikol.<span class="chip-tier">Generous previous supporter/donator</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="supporter"
+                        href="https://www.discord.com"
+                        rel="noopener"
+                        target="_blank"
+                        >thealteringcat<span class="chip-tier">Supporter</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="supporter"
+                        href="https://www.youtube.com/channel/UCbhW-KFuHj-a1cFYA7Ntr4w"
+                        rel="noopener"
+                        target="_blank"
+                        >koshkamatew<span class="chip-tier">Supporter</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="supporter"
+                        href="https://steamcommunity.com/profiles/76561199367700318"
+                        rel="noopener"
+                        target="_blank"
+                        >roystbit<span class="chip-tier">Supporter</span></a
+                    >
 
-<footer class="footer">
-    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" decoding="async" height="3072" loading="lazy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
-         width="2304">
-    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
-    <p class="footer-links">
-        <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot; <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot; <a
-            href="https://uptime.relaxy.xyz">Service uptime status</a>
-    </p>
-</footer>
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://www.discord.com"
+                        rel="noopener"
+                        target="_blank"
+                        >Чумачеча<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://www.discord.com"
+                        rel="noopener"
+                        target="_blank"
+                        >sake<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://www.discord.com"
+                        rel="noopener"
+                        target="_blank"
+                        >holypenguin0<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://steamcommunity.com/profiles/76561198084077535"
+                        rel="noopener"
+                        target="_blank"
+                        >f34rmachinex<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://www.reddit.com/user/Simple_goat_999999/"
+                        rel="noopener"
+                        target="_blank"
+                        >goaty_the_goat<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://x.com/Shad0wlool94"
+                        rel="noopener"
+                        target="_blank"
+                        >shad0w94<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://www.discord.com"
+                        rel="noopener"
+                        target="_blank"
+                        >pulk_<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://2021-johnsloan.wixsite.com/home"
+                        rel="noopener"
+                        target="_blank"
+                        >oldmangamess<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="previous"
+                        href="https://www.discord.com"
+                        rel="noopener"
+                        target="_blank"
+                        >ginger<span class="chip-tier">Previous</span></a
+                    >
+                    <a
+                        class="supporter-chip"
+                        data-tier="donator"
+                        href="https://steamcommunity.com/profiles/76561199211891882"
+                        rel="noopener"
+                        target="_blank"
+                        >snovay<span class="chip-tier">Donator</span></a
+                    >
+                </div>
+                <p class="centered-text" style="margin-top: var(--space-5)">
+                    <a
+                        class="invite-button kofi-cta"
+                        href="https://ko-fi.com/mattfor"
+                        rel="noopener"
+                        style="font-size: 1.1rem"
+                        target="_blank"
+                        ><span class="kofi-cta-line">Want on this list?</span>
+                        <span class="kofi-cta-line"
+                            >Support on Ko-fi! <span aria-hidden="true" class="kofi-heart">❤️</span></span
+                        ></a
+                    >
+                </p>
+            </section>
 
-<script defer src="/dist/js/main/subpagebar.js"></script>
-<script defer src="/dist/main.js"></script>
-<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
-<script defer src="/dist/js/main/enhance.js"></script>
-<script defer src="/dist/js/main/mobilenav.js"></script>
-<script defer src="/dist/js/main/art.js"></script>
-</body>
+            <section class="card section reveal" data-reveal-delay="60" id="new-era">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Current era</p>
+                    <h2 style="text-align: left">Requests since the true public 1.0.0 release</h2>
+                </div>
+                <ul class="request-list">
+                    <li>Nothing here yet...</li>
+                </ul>
+            </section>
 
+            <section class="card section reveal" data-reveal-delay="60" id="new-era">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">New (but still old) era</p>
+                    <h2 style="text-align: left">Requests since beta 1.0.0</h2>
+                    <p style="margin: 0">The public era features shaped by the community.</p>
+                </div>
+                <ul class="request-list">
+                    <li><code>=sakify</code> <span>pulk_</span></li>
+                    <li><code>More =ticketsystem customization</code> <span>edwardtheviking</span></li>
+                </ul>
+            </section>
+
+            <section class="card section reveal" data-reveal-delay="120" id="old-era">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Old era</p>
+                    <h2 style="text-align: left">Requests before beta 1.0.0</h2>
+                    <p style="margin: 0">Public release - last private version: 12.0.1</p>
+                </div>
+                <ul class="request-list">
+                    <li><code>=pskip</code> <span>Mened#5127</span></li>
+                    <li><code>economy suite</code> <span>Baroncalledmetrashmaster#8408</span></li>
+                    <li><code>=restrict</code> <span>TheTriforceofAwesomeness#3389</span></li>
+                    <li><code>=censor, =autoban, =lockdown</code> <span>Maxel#1457</span></li>
+                    <li><code>=image</code> <span>Cum#4869</span></li>
+                    <li><code>=decimate, =dm</code> <span>bendy51743#4526</span></li>
+                    <li><code>=8b</code> <span>Dante Sparda#7157</span></li>
+                    <li><code>=execute</code> <span>Tea4_Jenkins#4071</span></li>
+                    <li><code>=myman, =sus, =drip</code> <span>Onytx#6815</span></li>
+                    <li><code>=delete, =shop, =preview, =buy</code> <span>Deppy#3350</span></li>
+                    <li><code>! Furry ! shop title</code> <span>Duke#4614</span></li>
+                    <li><code>More modlog customization</code> <span>Destiny#0701</span></li>
+                </ul>
+            </section>
+
+            <section class="card section reveal" data-reveal-delay="180" id="others">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Everyone else</p>
+                    <h2 style="text-align: left">Others</h2>
+                    <p style="margin: 0">
+                        The people who gave Relaxy! its art, its rooms and its reason to keep going.
+                    </p>
+                </div>
+                <ul class="request-list">
+                    <li><code>Femcy</code> <span>The images on the main page!</span></li>
+                    <li>
+                        <code>Light Nate</code>
+                        <span>Relaxy!'s banner, the page's footer image and other awesome art!</span>
+                    </li>
+                    <li><code>@lean.2</code> <span>Helping with heartboards</span></li>
+                    <li><code>Fancy</code> <span>Giving Relaxy! a big server to expand on from</span></li>
+                    <li><code>Everyone else</code> <span>For using Relaxy! on their server!!!</span></li>
+                </ul>
+            </section>
+
+            <section class="card section reveal" id="owner">
+                <div class="owner-grid">
+                    <div class="owner-text">
+                        <p class="eyebrow">Creator of Relaxy!</p>
+                        <h2>MattFor's Information</h2>
+                        <ul class="owner-links">
+                            <li>
+                                <a draggable="false" href="https://github.com/MattFor" rel="noopener" target="_blank">
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                        />
+                                    </svg>
+                                    My GitHub</a
+                                >
+                            </li>
+                            <li>
+                                <a draggable="false" href="https://codeberg.org/MattFor" rel="noopener" target="_blank">
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"
+                                        />
+                                    </svg>
+                                    My Codeberg</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    draggable="false"
+                                    href="https://codeberg.org/MattFor/relaxy-website"
+                                    rel="noopener"
+                                    target="_blank"
+                                >
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"
+                                        />
+                                    </svg>
+                                    This page's source code</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    draggable="false"
+                                    href="https://github.com/MattFor/relaxy-public"
+                                    rel="noopener"
+                                    target="_blank"
+                                >
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                        />
+                                    </svg>
+                                    Relaxy!'s public source (GitHub)</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    draggable="false"
+                                    href="https://codeberg.org/MattFor/relaxy-public"
+                                    rel="noopener"
+                                    target="_blank"
+                                >
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"
+                                        />
+                                    </svg>
+                                    Relaxy!'s public source (Codeberg)</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    draggable="false"
+                                    href="https://github.com/MattFor/Relaxy-public-showcase"
+                                    rel="noopener"
+                                    target="_blank"
+                                >
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                        />
+                                    </svg>
+                                    Older public release (showcase)</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    draggable="false"
+                                    href="https://steamcommunity.com/id/MattFor/"
+                                    rel="noopener"
+                                    target="_blank"
+                                >
+                                    <svg aria-hidden="true" class="owner-icon" viewBox="0 0 24 24">
+                                        <path
+                                            d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"
+                                        />
+                                    </svg>
+                                    My Steam profile</a
+                                >
+                            </li>
+                        </ul>
+                        <p class="owner-note">
+                            Note: Relaxy! is half open source - a good chunk of the code is public, the rest stays
+                            private. If you want to know more about any of it, just ask me.
+                        </p>
+                        <address class="owner-contact">
+                            My email is:
+                            <a class="tag-item" draggable="false" href="mailto:mattfor@relaxy.xyz">
+                                <svg aria-hidden="true" class="inline-icon icon-mail" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+                                    />
+                                </svg>
+                                mattfor@relaxy.xyz</a
+                            >
+                            <span aria-hidden="true" class="sep">·</span>
+                            <a
+                                class="tag-item"
+                                draggable="false"
+                                href="https://www.discord.gg/xRAGVePxk6"
+                                title="Join Relaxy!'s Requests"
+                                rel="noopener"
+                                target="_blank"
+                            >
+                                <svg aria-hidden="true" class="inline-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"
+                                    />
+                                </svg>
+                                <span class="sr-only">Discord:</span>mattfor</a
+                            >
+                        </address>
+                    </div>
+
+                    <div class="owner-photo" id="ownerPhoto">
+                        <button
+                            aria-label="Flip MattFor's photo"
+                            aria-pressed="false"
+                            class="owner-flip"
+                            draggable="false"
+                            type="button"
+                        >
+                            <span class="owner-flip-inner">
+                                <img
+                                    alt="MattFor's current profile picture"
+                                    class="owner-face owner-front"
+                                    decoding="async"
+                                    draggable="false"
+                                    height="640"
+                                    src="https://cdn.relaxy.xyz/relaxy/website/img/people/owner7.webp"
+                                    width="640"
+                                />
+                                <img
+                                    alt="A profile picture MattFor has used"
+                                    class="owner-face owner-back"
+                                    decoding="async"
+                                    draggable="false"
+                                    height="640"
+                                    loading="lazy"
+                                    src="https://cdn.relaxy.xyz/relaxy/website/img/people/owner1.webp"
+                                    width="640"
+                                />
+                            </span>
+                        </button>
+                        <span
+                            aria-hidden="true"
+                            class="owner-hint"
+                            data-hover="Click to flip"
+                            data-touch="Tap to flip"
+                        ></span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="subpages-bar"></div>
+
+        <aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
+            <div class="relaxy-coach-panel">
+                <span class="relaxy-coach-resize" aria-hidden="true"></span>
+                <p class="relaxy-coach-hint">
+                    Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or
+                    <strong>double-click me</strong> to tuck me away.
+                </p>
+                <div class="relaxy-coach-search">
+                    <input
+                        class="relaxy-coach-input"
+                        type="text"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Search commands"
+                        placeholder="Type a command name to learn more about it..."
+                    />
+                    <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
+                </div>
+            </div>
+            <img
+                draggable="false"
+                class="relaxy-coach-avatar"
+                alt="Relaxy!"
+                title="Click to search Relaxy!'s commands - double-click to hide or show me"
+                decoding="async"
+                height="480"
+                width="480"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp"
+            />
+        </aside>
+
+        <footer class="footer">
+            <img
+                draggable="false"
+                alt=""
+                aria-hidden="true"
+                class="footer-relaxy"
+                decoding="async"
+                height="3072"
+                loading="lazy"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
+                width="2304"
+            />
+            <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+            <p class="footer-links">
+                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot;
+                <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
+                <a href="https://uptime.relaxy.xyz">Service uptime status</a>
+            </p>
+        </footer>
+
+        <script defer src="/dist/js/main/subpagebar.js"></script>
+        <script defer src="/dist/main.js"></script>
+        <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
+        <script defer src="/dist/js/main/enhance.js"></script>
+        <script defer src="/dist/js/main/mobilenav.js"></script>
+        <script defer src="/dist/js/main/art.js"></script>
+    </body>
 </html>

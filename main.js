@@ -3,34 +3,23 @@
  * @link https://codeberg.org/MattFor/relaxy-website
  */
 
-const syncThemeButton = () =>
-{
+const syncThemeButton = () => {
     const themeButton = document.getElementById('themeButton');
-    if (!themeButton)
-    {
+    if (!themeButton) {
         return;
     }
 
     const isLight = document.documentElement.classList.contains('light-mode');
 
-    themeButton.innerText = isLight
-        ? 'Dark Mode'
-        : 'Light Mode';
+    themeButton.innerText = isLight ? 'Dark Mode' : 'Light Mode';
     themeButton.setAttribute('aria-pressed', String(isLight));
 };
 
-const toggleTheme = () =>
-{
+const toggleTheme = () => {
     const isLight = document.documentElement.classList.toggle('light-mode');
-    try
-    {
-        localStorage.setItem('theme',
-            isLight
-                ? 'light'
-                : 'dark');
-    }
-    catch (e)
-    {
+    try {
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    } catch (e) {
         // Storage unavailable so theme won't persist
     }
 
@@ -50,13 +39,11 @@ let bgFxH = 0;
 
 const BG_FX_H_TOLERANCE = 200;
 
-const buildBackgroundFx = () =>
-{
+const buildBackgroundFx = () => {
     let fx = document.querySelector('.bg-fx');
     const isNew = !fx;
 
-    if (isNew)
-    {
+    if (isNew) {
         fx = document.createElement('div');
         fx.className = 'bg-fx';
         fx.setAttribute('aria-hidden', 'true');
@@ -67,8 +54,7 @@ const buildBackgroundFx = () =>
     const W = Math.max(320, Math.round(box.width) || window.innerWidth);
     const H = Math.max(320, Math.round(box.height) || window.innerHeight);
 
-    if (!isNew && W === bgFxW && Math.abs(H - bgFxH) <= BG_FX_H_TOLERANCE)
-    {
+    if (!isNew && W === bgFxW && Math.abs(H - bgFxH) <= BG_FX_H_TOLERANCE) {
         return;
     }
 
@@ -85,23 +71,17 @@ const buildBackgroundFx = () =>
     const cx = W / 2;
     const cy = H / 2;
     const edgeBias = (x, y) => Math.max(Math.abs(x - cx) / cx, Math.abs(y - cy) / cy);
-    const edgePoint = () =>
-    {
+    const edgePoint = () => {
         let x = clamp(snap(rnd(0, W)), 0, W);
         let y = clamp(snap(rnd(0, H)), 0, H);
-        for (let t = 0; t < 5; t++)
-        {
-            if (Math.random() <= edgeBias(x, y))
-            {
+        for (let t = 0; t < 5; t++) {
+            if (Math.random() <= edgeBias(x, y)) {
                 break;
             }
             x = clamp(snap(rnd(0, W)), 0, W);
             y = clamp(snap(rnd(0, H)), 0, H);
         }
-        return [
-            x,
-            y
-        ];
+        return [x, y];
     };
 
     const inset = Math.min(120, Math.round(Math.min(W, H) * 0.12));
@@ -110,60 +90,35 @@ const buildBackgroundFx = () =>
     const minY = inset;
     const maxY = H - inset;
 
-    const flowPoint = () => [
-        clamp(snap(rnd(minX, maxX)), minX, maxX),
-        clamp(snap(rnd(minY, maxY)), minY, maxY)
-    ];
+    const flowPoint = () => [clamp(snap(rnd(minX, maxX)), minX, maxX), clamp(snap(rnd(minY, maxY)), minY, maxY)];
 
-    const bounceTo = (v, len, lo, hi) =>
-    {
+    const bounceTo = (v, len, lo, hi) => {
         const forward = v + len;
-        return clamp(snap(forward < lo || forward > hi
-            ? v - len
-            : forward), lo, hi);
+        return clamp(snap(forward < lo || forward > hi ? v - len : forward), lo, hi);
     };
 
     const parts = [];
     const nodes = [];
     const flows = [];
 
-    const trace = (flow) =>
-    {
-        const start = flow
-            ? flowPoint()
-            : edgePoint();
+    const trace = (flow) => {
+        const start = flow ? flowPoint() : edgePoint();
         let x = start[0];
         let y = start[1];
         let d = 'M' + x + ' ' + y;
-        const segs = flow
-            ? rint(4, 7)
-            : rint(2, 4);
+        const segs = flow ? rint(4, 7) : rint(2, 4);
         let horiz = chance(0.5);
         let pathLen = 0;
-        for (let i = 0; i < segs; i++)
-        {
-            const span = horiz
-                ? maxX - minX
-                : maxY - minY;
-            const len = snap(flow
-                ? Math.min(rnd(160, 440), span)
-                : rnd(80, 300)) * (chance(0.5)
-                ? 1
-                : -1);
-            if (horiz)
-            {
-                const nx = flow
-                    ? bounceTo(x, len, minX, maxX)
-                    : clamp(x + len, 0, W);
+        for (let i = 0; i < segs; i++) {
+            const span = horiz ? maxX - minX : maxY - minY;
+            const len = snap(flow ? Math.min(rnd(160, 440), span) : rnd(80, 300)) * (chance(0.5) ? 1 : -1);
+            if (horiz) {
+                const nx = flow ? bounceTo(x, len, minX, maxX) : clamp(x + len, 0, W);
                 pathLen += Math.abs(nx - x);
                 x = nx;
                 d += ' H' + x;
-            }
-            else
-            {
-                const ny = flow
-                    ? bounceTo(y, len, minY, maxY)
-                    : clamp(y + len, 0, H);
+            } else {
+                const ny = flow ? bounceTo(y, len, minY, maxY) : clamp(y + len, 0, H);
                 pathLen += Math.abs(ny - y);
                 y = ny;
                 d += ' V' + y;
@@ -171,28 +126,25 @@ const buildBackgroundFx = () =>
             horiz = !horiz;
         }
 
-        const blue = chance(0.35)
-            ? ' b'
-            : '';
-        nodes.push([
-            x,
-            y,
-            blue
-        ]);
+        const blue = chance(0.35) ? ' b' : '';
+        nodes.push([x, y, blue]);
 
-        if (flow)
-        {
+        if (flow) {
             const dur = (7 + Math.random() * 9).toFixed(1);
             const del = (-Math.random() * 12).toFixed(1);
-            parts.push('<path class="bg-fx-flow' + blue + '" style="animation-duration:' + dur + 's;animation-delay:' + del + 's" d="' + d + '"/>');
-            flows.push([
-                d,
-                blue,
-                pathLen
-            ]);
-        }
-        else
-        {
+            parts.push(
+                '<path class="bg-fx-flow' +
+                    blue +
+                    '" style="animation-duration:' +
+                    dur +
+                    's;animation-delay:' +
+                    del +
+                    's" d="' +
+                    d +
+                    '"/>'
+            );
+            flows.push([d, blue, pathLen]);
+        } else {
             parts.push('<path class="bg-fx-trace' + blue + '" d="' + d + '"/>');
         }
     };
@@ -201,88 +153,92 @@ const buildBackgroundFx = () =>
 
     const TRACE = thin
         ? {
-            per: 90000,
-            min: 8,
-            max: 34
-        }
+              per: 90000,
+              min: 8,
+              max: 34
+          }
         : {
-            per: 34000,
-            min: 14,
-            max: 110
-        };
+              per: 34000,
+              min: 14,
+              max: 110
+          };
 
     const FLOW = thin
         ? {
-            per: 420000,
-            min: 2,
-            max: 6
-        }
+              per: 420000,
+              min: 2,
+              max: 6
+          }
         : {
-            per: 200000,
-            min: 3,
-            max: 20
-        };
+              per: 200000,
+              min: 3,
+              max: 20
+          };
 
     const PAD = thin
         ? {
-            per: 200000,
-            min: 2,
-            max: 5
-        }
+              per: 200000,
+              min: 2,
+              max: 5
+          }
         : {
-            per: 200000,
-            min: 4,
-            max: 18
-        };
+              per: 200000,
+              min: 4,
+              max: 18
+          };
 
     const area = W * H;
     const nTrace = clamp(Math.round(area / TRACE.per), TRACE.min, TRACE.max);
     const nFlow = clamp(Math.round(area / FLOW.per), FLOW.min, FLOW.max);
 
-    for (let i = 0; i < nTrace; i++)
-    {
+    for (let i = 0; i < nTrace; i++) {
         trace(false);
     }
-    for (let i = 0; i < nFlow; i++)
-    {
+    for (let i = 0; i < nFlow; i++) {
         trace(true);
     }
 
-    nodes.forEach((n) =>
-    {
+    nodes.forEach((n) => {
         parts.push('<circle class="bg-fx-node' + n[2] + '" cx="' + n[0] + '" cy="' + n[1] + '" r="3"/>');
     });
 
     const nPad = clamp(Math.round(area / PAD.per), PAD.min, PAD.max);
-    for (let i = 0; i < nPad; i++)
-    {
+    for (let i = 0; i < nPad; i++) {
         const n = nodes[rint(0, nodes.length - 1)];
-        if (!n)
-        {
+        if (!n) {
             break;
         }
 
         const dur = (2.6 + Math.random() * 2.6).toFixed(1);
         const del = (-Math.random() * 3).toFixed(1);
 
-        parts.push('<circle class="bg-fx-pad bg-fx-pulse' + n[2] + '" style="animation-duration:' + dur + 's;animation-delay:' + del + 's" cx="' + n[0] + '" cy="' + n[1] + '" r="6"/>');
+        parts.push(
+            '<circle class="bg-fx-pad bg-fx-pulse' +
+                n[2] +
+                '" style="animation-duration:' +
+                dur +
+                's;animation-delay:' +
+                del +
+                's" cx="' +
+                n[0] +
+                '" cy="' +
+                n[1] +
+                '" r="6"/>'
+        );
     }
 
-    if (!prefersReducedMotion() && !thin && flows.length)
-    {
+    if (!prefersReducedMotion() && !thin && flows.length) {
         const nRider = clamp(Math.round(nFlow * 0.35), 1, 3);
         const headR = 3.4;
         const tailR = 2.4;
         const spacing = 3.4;
         const trailPx = 230;
 
-        for (let i = 0; i < nRider; i++)
-        {
+        for (let i = 0; i < nRider; i++) {
             const f = flows[rint(0, flows.length - 1)];
             const len = f[2];
 
-            if (len < 80)
-            {
+            if (len < 80) {
                 continue;
             }
 
@@ -293,13 +249,23 @@ const buildBackgroundFx = () =>
             const step = (spacing / len) * parseFloat(dur);
 
             let g = '<g class="bg-fx-rider' + f[1] + '">';
-            for (let k = count - 1; k >= 0; k--)
-            {
+            for (let k = count - 1; k >= 0; k--) {
                 const r = (headR - (headR - tailR) * (k / (count - 1))).toFixed(2);
                 const op = (0.85 * Math.pow(1 - k / count, 1.15)).toFixed(3);
                 const begin = (base + k * step).toFixed(3);
 
-                g += '<circle r="' + r + '" fill="currentColor" opacity="' + op + '"><animateMotion dur="' + dur + 's" begin="' + begin + 's" repeatCount="indefinite" rotate="0" path="' + f[0] + '"/></circle>';
+                g +=
+                    '<circle r="' +
+                    r +
+                    '" fill="currentColor" opacity="' +
+                    op +
+                    '"><animateMotion dur="' +
+                    dur +
+                    's" begin="' +
+                    begin +
+                    's" repeatCount="indefinite" rotate="0" path="' +
+                    f[0] +
+                    '"/></circle>';
             }
 
             g += '</g>';
@@ -307,30 +273,41 @@ const buildBackgroundFx = () =>
         }
     }
 
-    fx.innerHTML = '<svg class="bg-fx-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"' + ' width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' + parts.join('') + '</svg>';
+    fx.innerHTML =
+        '<svg class="bg-fx-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"' +
+        ' width="' +
+        W +
+        '" height="' +
+        H +
+        '" viewBox="0 0 ' +
+        W +
+        ' ' +
+        H +
+        '">' +
+        parts.join('') +
+        '</svg>';
 };
 
-const playEgg = (el, anim) =>
-{
-    if (el.dataset.egging)
-    {
+const playEgg = (el, anim) => {
+    if (el.dataset.egging) {
         return;
     }
 
     el.dataset.egging = '1';
     el.classList.add(anim);
-    el.addEventListener('animationend', () =>
-    {
-        el.classList.remove(anim);
-        delete el.dataset.egging;
-    }, { once: true });
+    el.addEventListener(
+        'animationend',
+        () => {
+            el.classList.remove(anim);
+            delete el.dataset.egging;
+        },
+        { once: true }
+    );
 };
 
-const eggToast = (text) =>
-{
+const eggToast = (text) => {
     const previous = document.querySelector('.egg-toast');
-    if (previous)
-    {
+    if (previous) {
         previous.remove();
     }
 
@@ -341,21 +318,17 @@ const eggToast = (text) =>
     document.body.appendChild(toast);
 
     requestAnimationFrame(() => toast.classList.add('is-visible'));
-    window.setTimeout(() =>
-    {
+    window.setTimeout(() => {
         toast.classList.remove('is-visible');
         toast.addEventListener('transitionend', () => toast.remove(), { once: true });
     }, 2800);
 };
 
-const retire = (el, lifetimeMs, done) =>
-{
+const retire = (el, lifetimeMs, done) => {
     let gone = false;
 
-    const kill = () =>
-    {
-        if (gone)
-        {
+    const kill = () => {
+        if (gone) {
             return;
         }
 
@@ -363,8 +336,7 @@ const retire = (el, lifetimeMs, done) =>
         window.clearTimeout(timer);
         el.remove();
 
-        if (done)
-        {
+        if (done) {
             done();
         }
     };
@@ -376,24 +348,15 @@ const retire = (el, lifetimeMs, done) =>
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 
-const HEART_GLYPHS = [
-    '❤️',
-    '💖',
-    '💕',
-    '💗',
-    '💓',
-    '💘'
-];
+const HEART_GLYPHS = ['❤️', '💖', '💕', '💗', '💓', '💘'];
 
 const MAX_LIVE_HEARTS = 60;
 
 let heartLayer = null;
 let liveHearts = 0;
 
-const getHeartLayer = () =>
-{
-    if (!heartLayer || !heartLayer.isConnected)
-    {
+const getHeartLayer = () => {
+    if (!heartLayer || !heartLayer.isConnected) {
         heartLayer = document.createElement('div');
         heartLayer.className = 'egg-heart-layer';
         heartLayer.setAttribute('aria-hidden', 'true');
@@ -403,27 +366,21 @@ const getHeartLayer = () =>
     return heartLayer;
 };
 
-const heartBurst = (count) =>
-{
-    if (prefersReducedMotion())
-    {
+const heartBurst = (count) => {
+    if (prefersReducedMotion()) {
         return;
     }
 
-    const wanted = lowPower()
-        ? Math.ceil(count / 2)
-        : count;
+    const wanted = lowPower() ? Math.ceil(count / 2) : count;
     const n = Math.min(wanted, MAX_LIVE_HEARTS - liveHearts);
 
-    if (n < 1)
-    {
+    if (n < 1) {
         return;
     }
 
     const batch = document.createDocumentFragment();
 
-    for (let i = 0; i < n; i++)
-    {
+    for (let i = 0; i < n; i++) {
         const heart = document.createElement('span');
         heart.className = 'egg-heart';
         heart.textContent = pick(HEART_GLYPHS);
@@ -443,8 +400,7 @@ const heartBurst = (count) =>
         batch.appendChild(heart);
         liveHearts += 1;
 
-        retire(heart, (dur + delay) * 1000 + 400, () =>
-        {
+        retire(heart, (dur + delay) * 1000 + 400, () => {
             liveHearts -= 1;
         });
     }
@@ -452,16 +408,7 @@ const heartBurst = (count) =>
     getHeartLayer().appendChild(batch);
 };
 
-const CONFETTI_COLORS = [
-    '#ff69b4',
-    '#ff4069',
-    '#4a90e2',
-    '#ffe600',
-    '#38d430',
-    '#9b4dff',
-    '#00c2ff',
-    '#ff8a00'
-];
+const CONFETTI_COLORS = ['#ff69b4', '#ff4069', '#4a90e2', '#ffe600', '#38d430', '#9b4dff', '#00c2ff', '#ff8a00'];
 
 const MAX_LIVE_CONFETTI = 110;
 
@@ -469,25 +416,19 @@ let confettiLayer = null;
 let confettiTimer = 0;
 let liveConfetti = 0;
 
-const dropConfetti = (count) =>
-{
-    if (prefersReducedMotion())
-    {
+const dropConfetti = (count) => {
+    if (prefersReducedMotion()) {
         return;
     }
 
-    const wanted = lowPower()
-        ? Math.ceil(count / 2)
-        : count;
+    const wanted = lowPower() ? Math.ceil(count / 2) : count;
     const n = Math.min(wanted, MAX_LIVE_CONFETTI - liveConfetti);
 
-    if (n < 1)
-    {
+    if (n < 1) {
         return;
     }
 
-    if (!confettiLayer || !confettiLayer.isConnected)
-    {
+    if (!confettiLayer || !confettiLayer.isConnected) {
         confettiLayer = document.createElement('div');
         confettiLayer.className = 'egg-confetti';
         confettiLayer.setAttribute('aria-hidden', 'true');
@@ -496,8 +437,7 @@ const dropConfetti = (count) =>
 
     const batch = document.createDocumentFragment();
 
-    for (let i = 0; i < n; i++)
-    {
+    for (let i = 0; i < n; i++) {
         const bit = document.createElement('span');
 
         bit.className = 'egg-confetti-bit';
@@ -513,16 +453,14 @@ const dropConfetti = (count) =>
         bit.style.animationDuration = dur.toFixed(2) + 's';
         bit.style.animationDelay = delay.toFixed(2) + 's';
 
-        if (Math.random() < 0.35)
-        {
+        if (Math.random() < 0.35) {
             bit.style.borderRadius = '50%';
         }
 
         batch.appendChild(bit);
         liveConfetti += 1;
 
-        retire(bit, (dur + delay) * 1000 + 400, () =>
-        {
+        retire(bit, (dur + delay) * 1000 + 400, () => {
             liveConfetti -= 1;
         });
     }
@@ -532,27 +470,21 @@ const dropConfetti = (count) =>
 
 const confettiRunning = () => document.documentElement.classList.contains('party-mode');
 
-const startConfetti = () =>
-{
-    if (prefersReducedMotion() || confettiTimer || document.hidden)
-    {
+const startConfetti = () => {
+    if (prefersReducedMotion() || confettiTimer || document.hidden) {
         return;
     }
 
     dropConfetti(70);
 
-    confettiTimer = window.setInterval(() => dropConfetti(lowPower()
-        ? 8
-        : 16), 700);
+    confettiTimer = window.setInterval(() => dropConfetti(lowPower() ? 8 : 16), 700);
 };
 
-const stopConfetti = () =>
-{
+const stopConfetti = () => {
     window.clearInterval(confettiTimer);
     confettiTimer = 0;
 
-    if (confettiLayer)
-    {
+    if (confettiLayer) {
         confettiLayer.remove();
         confettiLayer = null;
     }
@@ -560,17 +492,14 @@ const stopConfetti = () =>
     liveConfetti = 0;
 };
 
-document.addEventListener('visibilitychange', () =>
-{
-    if (document.hidden)
-    {
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
         window.clearInterval(confettiTimer);
         confettiTimer = 0;
         return;
     }
 
-    if (confettiRunning())
-    {
+    if (confettiRunning()) {
         startConfetti();
     }
 });
@@ -590,24 +519,19 @@ const NO_DRAG_SELECTOR = [
     '.tag-item'
 ].join(', ');
 
-const disableGhostDrag = () =>
-{
+const disableGhostDrag = () => {
     document.querySelectorAll(NO_DRAG_SELECTOR).forEach((el) => el.setAttribute('draggable', 'false'));
 
-    document.addEventListener('dragstart', (e) =>
-    {
+    document.addEventListener('dragstart', (e) => {
         const el = e.target;
-        if (el && el.closest && el.closest(NO_DRAG_SELECTOR))
-        {
+        if (el && el.closest && el.closest(NO_DRAG_SELECTOR)) {
             e.preventDefault();
         }
     });
 };
 
-const attachKofi = () =>
-{
-    document.querySelectorAll('.kofi-button').forEach((button) =>
-    {
+const attachKofi = () => {
+    document.querySelectorAll('.kofi-button').forEach((button) => {
         button.addEventListener('click', () => heartBurst(12));
     });
 };
@@ -618,63 +542,47 @@ const OWNER_IMG_BASE = 'https://cdn.relaxy.xyz/relaxy/website/img/people/';
 const OWNER_IMG_COUNT = 17;
 const OWNER_CURRENT = 'owner7';
 
-const attachOwnerCard = () =>
-{
+const attachOwnerCard = () => {
     const photo = document.getElementById('ownerPhoto');
     const flip = photo && photo.querySelector('.owner-flip');
     const inner = flip && flip.querySelector('.owner-flip-inner');
     const front = flip && flip.querySelector('.owner-front');
     const back = flip && flip.querySelector('.owner-back');
 
-    if (!flip || !inner || !front || !back)
-    {
+    if (!flip || !inner || !front || !back) {
         return;
     }
 
     const urls = [];
-    for (let i = 1; i <= OWNER_IMG_COUNT; i++)
-    {
+    for (let i = 1; i <= OWNER_IMG_COUNT; i++) {
         urls.push(OWNER_IMG_BASE + 'owner' + i + '.webp');
     }
 
     let currentIndex = urls.indexOf(OWNER_IMG_BASE + OWNER_CURRENT + '.webp');
-    if (currentIndex < 0)
-    {
+    if (currentIndex < 0) {
         currentIndex = 0;
     }
 
     let bag = [];
 
-    const refill = () =>
-    {
+    const refill = () => {
         bag = urls.map((_, i) => i);
-        for (let i = bag.length - 1; i > 0; i--)
-        {
+        for (let i = bag.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [
-                bag[i],
-                bag[j]
-            ] = [
-                bag[j],
-                bag[i]
-            ];
+            [bag[i], bag[j]] = [bag[j], bag[i]];
         }
     };
 
-    const draw = (exclude) =>
-    {
-        if (!bag.length)
-        {
+    const draw = (exclude) => {
+        if (!bag.length) {
             refill();
         }
 
         let at = bag.findIndex((i) => i !== exclude);
-        if (at < 0)
-        {
+        if (at < 0) {
             refill();
             at = bag.findIndex((i) => i !== exclude);
-            if (at < 0)
-            {
+            if (at < 0) {
                 at = 0;
             }
         }
@@ -684,8 +592,7 @@ const attachOwnerCard = () =>
 
     refill();
     const usedAt = bag.indexOf(currentIndex);
-    if (usedAt >= 0)
-    {
+    if (usedAt >= 0) {
         bag.splice(usedAt, 1);
     }
 
@@ -698,10 +605,8 @@ const attachOwnerCard = () =>
     let flipped = false;
     let busy = false;
 
-    flip.addEventListener('click', () =>
-    {
-        if (busy)
-        {
+    flip.addEventListener('click', () => {
+        if (busy) {
             return;
         }
 
@@ -711,15 +616,11 @@ const attachOwnerCard = () =>
         flip.classList.toggle('is-flipped', flipped);
         flip.setAttribute('aria-pressed', String(flipped));
 
-        const shownIndex = flipped
-            ? backIndex
-            : frontIndex;
+        const shownIndex = flipped ? backIndex : frontIndex;
 
         let done = false;
-        const advance = () =>
-        {
-            if (done)
-            {
+        const advance = () => {
+            if (done) {
                 return;
             }
 
@@ -727,13 +628,10 @@ const attachOwnerCard = () =>
             inner.removeEventListener('transitionend', onEnd);
 
             const nextIndex = draw(shownIndex);
-            if (flipped)
-            {
+            if (flipped) {
                 frontIndex = nextIndex;
                 front.src = urls[nextIndex];
-            }
-            else
-            {
+            } else {
                 backIndex = nextIndex;
                 back.src = urls[nextIndex];
             }
@@ -741,10 +639,8 @@ const attachOwnerCard = () =>
             busy = false;
         };
 
-        const onEnd = (e) =>
-        {
-            if (e.target === inner && e.propertyName === 'transform')
-            {
+        const onEnd = (e) => {
+            if (e.target === inner && e.propertyName === 'transform') {
                 advance();
             }
         };
@@ -753,13 +649,11 @@ const attachOwnerCard = () =>
         window.setTimeout(advance, 600);
     });
 
-    if (prefersReducedMotion() || !canHover())
-    {
+    if (prefersReducedMotion() || !canHover()) {
         return;
     }
 
-    photo.addEventListener('pointermove', (e) =>
-    {
+    photo.addEventListener('pointermove', (e) => {
         const box = photo.getBoundingClientRect();
         const nx = (e.clientX - box.left) / box.width - 0.5;
         const ny = (e.clientY - box.top) / box.height - 0.5;
@@ -768,33 +662,24 @@ const attachOwnerCard = () =>
         flip.style.setProperty('--rx', (-ny * OWNER_TILT_DEG).toFixed(2) + 'deg');
     });
 
-    photo.addEventListener('pointerleave', () =>
-    {
+    photo.addEventListener('pointerleave', () => {
         flip.style.removeProperty('--rx');
         flip.style.removeProperty('--ry');
     });
 };
 
-const attachEggs = () =>
-{
-    const anims = [
-        'egg-spin',
-        'egg-wobble',
-        'egg-jump'
-    ];
+const attachEggs = () => {
+    const anims = ['egg-spin', 'egg-wobble', 'egg-jump'];
 
     const targets = document.querySelectorAll('.hero-logo, .footer-relaxy, .patreon-image, .eng-icon');
-    targets.forEach((el) =>
-    {
+    targets.forEach((el) => {
         let clicks = 0;
         el.style.cursor = 'pointer';
-        el.addEventListener('click', () =>
-        {
+        el.addEventListener('click', () => {
             clicks += 1;
 
             // Every fifth poke escalates from a nudge into a full barrel roll :D
-            if (clicks % 5 === 0)
-            {
+            if (clicks % 5 === 0) {
                 playEgg(el, 'egg-roll');
                 return;
             }
@@ -819,91 +704,73 @@ const KONAMI = [
 
 const LOVE_WORDS = [
     {
-        word:     'iloverelaxy',
-        hearts:   46,
+        word: 'iloverelaxy',
+        hearts: 46,
         confetti: true,
-        toast:    'Relaxy! loves you MORE. 💞'
+        toast: 'Relaxy! loves you MORE. 💞'
     },
     {
-        word:     'iloveyou',
-        hearts:   46,
+        word: 'iloveyou',
+        hearts: 46,
         confetti: true,
-        toast:    'Relaxy! loves you MORE. 💞'
+        toast: 'Relaxy! loves you MORE. 💞'
     },
     {
-        word:     'relaxy',
-        hearts:   20,
+        word: 'relaxy',
+        hearts: 20,
         confetti: false,
-        toast:    'Relaxy! loves you too.'
+        toast: 'Relaxy! loves you too.'
     },
     {
-        word:     'love',
-        hearts:   10,
+        word: 'love',
+        hearts: 10,
         confetti: false,
-        toast:    'Aww. Love you too. 💗'
+        toast: 'Aww. Love you too. 💗'
     }
 ];
 
 const LOVE_SETTLE_MS = 500;
 
-const attachKeyboardEggs = () =>
-{
+const attachKeyboardEggs = () => {
     let konamiAt = 0;
     let typed = '';
     let settleTimer = 0;
 
-    document.addEventListener('keydown', (e) =>
-    {
+    document.addEventListener('keydown', (e) => {
         const tag = e.target.tagName;
-        if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable)
-        {
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) {
             return;
         }
 
-        const key = e.key.length === 1
-            ? e.key.toLowerCase()
-            : e.key;
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
 
-        konamiAt = key === KONAMI[konamiAt]
-            ? konamiAt + 1
-            : (key === KONAMI[0]
-                ? 1
-                : 0);
+        konamiAt = key === KONAMI[konamiAt] ? konamiAt + 1 : key === KONAMI[0] ? 1 : 0;
 
-        if (konamiAt === KONAMI.length)
-        {
+        if (konamiAt === KONAMI.length) {
             konamiAt = 0;
 
             const on = document.documentElement.classList.toggle('party-mode');
-            if (on)
-            {
+            if (on) {
                 startConfetti();
-            }
-            else
-            {
+            } else {
                 stopConfetti();
             }
 
-            eggToast(on
-                ? 'Party mode! Relaxy! is dancing.'
-                : 'Party over. Back to work.');
+            eggToast(on ? 'Party mode! Relaxy! is dancing.' : 'Party over. Back to work.');
 
             return;
         }
 
-        if (e.key.length !== 1)
-        {
+        if (e.key.length !== 1) {
             return;
         }
 
         typed = (typed + key).slice(-16);
 
         window.clearTimeout(settleTimer);
-        settleTimer = window.setTimeout(() =>
-        {
+        settleTimer = window.setTimeout(() => {
             const hit = LOVE_WORDS.find((entry) => typed.endsWith(entry.word));
-            if (!hit)
-            {
+            if (!hit) {
                 return;
             }
 
@@ -912,14 +779,12 @@ const attachKeyboardEggs = () =>
             heartBurst(hit.hearts);
             eggToast(hit.toast);
 
-            if (hit.confetti)
-            {
+            if (hit.confetti) {
                 dropConfetti(80);
             }
 
             const mascot = document.querySelector('.hero-logo') || document.querySelector('.relaxy-coach-avatar');
-            if (mascot)
-            {
+            if (mascot) {
                 playEgg(mascot, 'egg-jump');
             }
         }, LOVE_SETTLE_MS);
@@ -929,17 +794,13 @@ const attachKeyboardEggs = () =>
 const BUTTON_TILT_DEG = 13;
 const BUTTON_PULL_PX = 7;
 
-const attachButtonMagnet = () =>
-{
-    if (prefersReducedMotion() || !canHover())
-    {
+const attachButtonMagnet = () => {
+    if (prefersReducedMotion() || !canHover()) {
         return;
     }
 
-    document.querySelectorAll('.button-secondary').forEach((button) =>
-    {
-        button.addEventListener('pointermove', (e) =>
-        {
+    document.querySelectorAll('.button-secondary').forEach((button) => {
+        button.addEventListener('pointermove', (e) => {
             const box = button.getBoundingClientRect();
             const nx = (e.clientX - box.left) / box.width - 0.5;
             const ny = (e.clientY - box.top) / box.height - 0.5;
@@ -950,186 +811,150 @@ const attachButtonMagnet = () =>
             button.style.setProperty('--ty', (ny * BUTTON_PULL_PX).toFixed(2) + 'px');
         });
 
-        button.addEventListener('pointerleave', () =>
-        {
-            [
-                '--rx',
-                '--ry',
-                '--tx',
-                '--ty'
-            ].forEach((prop) => button.style.removeProperty(prop));
+        button.addEventListener('pointerleave', () => {
+            ['--rx', '--ry', '--tx', '--ty'].forEach((prop) => button.style.removeProperty(prop));
         });
     });
 };
 
-const greetTheCurious = () =>
-{
-    if (!window.console || !console.log)
-    {
+const greetTheCurious = () => {
+    if (!window.console || !console.log) {
         return;
     }
 
-    console.log('%c ___     _               _ \n| _ \\___| |__ ___ ___  _| |\n|   / -_) / _` \\ \\ / || |_|\n|_|_\\___|_\\__,_/_\\_\\\\_, (_)\n                    |__/   ', 'color:#ff69b4;font-weight:700');
-    console.log('%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website\nMaybe there are some more eggs here to find....', 'color:#4a90e2');
+    console.log(
+        '%c ___     _               _ \n| _ \\___| |__ ___ ___  _| |\n|   / -_) / _` \\ \\ / || |_|\n|_|_\\___|_\\__,_/_\\_\\\\_, (_)\n                    |__/   ',
+        'color:#ff69b4;font-weight:700'
+    );
+    console.log(
+        '%cPoking around? Good. It is all open source: https://codeberg.org/MattFor/relaxy-website\nMaybe there are some more eggs here to find....',
+        'color:#4a90e2'
+    );
 };
 
-const fmtUptime = (seconds) =>
-{
+const fmtUptime = (seconds) => {
     const s = Math.max(0, Math.floor(seconds));
     const d = Math.floor(s / 86400);
     const h = Math.floor((s % 86400) / 3600);
     const m = Math.floor((s % 3600) / 60);
 
-    if (d > 0)
-    {
+    if (d > 0) {
         return d + 'd ' + h + 'h';
     }
 
-    return h > 0
-        ? h + 'h ' + m + 'm'
-        : m + 'm';
+    return h > 0 ? h + 'h ' + m + 'm' : m + 'm';
 };
 
 const piFields = {
-    os:     (d) => d.os,
+    os: (d) => d.os,
     kernel: (d) => d.kernel,
-    arch:   (d) => d.arch,
-    cores:  (d) => (d.cpu && d.cpu.cores != null
-        ? d.cpu.cores + ' cores'
-        : null),
-    load:   (d) => (d.cpu && typeof d.cpu.load === 'number'
-        ? d.cpu.load.toFixed(0) + '%'
-        : null),
-    mem:    (d) => (d.memory && d.memory.usedGb != null && d.memory.totalGb != null
-        ? d.memory.usedGb + ' / ' + d.memory.totalGb + ' GB'
-        : null),
-    uptime: (d) => (typeof d.uptimeSeconds === 'number'
-        ? fmtUptime(d.uptimeSeconds)
-        : null),
-    temp:   (d) => (typeof d.temperatureC === 'number'
-        ? d.temperatureC.toFixed(1) + ' °C'
-        : null),
+    arch: (d) => d.arch,
+    cores: (d) => (d.cpu && d.cpu.cores != null ? d.cpu.cores + ' cores' : null),
+    load: (d) => (d.cpu && typeof d.cpu.load === 'number' ? d.cpu.load.toFixed(0) + '%' : null),
+    mem: (d) =>
+        d.memory && d.memory.usedGb != null && d.memory.totalGb != null
+            ? d.memory.usedGb + ' / ' + d.memory.totalGb + ' GB'
+            : null,
+    uptime: (d) => (typeof d.uptimeSeconds === 'number' ? fmtUptime(d.uptimeSeconds) : null),
+    temp: (d) => (typeof d.temperatureC === 'number' ? d.temperatureC.toFixed(1) + ' °C' : null),
 
-    botHost: (d) =>
-             {
-                 if (!d.bot)
-                 {
-                     return 'Unknown';
-                 }
+    botHost: (d) => {
+        if (!d.bot) {
+            return 'Unknown';
+        }
 
-                 if (!d.bot.online || !d.bot.primary)
-                 {
-                     return 'Offline';
-                 }
+        if (!d.bot.online || !d.bot.primary) {
+            return 'Offline';
+        }
 
-                 return d.bot.hostCount > 1
-                     ? d.bot.primary + ' (+' + (d.bot.hostCount - 1) + ' more)'
-                     : d.bot.primary;
-             },
+        return d.bot.hostCount > 1 ? d.bot.primary + ' (+' + (d.bot.hostCount - 1) + ' more)' : d.bot.primary;
+    },
 
-    botGuilds: (d) => (d.bot && d.bot.online && typeof d.bot.totalGuilds === 'number'
-        ? d.bot.totalGuilds.toLocaleString()
-        : '-'),
+    botGuilds: (d) =>
+        d.bot && d.bot.online && typeof d.bot.totalGuilds === 'number' ? d.bot.totalGuilds.toLocaleString() : '-',
 
-    botClusters: (d) => (d.bot && d.bot.online && typeof d.bot.totalClusters === 'number'
-        ? String(d.bot.totalClusters) + (d.bot.totalShards
-        ? ' (' + d.bot.totalShards + ' shards)'
-        : '')
-        : '-'),
+    botClusters: (d) =>
+        d.bot && d.bot.online && typeof d.bot.totalClusters === 'number'
+            ? String(d.bot.totalClusters) + (d.bot.totalShards ? ' (' + d.bot.totalShards + ' shards)' : '')
+            : '-',
 
-    botPlayers: (d) => (d.bot && d.bot.online && typeof d.bot.totalPlayers === 'number'
-        ? String(d.bot.totalPlayers)
-        : '-')
+    botPlayers: (d) =>
+        d.bot && d.bot.online && typeof d.bot.totalPlayers === 'number' ? String(d.bot.totalPlayers) : '-'
 };
 
-const loadPiStats = () =>
-{
+const loadPiStats = () => {
     const card = document.getElementById('hostMachine');
-    if (!card || !('fetch' in window))
-    {
+    if (!card || !('fetch' in window)) {
         return;
     }
 
     fetch('/status.json', { cache: 'no-store' })
-        .then((res) => (res.ok
-            ? res.json()
-            : Promise.reject(res.status)))
-        .then((data) =>
-        {
-            Object.keys(piFields).forEach((key) =>
-            {
+        .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+        .then((data) => {
+            Object.keys(piFields).forEach((key) => {
                 const cell = card.querySelector('[data-pi="' + key + '"]');
                 const value = piFields[key](data);
-                if (cell && value != null && value !== '')
-                {
+                if (cell && value != null && value !== '') {
                     cell.textContent = value;
                 }
             });
 
             card.classList.add('is-live');
         })
-        .catch(() =>
-        {
+        .catch(() => {
             // Feed is down
         });
 };
 
 const SERVICE_STATE = {
-    true:    {
-        css:   'is-up',
+    true: {
+        css: 'is-up',
         label: 'All is good'
     },
-    false:   {
-        css:   'is-down',
+    false: {
+        css: 'is-down',
         label: 'Offline'
     },
     unknown: {
-        css:   'is-unknown',
+        css: 'is-unknown',
         label: 'Unknown?'
     }
 };
 
 const NODE_STATE = {
-    true:    {
-        css:   '',
+    true: {
+        css: '',
         label: 'online!'
     },
-    false:   {
-        css:   'is-down',
+    false: {
+        css: 'is-down',
         label: 'offline!'
     },
     unknown: {
-        css:   'is-unknown',
+        css: 'is-unknown',
         label: 'unknown'
     }
 };
 
-const paintNodeCards = (services) =>
-{
+const paintNodeCards = (services) => {
     const byKey = {};
-    services.forEach((service) =>
-    {
+    services.forEach((service) => {
         byKey[service.key] = service;
     });
 
-    document.querySelectorAll('.node-card[data-health]').forEach((card) =>
-    {
+    document.querySelectorAll('.node-card[data-health]').forEach((card) => {
         const service = byKey[card.dataset.health];
         const badge = card.querySelector('.node-online');
 
-        if (!service || !badge)
-        {
+        if (!service || !badge) {
             return;
         }
 
-        const state = NODE_STATE[service.online === null
-            ? 'unknown'
-            : String(service.online)];
+        const state = NODE_STATE[service.online === null ? 'unknown' : String(service.online)];
 
         badge.classList.remove('is-down', 'is-unknown');
 
-        if (state.css)
-        {
+        if (state.css) {
             badge.classList.add(state.css);
         }
 
@@ -1139,52 +964,54 @@ const paintNodeCards = (services) =>
     });
 };
 
-const loadServiceHealth = () =>
-{
+const loadServiceHealth = () => {
     const grid = document.getElementById('service-health');
     const cards = document.querySelectorAll('.node-card[data-health]');
 
-    if ((!grid && !cards.length) || !('fetch' in window))
-    {
+    if ((!grid && !cards.length) || !('fetch' in window)) {
         return;
     }
 
     fetch('/health.json', { cache: 'no-store' })
-        .then((res) => (res.ok
-            ? res.json()
-            : Promise.reject(res.status)))
-        .then((data) =>
-        {
+        .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+        .then((data) => {
             const services = data.services || [];
 
-            if (!services.length)
-            {
+            if (!services.length) {
                 return;
             }
 
             paintNodeCards(services);
 
-            if (!grid)
-            {
+            if (!grid) {
                 return;
             }
 
-            const escape = (value) => String(value)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const escape = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-            grid.innerHTML = services.map((service) =>
-            {
-                const state = SERVICE_STATE[service.online === null
-                    ? 'unknown'
-                    : String(service.online)];
+            grid.innerHTML = services
+                .map((service) => {
+                    const state = SERVICE_STATE[service.online === null ? 'unknown' : String(service.online)];
 
-                return '<div class="svc-card ' + state.css + '">' + '<span class="svc-dot" aria-hidden="true"></span>' + '<span class="svc-name">' + escape(service.name) + '</span>' + '<span class="svc-state">' + state.label + '</span>' + '</div>';
-            }).join('');
+                    return (
+                        '<div class="svc-card ' +
+                        state.css +
+                        '">' +
+                        '<span class="svc-dot" aria-hidden="true"></span>' +
+                        '<span class="svc-name">' +
+                        escape(service.name) +
+                        '</span>' +
+                        '<span class="svc-state">' +
+                        state.label +
+                        '</span>' +
+                        '</div>'
+                    );
+                })
+                .join('');
 
             const stamp = document.getElementById('service-health-stamp');
 
-            if (stamp)
-            {
+            if (stamp) {
                 const total = services.length;
                 const up = services.filter((service) => service.online === true).length;
                 const down = services.filter((service) => service.online === false).length;
@@ -1193,29 +1020,21 @@ const loadServiceHealth = () =>
                 let verdict;
                 let tone;
 
-                if (down)
-                {
+                if (down) {
                     verdict = down + ' of ' + total + ' services offline';
                     tone = 'is-down';
-                }
-                else if (unreadable === total)
-                {
+                } else if (unreadable === total) {
                     verdict = 'No service could be reached for a reading';
                     tone = '';
-                }
-                else if (unreadable)
-                {
+                } else if (unreadable) {
                     verdict = up + ' of ' + total + ' services online';
                     tone = '';
-                }
-                else
-                {
+                } else {
                     verdict = 'All ' + total + ' services online';
                     tone = 'is-ok';
                 }
 
-                if (unreadable && unreadable !== total)
-                {
+                if (unreadable && unreadable !== total) {
                     verdict += ', ' + unreadable + ' with no reading';
                 }
 
@@ -1223,29 +1042,25 @@ const loadServiceHealth = () =>
 
                 stamp.classList.remove('is-ok', 'is-down');
 
-                if (tone)
-                {
+                if (tone) {
                     stamp.classList.add(tone);
                 }
             }
 
             const block = document.getElementById('services-block') || grid.closest('section');
 
-            if (block)
-            {
+            if (block) {
                 block.hidden = false;
             }
         })
-        .catch(() =>
-        {
+        .catch(() => {
             // Feed is down
         });
 };
 
 window.toggleTheme = toggleTheme;
 
-const initPage = () =>
-{
+const initPage = () => {
     syncThemeButton();
     buildBackgroundFx();
     disableGhostDrag();
@@ -1258,28 +1073,22 @@ const initPage = () =>
     loadPiStats();
     loadServiceHealth();
 
-    if (document.getElementById('service-health'))
-    {
+    if (document.getElementById('service-health')) {
         window.setInterval(loadServiceHealth, 60000);
     }
 };
 
-if (document.readyState === 'loading')
-{
+if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initPage);
-}
-else
-{
+} else {
     initPage();
 }
 
 let bgFxTimer;
 let bgFxLastW = window.innerWidth;
 
-window.addEventListener('resize', () =>
-{
-    if (window.innerWidth === bgFxLastW)
-    {
+window.addEventListener('resize', () => {
+    if (window.innerWidth === bgFxLastW) {
         return;
     }
 

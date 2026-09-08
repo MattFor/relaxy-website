@@ -1,153 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Relaxy! CDN - Self-Hosted Content Delivery Network</title>
-    <script>document.documentElement.classList.add('js');
-    try
-    {
-        if (localStorage.getItem('theme') === 'light')
-        {
-            document.documentElement.classList.add('light-mode');
-        }
-    }
-    catch (e)
-    {
-    }</script>
-    <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect">
-    <link href="https://cdn.relaxy.xyz" rel="dns-prefetch">
-    <link href="/dist/main.css" rel="stylesheet">
-    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
-    <meta content="#ff69b4" name="theme-color">
-    <meta content="MattFor" name="author">
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
-    <meta content="The self-hosted Relaxy! content delivery network at cdn.relaxy.xyz - every image, asset and file the bot and site use, served straight off a Raspberry Pi." name="description">
-    <meta content="self-hosted cdn, raspberry pi cdn, content delivery network, cdn.relaxy.xyz" name="keywords">
-    <link href="https://www.relaxy.xyz/subpages/cdn" rel="canonical">
-    <meta content="website" property="og:type">
-    <meta content="https://www.relaxy.xyz/subpages/cdn" property="og:url">
-    <meta content="Relaxy! CDN - Self-Hosted Content Delivery Network" property="og:title">
-    <meta content="A self-run CDN serving every asset for the bot and site, straight off the Pi." property="og:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image">
-    <meta content="Relaxy!" property="og:site_name">
-    <meta content="en_US" property="og:locale">
-    <meta content="600" property="og:image:width">
-    <meta content="600" property="og:image:height">
-    <meta content="Relaxy! the Discord bot mascot" property="og:image:alt">
-    <meta content="summary" name="twitter:card">
-    <meta content="Relaxy! CDN - Self-Hosted Content Delivery Network" name="twitter:title">
-    <meta content="The self-hosted Relaxy! content delivery network at cdn.relaxy.xyz - every image, asset and file the bot and site use, served straight off a Raspberry Pi."
-          name="twitter:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image">
-    <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt">
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "WebPage",
-                    "@id": "https://www.relaxy.xyz/subpages/cdn",
-                    "url": "https://www.relaxy.xyz/subpages/cdn",
-                    "name": "Relaxy! CDN - Self-Hosted Content Delivery Network",
-                    "description": "The self-hosted Relaxy! content delivery network at cdn.relaxy.xyz - every image, asset and file the bot and site use, served straight off a Raspberry Pi.",
-                    "isPartOf": {
-                        "@id": "https://www.relaxy.xyz/#website"
-                    },
-                    "primaryImageOfPage": {
-                        "@type": "ImageObject",
-                        "url": "https://cdn.relaxy.xyz/relaxy.webp",
-                        "width": 600,
-                        "height": 600
-                    },
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": "Relaxy!",
-                            "item": "https://www.relaxy.xyz/"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 2,
-                            "name": "Content Delivery Network",
-                            "item": "https://www.relaxy.xyz/subpages/cdn"
-                        }
-                    ]
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Relaxy! CDN - Self-Hosted Content Delivery Network</title>
+        <script>
+            document.documentElement.classList.add('js');
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('light-mode');
                 }
-            ]
-        }
-    </script>
-</head>
+            } catch (e) {}
+        </script>
+        <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect" />
+        <link href="https://cdn.relaxy.xyz" rel="dns-prefetch" />
+        <link href="/dist/main.css" rel="stylesheet" />
+        <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon" />
+        <meta content="#ff69b4" name="theme-color" />
+        <meta content="MattFor" name="author" />
+        <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots" />
+        <meta
+            content="The self-hosted Relaxy! content delivery network at cdn.relaxy.xyz - every image, asset and file the bot and site use, served straight off a Raspberry Pi."
+            name="description"
+        />
+        <meta content="self-hosted cdn, raspberry pi cdn, content delivery network, cdn.relaxy.xyz" name="keywords" />
+        <link href="https://www.relaxy.xyz/subpages/cdn" rel="canonical" />
+        <meta content="website" property="og:type" />
+        <meta content="https://www.relaxy.xyz/subpages/cdn" property="og:url" />
+        <meta content="Relaxy! CDN - Self-Hosted Content Delivery Network" property="og:title" />
+        <meta
+            content="A self-run CDN serving every asset for the bot and site, straight off the Pi."
+            property="og:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image" />
+        <meta content="Relaxy!" property="og:site_name" />
+        <meta content="en_US" property="og:locale" />
+        <meta content="600" property="og:image:width" />
+        <meta content="600" property="og:image:height" />
+        <meta content="Relaxy! the Discord bot mascot" property="og:image:alt" />
+        <meta content="summary" name="twitter:card" />
+        <meta content="Relaxy! CDN - Self-Hosted Content Delivery Network" name="twitter:title" />
+        <meta
+            content="The self-hosted Relaxy! content delivery network at cdn.relaxy.xyz - every image, asset and file the bot and site use, served straight off a Raspberry Pi."
+            name="twitter:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image" />
+        <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt" />
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "WebPage",
+                        "@id": "https://www.relaxy.xyz/subpages/cdn",
+                        "url": "https://www.relaxy.xyz/subpages/cdn",
+                        "name": "Relaxy! CDN - Self-Hosted Content Delivery Network",
+                        "description": "The self-hosted Relaxy! content delivery network at cdn.relaxy.xyz - every image, asset and file the bot and site use, served straight off a Raspberry Pi.",
+                        "isPartOf": {
+                            "@id": "https://www.relaxy.xyz/#website"
+                        },
+                        "primaryImageOfPage": {
+                            "@type": "ImageObject",
+                            "url": "https://cdn.relaxy.xyz/relaxy.webp",
+                            "width": 600,
+                            "height": 600
+                        },
+                        "inLanguage": "en"
+                    },
+                    {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "name": "Relaxy!",
+                                "item": "https://www.relaxy.xyz/"
+                            },
+                            {
+                                "@type": "ListItem",
+                                "position": 2,
+                                "name": "Content Delivery Network",
+                                "item": "https://www.relaxy.xyz/subpages/cdn"
+                            }
+                        ]
+                    }
+                ]
+            }
+        </script>
+    </head>
 
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="topbar">
-    <a class="brand" href="/"> <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56"> <span>Relaxy!</span> </a>
-    <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
-    <div class="topbar-end">
-        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
-        </button>
-        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</header>
-
-<div aria-hidden="true" class="nav-drawer" id="navDrawer">
-    <div class="nav-drawer-overlay" id="navOverlay"></div>
-    <div class="nav-drawer-panel">
-        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
-        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
-    </div>
-</div>
-
-<section class="hero">
-    <p class="eyebrow">Self-hosted assets</p>
-    <h1>The Relaxy! CDN</h1>
-    <p class="tagline">Every image, asset and file the bot and this site use is served from here. A content delivery network I also host myself. And if you'd want me to host your important file, then
-        feel free to ask :)</p>
-    <a class="invite-button" href="https://cdn.relaxy.xyz" rel="noopener" target="_blank">Browse the CDN</a>
-    <p class="byline">Base URL: <code>https://cdn.relaxy.xyz</code></p>
-</section>
-
-<main class="wrap" id="main">
-    <section class="card section">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">What it serves</p>
-            <h2 style="text-align:left">A single place for every static asset</h2>
-            <p style="margin:0;max-width:none">Instead of polluting all of my projects with the dreaded assets/ folder I wanted a simple way to have everything in once place (with static internet
-                links!).</p>
-        </div>
-        <div class="eng-grid">
-            <div class="host-card">
-                <h3>Website assets</h3>
-                <p>The mascot art, icons, social images and Markdown content for this very site are all grouped under <code>/relaxy/website</code>.</p>
+        <header class="topbar">
+            <a class="brand" href="/">
+                <img
+                    draggable="false"
+                    alt=""
+                    decoding="async"
+                    height="56"
+                    src="https://cdn.relaxy.xyz/relaxy.webp"
+                    width="56"
+                />
+                <span>Relaxy!</span>
+            </a>
+            <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
+            <div class="topbar-end">
+                <button
+                    aria-pressed="false"
+                    class="theme-button"
+                    id="themeButton"
+                    onclick="toggleTheme()"
+                    type="button"
+                >
+                    Light Mode
+                </button>
+                <button
+                    aria-expanded="false"
+                    aria-label="Open navigation"
+                    class="nav-toggle"
+                    id="navToggle"
+                    type="button"
+                >
+                    <span></span><span></span><span></span>
+                </button>
             </div>
-            <div class="host-card">
-                <h3>Bot assets</h3>
-                <p>Shared images the Discord bot renders and reuses live under <code>/relaxy/bot</code>.</p>
-            </div>
-            <div class="host-card">
-                <h3>Scam censoring flags</h3>
-                <p>The bot directly uses <code>/relaxy/bot/text/scams.txt</code> to determine whether messages/images are scams, if you've found a new scam, please report it and I'll add it here!</p>
-            </div>
-        </div>
-    </section>
+        </header>
 
-    <section class="card section">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">How it's all laid out</p>
-            <h2 style="text-align:left">The directory tree</h2>
-            <p style="margin:0">This is read straight off <code>cdn.relaxy.xyz</code>, handy real-time guide.</p>
+        <div aria-hidden="true" class="nav-drawer" id="navDrawer">
+            <div class="nav-drawer-overlay" id="navOverlay"></div>
+            <div class="nav-drawer-panel">
+                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">
+                    ✕
+                </button>
+                <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
+            </div>
         </div>
-        <pre class="tech-tree" id="cdn-tree"><span class="dir">cdn.relaxy.xyz/</span>
+
+        <section class="hero">
+            <p class="eyebrow">Self-hosted assets</p>
+            <h1>The Relaxy! CDN</h1>
+            <p class="tagline">
+                Every image, asset and file the bot and this site use is served from here. A content delivery network I
+                also host myself. And if you'd want me to host your important file, then feel free to ask :)
+            </p>
+            <a class="invite-button" href="https://cdn.relaxy.xyz" rel="noopener" target="_blank">Browse the CDN</a>
+            <p class="byline">Base URL: <code>https://cdn.relaxy.xyz</code></p>
+        </section>
+
+        <main class="wrap" id="main">
+            <section class="card section">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">What it serves</p>
+                    <h2 style="text-align: left">A single place for every static asset</h2>
+                    <p style="margin: 0; max-width: none">
+                        Instead of polluting all of my projects with the dreaded assets/ folder I wanted a simple way to
+                        have everything in once place (with static internet links!).
+                    </p>
+                </div>
+                <div class="eng-grid">
+                    <div class="host-card">
+                        <h3>Website assets</h3>
+                        <p>
+                            The mascot art, icons, social images and Markdown content for this very site are all grouped
+                            under <code>/relaxy/website</code>.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Bot assets</h3>
+                        <p>Shared images the Discord bot renders and reuses live under <code>/relaxy/bot</code>.</p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Scam censoring flags</h3>
+                        <p>
+                            The bot directly uses <code>/relaxy/bot/text/scams.txt</code> to determine whether
+                            messages/images are scams, if you've found a new scam, please report it and I'll add it
+                            here!
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card section">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">How it's all laid out</p>
+                    <h2 style="text-align: left">The directory tree</h2>
+                    <p style="margin: 0">
+                        This is read straight off <code>cdn.relaxy.xyz</code>, handy real-time guide.
+                    </p>
+                </div>
+                <pre class="tech-tree" id="cdn-tree"><span class="dir">cdn.relaxy.xyz/</span>
 ├── THIS IS A PLACEHOLDER, THE CDN COULD NOT BE REACHED
 └── <span class="dir">relaxy/</span>
     ├── <span class="dir">website/</span>            <span class="cmt"># everything this site uses</span>
@@ -160,40 +202,67 @@
     │   └── <span class="dir">text/</span>           <span class="cmt"># changelog, devlog, upcoming</span>
     ├── <span class="dir">common/</span>             <span class="cmt"># shared bot images</span>
     └── <span class="dir">music/</span>              <span class="cmt"># audio &amp; media assets</span></pre>
-    </section>
-</main>
+            </section>
+        </main>
 
-<div id="subpages-bar"></div>
+        <div id="subpages-bar"></div>
 
-<aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
-    <div class="relaxy-coach-panel">
-        <span class="relaxy-coach-resize" aria-hidden="true"></span>
-        <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or <strong>double-click me</strong> to tuck me away.</p>
-        <div class="relaxy-coach-search">
-            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
-            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
-        </div>
-    </div>
-    <img draggable="false" class="relaxy-coach-avatar" alt="Relaxy!" title="Click to search Relaxy!'s commands - double-click to hide or show me" decoding="async" height="480" width="480"
-         src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
-</aside>
+        <aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
+            <div class="relaxy-coach-panel">
+                <span class="relaxy-coach-resize" aria-hidden="true"></span>
+                <p class="relaxy-coach-hint">
+                    Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or
+                    <strong>double-click me</strong> to tuck me away.
+                </p>
+                <div class="relaxy-coach-search">
+                    <input
+                        class="relaxy-coach-input"
+                        type="text"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Search commands"
+                        placeholder="Type a command name to learn more about it..."
+                    />
+                    <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
+                </div>
+            </div>
+            <img
+                draggable="false"
+                class="relaxy-coach-avatar"
+                alt="Relaxy!"
+                title="Click to search Relaxy!'s commands - double-click to hide or show me"
+                decoding="async"
+                height="480"
+                width="480"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp"
+            />
+        </aside>
 
-<footer class="footer">
-    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" decoding="async" height="3072" loading="lazy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
-         width="2304">
-    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
-    <p class="footer-links">
-        <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot; <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot; <a
-            href="https://uptime.relaxy.xyz">Service uptime status</a>
-    </p>
-</footer>
+        <footer class="footer">
+            <img
+                draggable="false"
+                alt=""
+                aria-hidden="true"
+                class="footer-relaxy"
+                decoding="async"
+                height="3072"
+                loading="lazy"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
+                width="2304"
+            />
+            <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+            <p class="footer-links">
+                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot;
+                <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
+                <a href="https://uptime.relaxy.xyz">Service uptime status</a>
+            </p>
+        </footer>
 
-<script defer src="/dist/js/main/subpagebar.js"></script>
-<script defer src="/dist/main.js"></script>
-<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
-<script defer src="/dist/js/main/enhance.js"></script>
-<script defer src="/dist/js/main/mobilenav.js"></script>
-<script defer src="/dist/js/main/cdn-tree.js"></script>
-</body>
-
+        <script defer src="/dist/js/main/subpagebar.js"></script>
+        <script defer src="/dist/main.js"></script>
+        <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
+        <script defer src="/dist/js/main/enhance.js"></script>
+        <script defer src="/dist/js/main/mobilenav.js"></script>
+        <script defer src="/dist/js/main/cdn-tree.js"></script>
+    </body>
 </html>

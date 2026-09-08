@@ -3,18 +3,16 @@
  * @link https://codeberg.org/MattFor/relaxy-website
  */
 
-const scrollToTop = () =>
-{
+const scrollToTop = () => {
     window.scrollTo({
-        top:      0,
+        top: 0,
         behavior: 'smooth'
     });
 };
 
-const scrollToBottom = () =>
-{
+const scrollToBottom = () => {
     window.scrollTo({
-        top:      document.body.scrollHeight,
+        top: document.body.scrollHeight,
         behavior: 'smooth'
     });
 };

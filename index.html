@@ -1,791 +1,1381 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Relaxy! - Free Multipurpose Discord Bot: Moderation & Music</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Relaxy! - Free Multipurpose Discord Bot: Moderation & Music</title>
-
-    <script>document.documentElement.classList.add('js');
-    try
-    {
-        if (localStorage.getItem('theme') === 'light')
-        {
-            document.documentElement.classList.add('light-mode');
-        }
-    }
-    catch (e)
-    {
-    }</script>
-
-    <link href="https://discord.com" rel="preconnect">
-    <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect">
-    <link href="https://cdn.relaxy.xyz" rel="dns-prefetch">
-    <link href="/dist/main.css" rel="stylesheet">
-    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
-
-    <meta content="#ff69b4" name="theme-color">
-    <meta content="MattFor" name="author">
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
-    <meta content="Relaxy! is a free multipurpose Discord bot - advanced moderation, censoring, a music player for YouTube links, tickets, custom forums, heartboards and levelling. No paywalls."
-          name="description">
-    <meta content="discord bot, moderation discord bot, music discord bot, youtube music discord bot, free discord bot, multipurpose discord bot, discord moderation bot, discord music bot, discord ticket bot, heartboard, starboard, custom forums, raid protection, discord levelling bot, self-hosted discord bot"
-          name="keywords">
-    <link href="https://www.relaxy.xyz/" rel="canonical">
-
-    <meta content="website" property="og:type">
-    <meta content="https://www.relaxy.xyz/" property="og:url">
-    <meta content="Relaxy! - Free Multipurpose Discord Bot: Moderation & Music" property="og:title">
-    <meta content="A free, self-hosted multipurpose Discord bot: advanced moderation and censoring, a YouTube music player, tickets, custom forums, heartboards and levelling. 205,000+ users across 270+ servers."
-          property="og:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image">
-    <meta content="Relaxy!" property="og:site_name">
-    <meta content="en_US" property="og:locale">
-    <meta content="600" property="og:image:width">
-    <meta content="600" property="og:image:height">
-    <meta content="Relaxy! the Discord bot mascot" property="og:image:alt">
-    <meta content="summary_large_image" name="twitter:card">
-    <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt">
-    <meta content="Relaxy! - Free Multipurpose Discord Bot: Moderation &amp; Music" name="twitter:title">
-    <meta content="A free, self-hosted multipurpose Discord bot - moderation, music, tickets, forums and heartboards. 205,000+ users across 270+ servers. No paywalls, forever."
-          name="twitter:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy/website/img/mascot/collab.webp" name="twitter:image">
-
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "WebSite",
-                    "@id": "https://www.relaxy.xyz/#website",
-                    "url": "https://www.relaxy.xyz/",
-                    "name": "Relaxy!",
-                    "description": "A free, self-hosted multipurpose Discord bot with moderation, music, tickets, forums and heartboards.",
-                    "publisher": {
-                        "@id": "https://www.relaxy.xyz/#mattfor"
-                    },
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "Person",
-                    "@id": "https://www.relaxy.xyz/#mattfor",
-                    "name": "MattFor",
-                    "url": "https://www.relaxy.xyz/",
-                    "email": "mattfor@relaxy.xyz",
-                    "sameAs": [
-                        "https://ko-fi.com/mattfor",
-                        "https://www.discord.gg/xRAGVePxk6"
-                    ]
-                },
-                {
-                    "@type": "WebPage",
-                    "@id": "https://www.relaxy.xyz/",
-                    "url": "https://www.relaxy.xyz/",
-                    "name": "Relaxy! - Free Multipurpose Discord Bot: Moderation & Music",
-                    "description": "Relaxy! is a free multipurpose Discord bot - advanced moderation, censoring, a music player for YouTube links, tickets, custom forums, heartboards and levelling. No paywalls.",
-                    "isPartOf": {
-                        "@id": "https://www.relaxy.xyz/#website"
-                    },
-                    "about": {
-                        "@id": "https://www.relaxy.xyz/#relaxy"
-                    },
-                    "primaryImageOfPage": {
-                        "@type": "ImageObject",
-                        "url": "https://cdn.relaxy.xyz/relaxy.webp",
-                        "width": 600,
-                        "height": 600
-                    },
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "SoftwareApplication",
-                    "@id": "https://www.relaxy.xyz/#relaxy",
-                    "name": "Relaxy!",
-                    "alternateName": "Relaxy Discord Bot",
-                    "applicationCategory": "CommunicationApplication",
-                    "applicationSubCategory": "Discord Bot",
-                    "operatingSystem": "Discord",
-                    "url": "https://www.relaxy.xyz/",
-                    "downloadUrl": "https://discord.com/api/oauth2/authorize?client_id=775358898088968202&permissions=3262528&scope=applications.commands%20bot",
-                    "installUrl": "https://discord.com/api/oauth2/authorize?client_id=775358898088968202&permissions=3262528&scope=applications.commands%20bot",
-                    "image": "https://cdn.relaxy.xyz/relaxy.webp",
-                    "author": {
-                        "@id": "https://www.relaxy.xyz/#mattfor"
-                    },
-                    "maintainer": {
-                        "@id": "https://www.relaxy.xyz/#mattfor"
-                    },
-                    "isAccessibleForFree": true,
-                    "description": "Relaxy! is a free, self-hosted multipurpose Discord bot featuring advanced moderation, OCR scam detection, music playback, tickets, forums, levelling, an economy and many more community management tools. Every feature is free with no paywalls.",
-                    "featureList": [
-                        "Highly advanced censoring, including OCR and entropy detection that reads scam text straight out of users' images",
-                        "Advanced warning ladder with tiers, autobanning and a per-member case dossier",
-                        "Raid protection that spots bursts of fresh accounts and clears them out on its own",
-                        "Comprehensive moderator log tracking across 43 separate events, each with its own channel",
-                        "Cross-server links, mirror a role across every server you link and, if you allow it, share moderation with them too",
-                        "Appeal channels hosted in a separate server, so punished members can appeal without rejoining yours",
-                        "Per-command permission grants, hand a single command to a role/user without touching Discord's permissions",
-                        "Built-in music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters and an equalizer",
-                        "Custom-built voice recorder that writes a separate track per speaker",
-                        "Fully customizable ticketing system",
-                        "Custom forums with detailed access control",
-                        "Join-to-create voice channels, and private voice channels with their own limit, bitrate and region",
-                        "Fully customizable embeds, self-clearing channels on a timer and reminders Relaxy! pings you for",
-                        "Customizable prefixes, pick anything you like",
-                        "Advanced message purging, up to 10 000 at once. Works for messages older than 2 weeks as well",
-                        "Multiple heartboards (a.k.a starboards) with extensive customization",
-                        "Reminds - Relaxy! will notify you about something after some time has passed",
-                        "Live reaction control panel for messages, plus reaction roles",
-                        "Levelling with rank cards, leaderboards and automatic role rewards per tier",
-                        "Economy and profiles: dailies, a shop, inventories, reputation and player-to-player trading",
-                        "Built-in games, counting channels, snake, minesweeper, tic-tac-toe and polls",
-                        "Customizable welcome / leave channels with generated cards, plus custom boost messages",
-                        "Image manipulation and file saving to user/server storage",
-                        "Add a caption to any image/gif with the classic black impact font on white background"
-                    ],
-                    "keywords": [
-                        "Discord bot",
-                        "moderation bot",
-                        "music bot",
-                        "ticket bot",
-                        "youtube music bot",
-                        "OCR scam detection",
-                        "Image entropy scam detection",
-                        "Discord moderation",
-                        "Discord music",
-                        "levelling",
-                        "heartboards",
-                        "economy"
-                    ],
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "0",
-                        "priceCurrency": "USD",
-                        "availability": "https://schema.org/InStock"
-                    },
-                    "sameAs": [
-                        "https://top.gg/bot/775358898088968202",
-                        "https://discordbotlist.com/bots/relaxy"
-                    ]
+        <script>
+            document.documentElement.classList.add('js');
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('light-mode');
                 }
-            ]
-        }
-    </script>
-</head>
+            } catch (e) {}
+        </script>
 
-<body class="is-home">
-<a class="skip-link" href="#main">Skip to content</a>
+        <link href="https://discord.com" rel="preconnect" />
+        <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect" />
+        <link href="https://cdn.relaxy.xyz" rel="dns-prefetch" />
+        <link href="/dist/main.css" rel="stylesheet" />
+        <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon" />
 
-<header class="topbar">
-    <a class="brand" href="/">
-        <!--suppress CheckImageSize -->
-        <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56"> <span>Relaxy!</span> </a>
-    <nav aria-label="Sections" class="site-nav" id="topnav">
-        <a href="#about">About</a> <a href="#features">Features</a> <a href="#internals">Internals</a> <a href="#ecosystem">Self-hosted</a> <a href="#commands">Commands</a> <a
-            href="#support">Support</a>
-    </nav>
-    <div class="topbar-end">
-        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
-        </button>
-        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</header>
+        <meta content="#ff69b4" name="theme-color" />
+        <meta content="MattFor" name="author" />
+        <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots" />
+        <meta
+            content="Relaxy! is a free multipurpose Discord bot - advanced moderation, censoring, a music player for YouTube links, tickets, custom forums, heartboards and levelling. No paywalls."
+            name="description"
+        />
+        <meta
+            content="discord bot, moderation discord bot, music discord bot, youtube music discord bot, free discord bot, multipurpose discord bot, discord moderation bot, discord music bot, discord ticket bot, heartboard, starboard, custom forums, raid protection, discord levelling bot, self-hosted discord bot"
+            name="keywords"
+        />
+        <link href="https://www.relaxy.xyz/" rel="canonical" />
 
-<div aria-hidden="true" class="nav-drawer" id="navDrawer">
-    <div class="nav-drawer-overlay" id="navOverlay"></div>
-    <div class="nav-drawer-panel">
-        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
-        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
-    </div>
-</div>
+        <meta content="website" property="og:type" />
+        <meta content="https://www.relaxy.xyz/" property="og:url" />
+        <meta content="Relaxy! - Free Multipurpose Discord Bot: Moderation & Music" property="og:title" />
+        <meta
+            content="A free, self-hosted multipurpose Discord bot: advanced moderation and censoring, a YouTube music player, tickets, custom forums, heartboards and levelling. 205,000+ users across 270+ servers."
+            property="og:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image" />
+        <meta content="Relaxy!" property="og:site_name" />
+        <meta content="en_US" property="og:locale" />
+        <meta content="600" property="og:image:width" />
+        <meta content="600" property="og:image:height" />
+        <meta content="Relaxy! the Discord bot mascot" property="og:image:alt" />
+        <meta content="summary_large_image" name="twitter:card" />
+        <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt" />
+        <meta content="Relaxy! - Free Multipurpose Discord Bot: Moderation &amp; Music" name="twitter:title" />
+        <meta
+            content="A free, self-hosted multipurpose Discord bot - moderation, music, tickets, forums and heartboards. 205,000+ users across 270+ servers. No paywalls, forever."
+            name="twitter:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy/website/img/mascot/collab.webp" name="twitter:image" />
 
-<section class="hero">
-    <picture>
-        <!--suppress HtmlUnknownTarget -->
-        <source srcset="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.webp" type="image/webp">
-        <img draggable="false" alt="The Relaxy! mascot, relaxing" class="hero-logo" decoding="async" fetchpriority="high" height="180" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.gif"
-             width="180">
-    </picture>
-    <p class="eyebrow">Multipurpose Discord Bot</p>
-    <h1>Relaxy!</h1>
-    <p class="tagline">Function over form. Every feature is free - no paywalls, not now, nor ever! No matter how demanding a server is.</p>
-    <div class="hero-actions">
-        <a class="invite-button" href="https://discord.com/api/oauth2/authorize?client_id=775358898088968202&permissions=3262528&scope=applications.commands%20bot" rel="noopener" target="_blank">Invite
-            Relaxy!</a> <a class="button-secondary" href="https://dashboard.relaxy.xyz" rel="noopener" target="_blank">Open the Dashboard</a>
-    </div>
-    <p class="byline"><span class="byline-credit">By MattFor · <a class="tag-item" draggable="false" href="https://www.discord.gg/xRAGVePxk6" title="Join Relaxy!'s Requests" rel="noopener"
-                                                                  target="_blank">
-        <svg aria-hidden="true" class="inline-icon" viewBox="0 0 24 24">
-            <path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
-        </svg>
-        <span class="sr-only">Discord:</span>mattfor</a></span><span class="byline-sep" aria-hidden="true"> · </span><span class="byline-stats"><span data-live-users>202,208</span> users · <span
-            data-live-guilds>270</span> servers</span></p>
-</section>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "WebSite",
+                        "@id": "https://www.relaxy.xyz/#website",
+                        "url": "https://www.relaxy.xyz/",
+                        "name": "Relaxy!",
+                        "description": "A free, self-hosted multipurpose Discord bot with moderation, music, tickets, forums and heartboards.",
+                        "publisher": {
+                            "@id": "https://www.relaxy.xyz/#mattfor"
+                        },
+                        "inLanguage": "en"
+                    },
+                    {
+                        "@type": "Person",
+                        "@id": "https://www.relaxy.xyz/#mattfor",
+                        "name": "MattFor",
+                        "url": "https://www.relaxy.xyz/",
+                        "email": "mattfor@relaxy.xyz",
+                        "sameAs": ["https://ko-fi.com/mattfor", "https://www.discord.gg/xRAGVePxk6"]
+                    },
+                    {
+                        "@type": "WebPage",
+                        "@id": "https://www.relaxy.xyz/",
+                        "url": "https://www.relaxy.xyz/",
+                        "name": "Relaxy! - Free Multipurpose Discord Bot: Moderation & Music",
+                        "description": "Relaxy! is a free multipurpose Discord bot - advanced moderation, censoring, a music player for YouTube links, tickets, custom forums, heartboards and levelling. No paywalls.",
+                        "isPartOf": {
+                            "@id": "https://www.relaxy.xyz/#website"
+                        },
+                        "about": {
+                            "@id": "https://www.relaxy.xyz/#relaxy"
+                        },
+                        "primaryImageOfPage": {
+                            "@type": "ImageObject",
+                            "url": "https://cdn.relaxy.xyz/relaxy.webp",
+                            "width": 600,
+                            "height": 600
+                        },
+                        "inLanguage": "en"
+                    },
+                    {
+                        "@type": "SoftwareApplication",
+                        "@id": "https://www.relaxy.xyz/#relaxy",
+                        "name": "Relaxy!",
+                        "alternateName": "Relaxy Discord Bot",
+                        "applicationCategory": "CommunicationApplication",
+                        "applicationSubCategory": "Discord Bot",
+                        "operatingSystem": "Discord",
+                        "url": "https://www.relaxy.xyz/",
+                        "downloadUrl": "https://discord.com/api/oauth2/authorize?client_id=775358898088968202&permissions=3262528&scope=applications.commands%20bot",
+                        "installUrl": "https://discord.com/api/oauth2/authorize?client_id=775358898088968202&permissions=3262528&scope=applications.commands%20bot",
+                        "image": "https://cdn.relaxy.xyz/relaxy.webp",
+                        "author": {
+                            "@id": "https://www.relaxy.xyz/#mattfor"
+                        },
+                        "maintainer": {
+                            "@id": "https://www.relaxy.xyz/#mattfor"
+                        },
+                        "isAccessibleForFree": true,
+                        "description": "Relaxy! is a free, self-hosted multipurpose Discord bot featuring advanced moderation, OCR scam detection, music playback, tickets, forums, levelling, an economy and many more community management tools. Every feature is free with no paywalls.",
+                        "featureList": [
+                            "Highly advanced censoring, including OCR and entropy detection that reads scam text straight out of users' images",
+                            "Advanced warning ladder with tiers, autobanning and a per-member case dossier",
+                            "Raid protection that spots bursts of fresh accounts and clears them out on its own",
+                            "Comprehensive moderator log tracking across 43 separate events, each with its own channel",
+                            "Cross-server links, mirror a role across every server you link and, if you allow it, share moderation with them too",
+                            "Appeal channels hosted in a separate server, so punished members can appeal without rejoining yours",
+                            "Per-command permission grants, hand a single command to a role/user without touching Discord's permissions",
+                            "Built-in music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters and an equalizer",
+                            "Custom-built voice recorder that writes a separate track per speaker",
+                            "Fully customizable ticketing system",
+                            "Custom forums with detailed access control",
+                            "Join-to-create voice channels, and private voice channels with their own limit, bitrate and region",
+                            "Fully customizable embeds, self-clearing channels on a timer and reminders Relaxy! pings you for",
+                            "Customizable prefixes, pick anything you like",
+                            "Advanced message purging, up to 10 000 at once. Works for messages older than 2 weeks as well",
+                            "Multiple heartboards (a.k.a starboards) with extensive customization",
+                            "Reminds - Relaxy! will notify you about something after some time has passed",
+                            "Live reaction control panel for messages, plus reaction roles",
+                            "Levelling with rank cards, leaderboards and automatic role rewards per tier",
+                            "Economy and profiles: dailies, a shop, inventories, reputation and player-to-player trading",
+                            "Built-in games, counting channels, snake, minesweeper, tic-tac-toe and polls",
+                            "Customizable welcome / leave channels with generated cards, plus custom boost messages",
+                            "Image manipulation and file saving to user/server storage",
+                            "Add a caption to any image/gif with the classic black impact font on white background"
+                        ],
+                        "keywords": [
+                            "Discord bot",
+                            "moderation bot",
+                            "music bot",
+                            "ticket bot",
+                            "youtube music bot",
+                            "OCR scam detection",
+                            "Image entropy scam detection",
+                            "Discord moderation",
+                            "Discord music",
+                            "levelling",
+                            "heartboards",
+                            "economy"
+                        ],
+                        "offers": {
+                            "@type": "Offer",
+                            "price": "0",
+                            "priceCurrency": "USD",
+                            "availability": "https://schema.org/InStock"
+                        },
+                        "sameAs": ["https://top.gg/bot/775358898088968202", "https://discordbotlist.com/bots/relaxy"]
+                    }
+                ]
+            }
+        </script>
+    </head>
 
-<main class="wrap" id="main">
-    <div class="grid-2 section">
-        <section class="card reveal" id="about">
-            <p class="eyebrow">About</p>
-            <h2 style="text-align:left">Totally Free. Reliable. Yours.</h2>
-            <p>Relaxy! is a bot made to combat the aggressive monetization of big multi-functional bots. Every feature is free and will never be pay-walled. Updates happen daily and suggestions in the
-                support server are added over time. Relaxy! is function over form which means it can be hard to use (which is why I made the dashboard), however, once mastered it's infinitely
-                flexible.</p>
-            <p>I offer full real time support for free to every server owner that uses Relaxy! Every server owner with more than 100 users can request anything they want into the bot as long as it
-                will benefit every user of Relaxy!</p>
-            <p>Relaxy!'s internals feature a real time monitoring system to ensure as little downtime as possible. The bot and its whole toolkit are self-hosted on a Raspberry Pi sitting on my desk;
-                no cloud, no rented boxes, no monthly bills. Just hardware I entirely own, running around the clock.</p>
-            <p>I've created this entire ecosystem to make sure there's always a fallback for people to rely on, I will absolutely never change the way things are ran, there are only going to be
-                additions that benefit everyone. I have some ambitious plans, if only I weren't so bad at marketing lol</p>
-            <p>I offer my infinite gratitude to anyone who supports this and my other projects financially, if you ever decide to do so, I'll add in anything you request, as long as it benefits every
-                user and isn't a completely whack idea. (but then again, those are fun, might give it a go, already replicated an entire ticket bot within 1 command)</p>
+    <body class="is-home">
+        <a class="skip-link" href="#main">Skip to content</a>
 
+        <header class="topbar">
+            <a class="brand" href="/">
+                <!--suppress CheckImageSize -->
+                <img
+                    draggable="false"
+                    alt=""
+                    decoding="async"
+                    height="56"
+                    src="https://cdn.relaxy.xyz/relaxy.webp"
+                    width="56"
+                />
+                <span>Relaxy!</span>
+            </a>
+            <nav aria-label="Sections" class="site-nav" id="topnav">
+                <a href="#about">About</a> <a href="#features">Features</a> <a href="#internals">Internals</a>
+                <a href="#ecosystem">Self-hosted</a> <a href="#commands">Commands</a> <a href="#support">Support</a>
+            </nav>
+            <div class="topbar-end">
+                <button
+                    aria-pressed="false"
+                    class="theme-button"
+                    id="themeButton"
+                    onclick="toggleTheme()"
+                    type="button"
+                >
+                    Light Mode
+                </button>
+                <button
+                    aria-expanded="false"
+                    aria-label="Open navigation"
+                    class="nav-toggle"
+                    id="navToggle"
+                    type="button"
+                >
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </header>
+
+        <div aria-hidden="true" class="nav-drawer" id="navDrawer">
+            <div class="nav-drawer-overlay" id="navOverlay"></div>
+            <div class="nav-drawer-panel">
+                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">
+                    ✕
+                </button>
+                <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
+            </div>
+        </div>
+
+        <section class="hero">
+            <picture>
+                <!--suppress HtmlUnknownTarget -->
+                <source srcset="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.webp" type="image/webp" />
+                <img
+                    draggable="false"
+                    alt="The Relaxy! mascot, relaxing"
+                    class="hero-logo"
+                    decoding="async"
+                    fetchpriority="high"
+                    height="180"
+                    src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy.gif"
+                    width="180"
+                />
+            </picture>
+            <p class="eyebrow">Multipurpose Discord Bot</p>
+            <h1>Relaxy!</h1>
+            <p class="tagline">
+                Function over form. Every feature is free - no paywalls, not now, nor ever! No matter how demanding a
+                server is.
+            </p>
+            <div class="hero-actions">
+                <a
+                    class="invite-button"
+                    href="https://discord.com/api/oauth2/authorize?client_id=775358898088968202&permissions=3262528&scope=applications.commands%20bot"
+                    rel="noopener"
+                    target="_blank"
+                    >Invite Relaxy!</a
+                >
+                <a class="button-secondary" href="https://dashboard.relaxy.xyz" rel="noopener" target="_blank"
+                    >Open the Dashboard</a
+                >
+            </div>
+            <p class="byline">
+                <span class="byline-credit"
+                    >By MattFor ·
+                    <a
+                        class="tag-item"
+                        draggable="false"
+                        href="https://www.discord.gg/xRAGVePxk6"
+                        title="Join Relaxy!'s Requests"
+                        rel="noopener"
+                        target="_blank"
+                    >
+                        <svg aria-hidden="true" class="inline-icon" viewBox="0 0 24 24">
+                            <path
+                                d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"
+                            />
+                        </svg>
+                        <span class="sr-only">Discord:</span>mattfor</a
+                    ></span
+                ><span class="byline-sep" aria-hidden="true"> · </span
+                ><span class="byline-stats"
+                    ><span data-live-users>202,208</span> users · <span data-live-guilds>270</span> servers</span
+                >
+            </p>
         </section>
 
-        <img draggable="false" alt="" aria-hidden="true" class="about-relaxy reveal" decoding="async" height="676" loading="lazy"
-             src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_guy_nobg.webp" width="369">
+        <main class="wrap" id="main">
+            <div class="grid-2 section">
+                <section class="card reveal" id="about">
+                    <p class="eyebrow">About</p>
+                    <h2 style="text-align: left">Totally Free. Reliable. Yours.</h2>
+                    <p>
+                        Relaxy! is a bot made to combat the aggressive monetization of big multi-functional bots. Every
+                        feature is free and will never be pay-walled. Updates happen daily and suggestions in the
+                        support server are added over time. Relaxy! is function over form which means it can be hard to
+                        use (which is why I made the dashboard), however, once mastered it's infinitely flexible.
+                    </p>
+                    <p>
+                        I offer full real time support for free to every server owner that uses Relaxy! Every server
+                        owner with more than 100 users can request anything they want into the bot as long as it will
+                        benefit every user of Relaxy!
+                    </p>
+                    <p>
+                        Relaxy!'s internals feature a real time monitoring system to ensure as little downtime as
+                        possible. The bot and its whole toolkit are self-hosted on a Raspberry Pi sitting on my desk; no
+                        cloud, no rented boxes, no monthly bills. Just hardware I entirely own, running around the
+                        clock.
+                    </p>
+                    <p>
+                        I've created this entire ecosystem to make sure there's always a fallback for people to rely on,
+                        I will absolutely never change the way things are ran, there are only going to be additions that
+                        benefit everyone. I have some ambitious plans, if only I weren't so bad at marketing lol
+                    </p>
+                    <p>
+                        I offer my infinite gratitude to anyone who supports this and my other projects financially, if
+                        you ever decide to do so, I'll add in anything you request, as long as it benefits every user
+                        and isn't a completely whack idea. (but then again, those are fun, might give it a go, already
+                        replicated an entire ticket bot within 1 command)
+                    </p>
+                </section>
 
-        <section class="card reveal" data-reveal-delay="80" id="features">
-            <p class="eyebrow">Features</p>
-            <h2 style="text-align:left">Main features</h2>
-            <div class="feature-pager" id="featurePager">
-                <div class="feature-stage">
-                    <ul class="feature-list has-icons feature-page is-active" data-feature-page="1">
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path
-                                d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 9h10"/><path d="M7 13h7"/></svg></span>Highly advanced censoring which can also perform
-                            OCR and entropy-based matching (reading text from the image f.e for Mr. Beast scams)
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path
-                                d="M12 9v4"/><path d="M12 17h.01"/></svg></span>Advanced warning ladder with tiers, autobanning and a per-member case dossier
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Raid protection that spots bursts
-                            of fresh accounts and clears them out on its own
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect height="4"
-                                                                                                                                                                                             rx="1"
-                                                                                                                                                                                             width="8"
-                                                                                                                                                                                             x="8"
-                                                                                                                                                                                             y="2"/><path
-                                d="M9 12h6"/><path d="M9 16h4"/></svg></span>Easy to understand moderator log tracking across 43 events, each one routable to its own channel
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path
-                                d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg></span>Cross-server links, mirror a role across every server you link and, if you allow it, share
-                            moderation with them too
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 4v17"/><path d="M8 21h8"/><path d="M5 8h14"/><path d="m5 8-3 6h6z"/><path
-                                d="m19 8-3 6h6z"/></svg></span>Appeal channels hosted in a separate server, punished members can appeal without rejoining the original one
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path
-                                d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>Per-command permission grants, hand a single command to a role/user without touching their Discord permissions
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Built-in
-                            music player: play YouTube, SoundCloud and Spotify links, plain search keywords or whole playlists, with audio filters, history and more!
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><rect height="12" rx="3" width="6" x="9" y="2"/><path d="M19 11v1a7 7 0 0 1-14 0v-1"/><path
-                                d="M12 19v3"/><path d="M8 22h8"/></svg></span>Custom-built voice recorder that writes a separate track per speaker
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path
-                                d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2"/><path d="M13 11v2"/><path
-                                d="M13 17v2"/></svg></span>Fully customizable ticketing system
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path
-                                d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>Custom forums with detailed access control and post moderation
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path
-                                d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>Join-to-create voice channels, and private voice channels with their own limit, bitrate and region
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Fully customizable embeds,
-                            self-clearing channels on a timer, and reminders that Relaxy! automatically DMs you about.
-                        </li>
-                    </ul>
-                    <ul class="feature-list has-icons feature-page" data-feature-page="2">
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></span>Customizable prefixes, pick anything you
-                            like
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path
-                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></span>Advanced message purging, up to 10 000 at once. Works for
-                            messages older than 2 weeks as well, however it's a bit slower in that case
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Multiple heartboards (a.k.a
-                            starboards) with extensive customization
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>Customizable
-                            reaction role embeds, they also use restrictors, if you have one role you can't have another!
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5s1.2 1.8 3.5 1.8 3.5-1.8 3.5-1.8"/><path
-                                d="M9 9.5h.01"/><path d="M15 9.5h.01"/></svg></span>Live reaction control panel for messages
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21v-7"/><path d="M12 21V4"/><path d="M18 21v-11"/></svg></span>Levelling
-                            with rank cards, leaderboards and automatic role rewards per tier
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path
-                                d="M16 10a4 4 0 0 1-8 0"/></svg></span>Economy and profiles: dailies, a shop, inventories, reputation and player-to-player trading
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><rect height="18" rx="3" width="18" x="3" y="3"/><path d="M8 8h.01"/><path d="M16 8h.01"/><path
-                                d="M12 12h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/></svg></span>Built-in games, counting channels, snake, minesweeper, tic-tac-toe and polls
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path
-                                d="M15 12H3"/></svg></span>Customizable welcome/leave channels with generated cards, plus custom boost messages
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path
-                                d="m21 15-5-5L5 21"/></svg></span>Image manipulation and file saving to user/server storage
-                        </li>
-                        <li><span aria-hidden="true" class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 7V5h16v2"/><path d="M12 5v14"/><path d="M9 19h6"/></svg></span>Add a caption to any
-                            image/gif with the classic black impact font on white background
-                        </li>
-                    </ul>
+                <img
+                    draggable="false"
+                    alt=""
+                    aria-hidden="true"
+                    class="about-relaxy reveal"
+                    decoding="async"
+                    height="676"
+                    loading="lazy"
+                    src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_guy_nobg.webp"
+                    width="369"
+                />
+
+                <section class="card reveal" data-reveal-delay="80" id="features">
+                    <p class="eyebrow">Features</p>
+                    <h2 style="text-align: left">Main features</h2>
+                    <div class="feature-pager" id="featurePager">
+                        <div class="feature-stage">
+                            <ul class="feature-list has-icons feature-page is-active" data-feature-page="1">
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+                                            <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+                                            <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+                                            <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+                                            <path d="M7 9h10" />
+                                            <path d="M7 13h7" /></svg></span
+                                    >Highly advanced censoring which can also perform OCR and entropy-based matching
+                                    (reading text from the image f.e for Mr. Beast scams)
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                                            />
+                                            <path d="M12 9v4" />
+                                            <path d="M12 17h.01" /></svg></span
+                                    >Advanced warning ladder with tiers, autobanning and a per-member case dossier
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg></span
+                                    >Raid protection that spots bursts of fresh accounts and clears them out on its own
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                                            />
+                                            <rect height="4" rx="1" width="8" x="8" y="2" />
+                                            <path d="M9 12h6" />
+                                            <path d="M9 16h4" /></svg></span
+                                    >Easy to understand moderator log tracking across 43 events, each one routable to
+                                    its own channel
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <circle cx="18" cy="5" r="3" />
+                                            <circle cx="6" cy="12" r="3" />
+                                            <circle cx="18" cy="19" r="3" />
+                                            <path d="m8.59 13.51 6.83 3.98" />
+                                            <path d="m15.41 6.51-6.82 3.98" /></svg></span
+                                    >Cross-server links, mirror a role across every server you link and, if you allow
+                                    it, share moderation with them too
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M12 4v17" />
+                                            <path d="M8 21h8" />
+                                            <path d="M5 8h14" />
+                                            <path d="m5 8-3 6h6z" />
+                                            <path d="m19 8-3 6h6z" /></svg></span
+                                    >Appeal channels hosted in a separate server, punished members can appeal without
+                                    rejoining the original one
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <circle cx="7.5" cy="15.5" r="5.5" />
+                                            <path d="m21 2-9.6 9.6" />
+                                            <path d="m15.5 7.5 3 3L22 7l-3-3" /></svg></span
+                                    >Per-command permission grants, hand a single command to a role/user without
+                                    touching their Discord permissions
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M9 18V5l12-2v13" />
+                                            <circle cx="6" cy="18" r="3" />
+                                            <circle cx="18" cy="16" r="3" /></svg></span
+                                    >Built-in music player: play YouTube, SoundCloud and Spotify links, plain search
+                                    keywords or whole playlists, with audio filters, history and more!
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <rect height="12" rx="3" width="6" x="9" y="2" />
+                                            <path d="M19 11v1a7 7 0 0 1-14 0v-1" />
+                                            <path d="M12 19v3" />
+                                            <path d="M8 22h8" /></svg></span
+                                    >Custom-built voice recorder that writes a separate track per speaker
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"
+                                            />
+                                            <path d="M13 5v2" />
+                                            <path d="M13 11v2" />
+                                            <path d="M13 17v2" /></svg></span
+                                    >Fully customizable ticketing system
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" />
+                                            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" /></svg></span
+                                    >Custom forums with detailed access control and post moderation
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M11 5 6 9H2v6h4l5 4z" />
+                                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" /></svg></span
+                                    >Join-to-create voice channels, and private voice channels with their own limit,
+                                    bitrate and region
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="9" />
+                                            <path d="M12 7v5l3 2" /></svg></span
+                                    >Fully customizable embeds, self-clearing channels on a timer, and reminders that
+                                    Relaxy! automatically DMs you about.
+                                </li>
+                            </ul>
+                            <ul class="feature-list has-icons feature-page" data-feature-page="2">
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="m4 17 6-6-6-6" />
+                                            <path d="M12 19h8" /></svg></span
+                                    >Customizable prefixes, pick anything you like
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M3 6h18" />
+                                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                            <path d="M10 11v6" />
+                                            <path d="M14 11v6" /></svg></span
+                                    >Advanced message purging, up to 10 000 at once. Works for messages older than 2
+                                    weeks as well, however it's a bit slower in that case
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z"
+                                            /></svg></span
+                                    >Multiple heartboards (a.k.a starboards) with extensive customization
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                                            <path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg></span
+                                    >Customizable reaction role embeds, they also use restrictors, if you have one role
+                                    you can't have another!
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="9" />
+                                            <path d="M8.5 14.5s1.2 1.8 3.5 1.8 3.5-1.8 3.5-1.8" />
+                                            <path d="M9 9.5h.01" />
+                                            <path d="M15 9.5h.01" /></svg></span
+                                    >Live reaction control panel for messages
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M3 21h18" />
+                                            <path d="M6 21v-7" />
+                                            <path d="M12 21V4" />
+                                            <path d="M18 21v-11" /></svg></span
+                                    >Levelling with rank cards, leaderboards and automatic role rewards per tier
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                            <path d="M3 6h18" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" /></svg></span
+                                    >Economy and profiles: dailies, a shop, inventories, reputation and player-to-player
+                                    trading
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <rect height="18" rx="3" width="18" x="3" y="3" />
+                                            <path d="M8 8h.01" />
+                                            <path d="M16 8h.01" />
+                                            <path d="M12 12h.01" />
+                                            <path d="M8 16h.01" />
+                                            <path d="M16 16h.01" /></svg></span
+                                    >Built-in games, counting channels, snake, minesweeper, tic-tac-toe and polls
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                                            <path d="m10 17 5-5-5-5" />
+                                            <path d="M15 12H3" /></svg></span
+                                    >Customizable welcome/leave channels with generated cards, plus custom boost
+                                    messages
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <rect height="18" rx="2" width="18" x="3" y="3" />
+                                            <circle cx="8.5" cy="8.5" r="1.5" />
+                                            <path d="m21 15-5-5L5 21" /></svg></span
+                                    >Image manipulation and file saving to user/server storage
+                                </li>
+                                <li>
+                                    <span aria-hidden="true" class="feature-icon"
+                                        ><svg viewBox="0 0 24 24">
+                                            <path d="M4 7V5h16v2" />
+                                            <path d="M12 5v14" />
+                                            <path d="M9 19h6" /></svg></span
+                                    >Add a caption to any image/gif with the classic black impact font on white
+                                    background
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="feature-pager-nav">
+                            <button class="feature-pager-hint" data-feature-next type="button">
+                                Click the feature list above, or this line, to flip to the other page
+                            </button>
+                            <span class="feature-dots">
+                                <button
+                                    aria-label="Show features, page 1"
+                                    class="feature-dot is-active"
+                                    data-feature-goto="1"
+                                    type="button"
+                                >
+                                    1
+                                </button>
+                                <button
+                                    aria-label="Show features, page 2"
+                                    class="feature-dot"
+                                    data-feature-goto="2"
+                                    type="button"
+                                >
+                                    2
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="section" id="internals">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Under the hood</p>
+                    <h2>How it's built</h2>
+                    <p>
+                        A lot of careful work went into ensuring Relaxy! has the highest uptime possible. I've
+                        implemented a lot of redundancies and fail-over systems to make sure that even if something
+                        breaks, it's automatically corrected.
+                    </p>
                 </div>
-                <div class="feature-pager-nav">
-                    <button class="feature-pager-hint" data-feature-next type="button">Click the feature list above, or this line, to flip to the other page</button>
-                    <span class="feature-dots">
-                        <button aria-label="Show features, page 1" class="feature-dot is-active" data-feature-goto="1" type="button">1</button>
-                        <button aria-label="Show features, page 2" class="feature-dot" data-feature-goto="2" type="button">2</button>
-                    </span>
+                <div class="eng-grid">
+                    <article class="card card-hover eng-card reveal">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect height="7" rx="1" width="7" x="3" y="3" />
+                                <rect height="7" rx="1" width="7" x="14" y="3" />
+                                <rect height="7" rx="1" width="7" x="14" y="14" />
+                                <rect height="7" rx="1" width="7" x="3" y="14" /></svg
+                        ></span>
+                        <h3>Hybrid-sharding clusters</h3>
+                        <p>
+                            Shards are grouped into clusters supervised by a manager process, so Relaxy! can quickly
+                            scale and adjust to server demands.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="60">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                                /></svg
+                        ></span>
+                        <h3>Self-repair systems</h3>
+                        <p>
+                            An ADSR diagnostic system watches error rates and silently restarts misbehaving shards; a
+                            heartbeat manager revives unresponsive and/or broken clusters.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="120">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                                <path d="M21 3v5h-5" />
+                                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                                <path d="M3 21v-5h5" /></svg
+                        ></span>
+                        <h3>Rolling re-cluster</h3>
+                        <p>
+                            Updates roll out shard-by-shard in real time, without a global restart (total outage), no
+                            interruption to your server.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                <path d="M3 5v14a9 3 0 0 0 18 0V5" />
+                                <path d="M3 12a9 3 0 0 0 18 0" /></svg
+                        ></span>
+                        <h3>Database Resilience</h3>
+                        <p>
+                            Writes are queued and saved periodically on separate worker threads. No updates will be lost
+                            as there is an extensive multi-shard / dashboard cache system in place.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="60">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"
+                                /></svg
+                        ></span>
+                        <h3>Hot reloading</h3>
+                        <p>
+                            Modules reload from source on the fly, so I can deliver fixes and features without taking
+                            the bot, or the dashboard offline.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="120">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
+                                /></svg
+                        ></span>
+                        <h3>Real-time monitoring</h3>
+                        <p>
+                            A live monitoring system tracks module health and uptime so downtime stays minimal,
+                            <a href="https://uptime.relaxy.xyz">click to check it out</a>.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect height="16" rx="2" width="16" x="4" y="4" />
+                                <rect height="6" width="6" x="9" y="9" />
+                                <path d="M15 2v2" />
+                                <path d="M15 20v2" />
+                                <path d="M2 15h2" />
+                                <path d="M2 9h2" />
+                                <path d="M20 15h2" />
+                                <path d="M20 9h2" />
+                                <path d="M9 2v2" />
+                                <path d="M9 20v2" /></svg
+                        ></span>
+                        <h3>System level optimizations</h3>
+                        <p>
+                            I've tuned the machine everything is running on specifically for the bot, it has total I/O
+                            and network priority. Helps with music / command response times.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="60">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="m12 14 4-4" />
+                                <path d="M3.34 19a10 10 0 1 1 17.32 0" /></svg
+                        ></span>
+                        <h3>Custom rate limiter</h3>
+                        <p>
+                            Discord.js's in-built limiter was not enough. I've built my own that synchronizes across
+                            shards, it can actually be used for any limitable action, pretty handy.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="120">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                                />
+                                <path d="m9 12 2 2 4-4" /></svg
+                        ></span>
+                        <h3>Anti-evasion censoring</h3>
+                        <p>
+                            The censoring system normalizes look-alike characters, spacing tricks and zero-width junk
+                            with NLP, so filter-dodging still gets caught, even on edited messages and images as well!
+                            For extreme cases tesseract-ocr (grey-scaling) and 256bit perceptual hash entropy matching
+                            is used. (f.e Mr Beast scam images)
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M9 18V5l12-2v13" />
+                                <circle cx="6" cy="18" r="3" />
+                                <circle cx="18" cy="16" r="3" /></svg
+                        ></span>
+                        <h3>Full music engine</h3>
+                        <p>
+                            Built on a custom fork of discord-player 7, rewritten into this codebase's style and
+                            maintained by me since. Request a YouTube link, type plain search keywords or queue an
+                            entire playlist, SoundCloud and Spotify resolve too. A live queue, audio filters, history,
+                            with smart buffering for a faster playback.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal" data-reveal-delay="60">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect height="18" rx="2" width="18" x="3" y="3" />
+                                <circle cx="9" cy="9" r="2" />
+                                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg
+                        ></span>
+                        <h3>On-the-fly image generation</h3>
+                        <p>
+                            Dozens of image and GIF commands are rendered locally with canvas, canvacord and sharp with
+                            no external services involved.
+                        </p>
+                    </article>
+                    <article class="card card-hover eng-card reveal">
+                        <span aria-hidden="true" class="eng-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" x2="12" y1="19" y2="22" /></svg
+                        ></span>
+                        <h3>Voice recording</h3>
+                        <p>
+                            Per-user voice capture writes separate streams for each speaker, so recordings stay clean
+                            and individually usable.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="ecosystem">
+                <div class="section-head">
+                    <p class="eyebrow">Self-hosted</p>
+                    <h2>One RaspberryPI to rule them all</h2>
+                    <p>
+                        Relaxy! and everything within the ecosystem runs on a single mini computer on my desk. Here's
+                        what I keep online for the community.
+                    </p>
+                </div>
+
+                <div class="host-machine" id="hostMachine">
+                    <div class="host-machine-head">
+                        <span class="host-machine-id">
+                            <svg
+                                aria-hidden="true"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect height="16" rx="2" width="16" x="4" y="4" />
+                                <rect height="6" width="6" x="9" y="9" />
+                                <path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2" />
+                            </svg>
+                            relaxy-pi
+                        </span>
+                        <a class="host-readout-link" href="https://uptime.relaxy.xyz"
+                            >Click to see historical/current uptime</a
+                        >
+                    </div>
+                    <dl class="host-machine-specs">
+                        <div class="host-spec">
+                            <dt>OS</dt>
+                            <dd data-pi="os">Void Linux</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>Kernel</dt>
+                            <dd data-pi="kernel">-</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>Arch</dt>
+                            <dd data-pi="arch">aarch64</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>CPU</dt>
+                            <dd data-pi="cores">4 cores</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>CPU load</dt>
+                            <dd data-pi="load">-</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>Memory</dt>
+                            <dd data-pi="mem">7.6 GB</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>Uptime</dt>
+                            <dd data-pi="uptime">-</dd>
+                        </div>
+                        <div class="host-spec">
+                            <dt>CPU temp</dt>
+                            <dd data-pi="temp">-</dd>
+                        </div>
+                        <div class="host-spec is-bot-host">
+                            <dt>Relaxy! runs on</dt>
+                            <dd data-pi="botHost">-</dd>
+                        </div>
+                        <div class="host-spec is-bot-host">
+                            <dt>Servers</dt>
+                            <dd data-pi="botGuilds">-</dd>
+                        </div>
+                        <div class="host-spec is-bot-host">
+                            <dt>Clusters</dt>
+                            <dd data-pi="botClusters">-</dd>
+                        </div>
+                        <div class="host-spec is-bot-host">
+                            <dt>Music queues</dt>
+                            <dd data-pi="botPlayers">-</dd>
+                        </div>
+                    </dl>
+                    <p class="host-machine-services">
+                        Runs <b>8</b> services: Relaxy! bot, this website, Matrix server, CDN, Minecraft server, TOR IRC
+                        chat, ADSR and the Dashboard.
+                    </p>
+                </div>
+
+                <div class="node-grid">
+                    <a class="node-card" data-health="website" draggable="false" href="/subpages/technical">
+                        <span class="node-online">online!</span>
+                        <span class="node-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect height="14" rx="2" width="20" x="2" y="3" />
+                                <path d="M8 21h8M12 17v4" /></svg
+                        ></span>
+                        <h3 class="node-name">The website</h3>
+                        <p class="node-domain">relaxy.xyz</p>
+                        <p class="node-desc">
+                            This page you're on right now. Built to load as fast as possible, still won't beat the
+                            original one hahaha. (I hate modern bloated frameworks)
+                        </p>
+                        <span class="node-go">How it's built</span>
+                    </a>
+
+                    <a class="node-card" data-health="matrix" draggable="false" href="/subpages/matrix">
+                        <span class="node-online">online!</span>
+                        <span class="node-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg
+                        ></span>
+                        <h3 class="node-name">Matrix chat</h3>
+                        <p class="node-domain">matrix.relaxy.xyz</p>
+                        <p class="node-desc">
+                            My own private, encrypted Matrix homeserver. Make an account and hang out. Made especially
+                            to circumvent EU chat control.
+                        </p>
+                        <span class="node-go">Join the server</span>
+                    </a>
+
+                    <a class="node-card" data-health="cdn" draggable="false" href="/subpages/cdn">
+                        <span class="node-online">online!</span>
+                        <span class="node-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle cx="12" cy="12" r="10" />
+                                <path
+                                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                                /></svg
+                        ></span>
+                        <h3 class="node-name">The CDN</h3>
+                        <p class="node-domain">cdn.relaxy.xyz</p>
+                        <p class="node-desc">
+                            A self-run content delivery network. Every image, asset and file the bot and site use is
+                            served from here.
+                        </p>
+                        <span class="node-go">Browse the CDN</span>
+                    </a>
+
+                    <a class="node-card" data-health="minecraft" draggable="false" href="/subpages/minecraft">
+                        <span class="node-online">online!</span>
+                        <span class="node-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12 2 21 7v10l-9 5-9-5V7z" />
+                                <path d="M12 12 21 7M12 12v10M12 12 3 7" />
+                                <path d="M3 10 12 15 21 10" /></svg
+                        ></span>
+                        <h3 class="node-name">Minecraft</h3>
+                        <p class="node-domain">minecraft.relaxy.xyz</p>
+                        <p class="node-desc">
+                            A Minecraft Beta 1.7.3 server running the Beta Unleashed 2.0 modpack. Old-school simple
+                            survival and building :)
+                        </p>
+                        <span class="node-go">How to join</span>
+                    </a>
+
+                    <a class="node-card" data-health="dashboard" draggable="false" href="/subpages/dashboard">
+                        <span class="node-online">online!</span>
+                        <span class="node-icon"
+                            ><svg
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect height="9" rx="1" width="7" x="3" y="3" />
+                                <rect height="5" rx="1" width="7" x="14" y="3" />
+                                <rect height="9" rx="1" width="7" x="14" y="12" />
+                                <rect height="5" rx="1" width="7" x="3" y="16" /></svg
+                        ></span>
+                        <h3 class="node-name">The dashboard</h3>
+                        <p class="node-domain">dashboard.relaxy.xyz</p>
+                        <p class="node-desc">
+                            A web control panel to configure Relaxy! for your server without touching a single command.
+                        </p>
+                        <span class="node-go">Take a peek</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section" id="commands">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Commands</p>
+                    <h2>What Relaxy! can do</h2>
+                    <p>
+                        <span id="cmd-total">...not loaded</span> commands across five categories. Most work as both the
+                        = prefix and / slash commands. You can also set your own prefixes if you like.
+                    </p>
+                </div>
+                <div class="card reveal" id="cmd-grid"></div>
+            </section>
+
+            <section class="section" id="lifeline">
+                <div class="card patreon-section reveal">
+                    <img
+                        draggable="false"
+                        alt="Relaxy! Mommy"
+                        class="patreon-image left-image"
+                        decoding="async"
+                        height="150"
+                        loading="lazy"
+                        src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute2.webp"
+                        width="150"
+                    />
+                    <div class="patreon-content">
+                        <p class="eyebrow">Support</p>
+                        <h2>Relaxy!'s LifeLine</h2>
+                        <p>
+                            Support the continued development of Relaxy! Get custom commands, suggestion priority and
+                            more.
+                        </p>
+                        <a
+                            class="kofi-button"
+                            draggable="false"
+                            href="https://ko-fi.com/mattfor"
+                            rel="noopener"
+                            target="_blank"
+                            ><span>Support on Ko-fi</span> <span aria-hidden="true" class="kofi-heart">❤️</span></a
+                        >
+                    </div>
+                    <img
+                        draggable="false"
+                        alt="Relaxy! Femboy"
+                        class="patreon-image right-image"
+                        decoding="async"
+                        height="150"
+                        loading="lazy"
+                        src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp"
+                        width="150"
+                    />
+                </div>
+            </section>
+
+            <section class="section" id="support">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Community Stuff</p>
+                    <h2>Have questions, need help, or just want to talk 'n' hang out?</h2>
+                    <p class="lead-wide">
+                        Hop into the Discord or my own Matrix server for real-time help, or check Relaxy! out on top.gg
+                        / DBL.
+                    </p>
+                </div>
+                <div class="support-topgg-container reveal">
+                    <section class="card support-section">
+                        <h2>Join the support server</h2>
+                        <a
+                            class="invite-button"
+                            href="https://www.discord.gg/xRAGVePxk6"
+                            rel="noopener"
+                            style="font-size: 1.1rem"
+                            target="_blank"
+                            >Join Relaxy!'s Requests!</a
+                        >
+                        <iframe
+                            class="widget-frame"
+                            loading="lazy"
+                            referrerpolicy="no-referrer"
+                            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                            src="https://discord.com/widget?id=1034514185922564106&theme=dark"
+                            title="Relaxy! Discord support server"
+                        ></iframe>
+                    </section>
+                    <section class="card support-section">
+                        <svg class="matrix-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
+                            <g class="ma-links">
+                                <line data-a="h" data-b="0" x1="110" y1="62" x2="34" y2="30" />
+                                <line data-a="h" data-b="1" x1="110" y1="62" x2="186" y2="34" />
+                                <line data-a="h" data-b="2" x1="110" y1="62" x2="26" y2="96" />
+                                <line data-a="h" data-b="3" x1="110" y1="62" x2="194" y2="98" />
+                                <line data-a="h" data-b="4" x1="110" y1="62" x2="108" y2="16" />
+                                <line data-a="h" data-b="5" x1="110" y1="62" x2="150" y2="112" />
+                                <line data-a="h" data-b="6" x1="110" y1="62" x2="70" y2="112" />
+                                <line class="b" data-a="0" data-b="4" x1="34" y1="30" x2="108" y2="16" />
+                                <line class="b" data-a="1" data-b="3" x1="186" y1="34" x2="194" y2="98" />
+                                <line class="b" data-a="2" data-b="6" x1="26" y1="96" x2="70" y2="112" />
+                            </g>
+                            <g class="ma-nodes">
+                                <circle data-node="0" cx="34" cy="30" r="5.5" class="ma-pulse" />
+                                <circle data-node="1" cx="186" cy="34" r="5.5" class="b" />
+                                <circle data-node="2" cx="26" cy="96" r="5" class="b ma-pulse d" />
+                                <circle data-node="3" cx="194" cy="98" r="5.5" />
+                                <circle data-node="4" cx="108" cy="16" r="5" class="ma-pulse d" />
+                                <circle data-node="5" cx="150" cy="112" r="5.5" class="b" />
+                                <circle data-node="6" cx="70" cy="112" r="5" class="ma-pulse" />
+                            </g>
+                            <circle class="ma-hub" cx="110" cy="62" r="14" />
+                            <g class="ma-lock">
+                                <path class="ma-shackle" d="M104 59 v-3 a6 6 0 0 1 12 0 v3" />
+                                <rect x="102" y="59" width="16" height="13" rx="2.5" />
+                                <circle class="ma-keyhole" cx="110" cy="65" r="1.9" />
+                            </g>
+                            <circle class="ma-lock-hit" cx="110" cy="62" r="15" />
+                            <g class="ma-grabs">
+                                <circle class="ma-grab" data-grab="0" cx="34" cy="30" r="13" />
+                                <circle class="ma-grab" data-grab="1" cx="186" cy="34" r="13" />
+                                <circle class="ma-grab" data-grab="2" cx="26" cy="96" r="13" />
+                                <circle class="ma-grab" data-grab="3" cx="194" cy="98" r="13" />
+                                <circle class="ma-grab" data-grab="4" cx="108" cy="16" r="13" />
+                                <circle class="ma-grab" data-grab="5" cx="150" cy="112" r="13" />
+                                <circle class="ma-grab" data-grab="6" cx="70" cy="112" r="13" />
+                            </g>
+                        </svg>
+                        <h2>Chat on my Matrix server</h2>
+                        <p>
+                            A self-hosted, end-to-end encrypted homeserver. No big tech in the middle, no ads, no
+                            tracking. (unlike Discord...)
+                        </p>
+                        <a
+                            class="invite-button"
+                            href="https://matrix.relaxy.xyz/login"
+                            rel="noopener"
+                            style="font-size: 1.1rem"
+                            target="_blank"
+                            >Join Relaxy!'s Matrix</a
+                        >
+                        <a href="/subpages/matrix" style="font-weight: 600">Learn more about it</a>
+                    </section>
+                </div>
+                <div class="support-topgg-container reveal" style="margin-top: var(--space-5)">
+                    <section class="card topgg-section">
+                        <a
+                            class="topgg-link"
+                            href="https://top.gg/bot/775358898088968202"
+                            rel="noopener"
+                            target="_blank"
+                        >
+                            <h2>Find Relaxy! on top.gg</h2>
+                        </a>
+                        <p>And better yet - vote for Relaxy!</p>
+                        <svg class="topgg-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
+                            <defs>
+                                <path
+                                    id="tg-star-shape"
+                                    d="M0,-6.5 L1.9,-2 L6.5,-1.8 L3,1.4 L4.2,6 L0,3.3 L-4.2,6 L-3,1.4 L-6.5,-1.8 L-1.9,-2 Z"
+                                />
+                            </defs>
+                            <line class="tg-base" x1="14" y1="112" x2="206" y2="112" />
+                            <g class="tg-bar is-top" data-bar="0" transform="translate(22 0)">
+                                <rect class="tg-bar-plate" x="0" y="30" width="26" height="82" rx="6" />
+                                <g class="tg-star">
+                                    <use href="#tg-star-shape" x="13" y="19" />
+                                </g>
+                            </g>
+                            <g class="tg-bar" data-bar="1" transform="translate(58 0)">
+                                <rect class="tg-bar-plate" x="0" y="44" width="26" height="68" rx="6" />
+                                <g class="tg-star">
+                                    <use href="#tg-star-shape" x="13" y="33" />
+                                </g>
+                            </g>
+                            <g class="tg-bar" data-bar="2" transform="translate(94 0)">
+                                <rect class="tg-bar-plate" x="0" y="54" width="26" height="58" rx="6" />
+                                <g class="tg-star">
+                                    <use href="#tg-star-shape" x="13" y="43" />
+                                </g>
+                            </g>
+                            <g class="tg-bar" data-bar="3" transform="translate(130 0)">
+                                <rect class="tg-bar-plate" x="0" y="62" width="26" height="50" rx="6" />
+                                <g class="tg-star">
+                                    <use href="#tg-star-shape" x="13" y="51" />
+                                </g>
+                            </g>
+                            <g class="tg-bar" data-bar="4" transform="translate(166 0)">
+                                <rect class="tg-bar-plate" x="0" y="68" width="26" height="44" rx="6" />
+                                <g class="tg-star">
+                                    <use href="#tg-star-shape" x="13" y="57" />
+                                </g>
+                            </g>
+                        </svg>
+                        <a
+                            class="invite-button"
+                            href="https://top.gg/bot/775358898088968202/vote"
+                            rel="noopener"
+                            style="font-size: 1.1rem"
+                            target="_blank"
+                            >Vote for Relaxy!</a
+                        >
+                    </section>
+                    <section class="card botlist-section">
+                        <a
+                            class="botlist-link"
+                            href="https://discordbotlist.com/bots/relaxy"
+                            rel="noopener"
+                            target="_blank"
+                        >
+                            <h2>Find Relaxy! on Discord Bot List</h2>
+                        </a>
+                        <p>Another place to vote. Every upvote helps people find Relaxy!</p>
+                        <svg class="botlist-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
+                            <g class="bl-row is-top" data-row="0" transform="translate(0 14)">
+                                <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8" />
+                                <circle class="bl-avatar" cx="44" cy="15" r="8" />
+                                <rect class="bl-line" x="60" y="9" width="72" height="4" rx="2" />
+                                <rect class="bl-line dim" x="60" y="18" width="46" height="4" rx="2" />
+                                <g class="bl-vote">
+                                    <circle cx="172" cy="15" r="11" />
+                                    <path class="bl-chevron" d="M167 18 l5 -6 l5 6" />
+                                </g>
+                            </g>
+                            <g class="bl-row" data-row="1" transform="translate(0 50)">
+                                <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8" />
+                                <circle class="bl-avatar b" cx="44" cy="15" r="8" />
+                                <rect class="bl-line" x="60" y="9" width="62" height="4" rx="2" />
+                                <rect class="bl-line dim" x="60" y="18" width="40" height="4" rx="2" />
+                                <g class="bl-vote">
+                                    <circle cx="172" cy="15" r="11" />
+                                    <path class="bl-chevron" d="M167 18 l5 -6 l5 6" />
+                                </g>
+                            </g>
+                            <g class="bl-row" data-row="2" transform="translate(0 86)">
+                                <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8" />
+                                <circle class="bl-avatar b" cx="44" cy="15" r="8" />
+                                <rect class="bl-line" x="60" y="9" width="66" height="4" rx="2" />
+                                <rect class="bl-line dim" x="60" y="18" width="36" height="4" rx="2" />
+                                <g class="bl-vote">
+                                    <circle cx="172" cy="15" r="11" />
+                                    <path class="bl-chevron" d="M167 18 l5 -6 l5 6" />
+                                </g>
+                            </g>
+                        </svg>
+                        <a
+                            class="invite-button"
+                            href="https://discordbotlist.com/bots/relaxy/upvote"
+                            rel="noopener"
+                            style="font-size: 1.1rem"
+                            target="_blank"
+                            >Upvote Relaxy!</a
+                        >
+                    </section>
+                </div>
+            </section>
+        </main>
+
+        <div id="subpages-bar"></div>
+
+        <aside class="relaxy-coach" id="relaxyCoach" hidden>
+            <div class="relaxy-coach-panel">
+                <span class="relaxy-coach-resize" aria-hidden="true"></span>
+                <p class="relaxy-coach-hint">
+                    Psst! <strong>Hover</strong> over any command to peek at what it does, click on it to make sure it
+                    doesn't disappear. Or <strong>click me</strong> to quickly search for a specific command! <br />
+                    <strong>Double-click me</strong> to tuck me away.
+                </p>
+                <div class="relaxy-coach-search">
+                    <input
+                        class="relaxy-coach-input"
+                        type="text"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Search commands"
+                        placeholder="Type a command name to learn more about it..."
+                    />
+                    <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
                 </div>
             </div>
-        </section>
-    </div>
+            <img
+                draggable="false"
+                class="relaxy-coach-avatar"
+                alt="Relaxy!"
+                title="Click to search Relaxy!'s commands - double-click to hide or show me"
+                decoding="async"
+                height="480"
+                width="480"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp"
+            />
+        </aside>
 
-    <section class="section" id="internals">
-        <div class="section-head reveal">
-            <p class="eyebrow">Under the hood</p>
-            <h2>How it's built</h2>
-            <p>A lot of careful work went into ensuring Relaxy! has the highest uptime possible. I've implemented a lot of redundancies and fail-over systems to make sure that even if something
-                breaks, it's automatically corrected.</p>
-        </div>
-        <div class="eng-grid">
-            <article class="card card-hover eng-card reveal">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="7"
-                                                                                                                                                                                           rx="1"
-                                                                                                                                                                                           width="7"
-                                                                                                                                                                                           x="3" y="3"/><rect
-                        height="7" rx="1" width="7" x="14" y="3"/><rect height="7" rx="1" width="7" x="14" y="14"/><rect height="7" rx="1" width="7" x="3" y="14"/></svg></span>
-                <h3>Hybrid-sharding clusters</h3>
-                <p>Shards are grouped into clusters supervised by a manager process, so Relaxy! can quickly scale and adjust to server demands.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="60">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-                <h3>Self-repair systems</h3>
-                <p>An ADSR diagnostic system watches error rates and silently restarts misbehaving shards; a heartbeat manager revives unresponsive and/or broken clusters.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="120">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg></span>
-                <h3>Rolling re-cluster</h3>
-                <p>Updates roll out shard-by-shard in real time, without a global restart (total outage), no interruption to your server.</p>
-            </article>
-            <article class="card card-hover eng-card reveal">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12"
-                                                                                                                                                                                              cy="5"
-                                                                                                                                                                                              rx="9"
-                                                                                                                                                                                              ry="3"/><path
-                        d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
-                <h3>Database Resilience</h3>
-                <p>Writes are queued and saved periodically on separate worker threads. No updates will be lost as there is an extensive multi-shard / dashboard cache system in place.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="60">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
-                <h3>Hot reloading</h3>
-                <p>Modules reload from source on the fly, so I can deliver fixes and features without taking the bot, or the dashboard offline.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="120">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span>
-                <h3>Real-time monitoring</h3>
-                <p>A live monitoring system tracks module health and uptime so downtime stays minimal, <a href="https://uptime.relaxy.xyz">click to check it out</a>.</p>
-            </article>
-            <article class="card card-hover eng-card reveal">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="16"
-                                                                                                                                                                                           rx="2"
-                                                                                                                                                                                           width="16"
-                                                                                                                                                                                           x="4" y="4"/><rect
-                        height="6" width="6" x="9" y="9"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path
-                        d="M9 20v2"/></svg></span>
-                <h3>System level optimizations</h3>
-                <p>I've tuned the machine everything is running on specifically for the bot, it has total I/O and network priority. Helps with music / command response times.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="60">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
-                <h3>Custom rate limiter</h3>
-                <p>Discord.js's in-built limiter was not enough. I've built my own that synchronizes across shards, it can actually be used for any limitable action, pretty handy.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="120">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path
-                        d="m9 12 2 2 4-4"/></svg></span>
-                <h3>Anti-evasion censoring</h3>
-                <p>The censoring system normalizes look-alike characters, spacing tricks and zero-width junk with NLP, so filter-dodging still gets caught, even on edited messages and images as well!
-                    For extreme cases tesseract-ocr (grey-scaling) and 256bit perceptual hash entropy matching is used. (f.e Mr Beast scam images)</p>
-            </article>
-            <article class="card card-hover eng-card reveal">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
-                <h3>Full music engine</h3>
-                <p>Built on a custom fork of discord-player 7, rewritten into this codebase's style and maintained by me since. Request a YouTube link, type plain search keywords or queue an entire
-                    playlist, SoundCloud and Spotify resolve too. A live queue, audio filters, history, with smart buffering for a faster playback.</p>
-            </article>
-            <article class="card card-hover eng-card reveal" data-reveal-delay="60">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="18"
-                                                                                                                                                                                           rx="2"
-                                                                                                                                                                                           width="18"
-                                                                                                                                                                                           x="3" y="3"/><circle
-                        cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></span>
-                <h3>On-the-fly image generation</h3>
-                <p>Dozens of image and GIF commands are rendered locally with canvas, canvacord and sharp with no external services involved.</p>
-            </article>
-            <article class="card card-hover eng-card reveal">
-                <span aria-hidden="true" class="eng-icon"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path
-                        d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></span>
-                <h3>Voice recording</h3>
-                <p>Per-user voice capture writes separate streams for each speaker, so recordings stay clean and individually usable.</p>
-            </article>
-        </div>
-    </section>
+        <footer class="footer">
+            <img
+                draggable="false"
+                alt=""
+                aria-hidden="true"
+                class="footer-relaxy"
+                decoding="async"
+                height="3072"
+                loading="lazy"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
+                width="2304"
+            />
+            <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+            <p class="footer-links">
+                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot;
+                <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
+                <a href="https://uptime.relaxy.xyz">Service uptime status</a>
+            </p>
+        </footer>
 
-    <section class="section" id="ecosystem">
-        <div class="section-head">
-            <p class="eyebrow">Self-hosted</p>
-            <h2>One RaspberryPI to rule them all</h2>
-            <p>Relaxy! and everything within the ecosystem runs on a single mini computer on my desk. Here's what I keep online for the community.</p>
-        </div>
-
-        <div class="host-machine" id="hostMachine">
-            <div class="host-machine-head">
-                <span class="host-machine-id">
-                    <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="16"
-                                                                                                                                                                        x="4" y="4"/><rect height="6"
-                                                                                                                                                                                           width="6"
-                                                                                                                                                                                           x="9" y="9"/><path
-                            d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
-                    relaxy-pi
-                </span> <a class="host-readout-link" href="https://uptime.relaxy.xyz">Click to see historical/current uptime</a>
-            </div>
-            <dl class="host-machine-specs">
-                <div class="host-spec">
-                    <dt>OS</dt>
-                    <dd data-pi="os">Void Linux</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>Kernel</dt>
-                    <dd data-pi="kernel">-</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>Arch</dt>
-                    <dd data-pi="arch">aarch64</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>CPU</dt>
-                    <dd data-pi="cores">4 cores</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>CPU load</dt>
-                    <dd data-pi="load">-</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>Memory</dt>
-                    <dd data-pi="mem">7.6 GB</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>Uptime</dt>
-                    <dd data-pi="uptime">-</dd>
-                </div>
-                <div class="host-spec">
-                    <dt>CPU temp</dt>
-                    <dd data-pi="temp">-</dd>
-                </div>
-                <div class="host-spec is-bot-host">
-                    <dt>Relaxy! runs on</dt>
-                    <dd data-pi="botHost">-</dd>
-                </div>
-                <div class="host-spec is-bot-host">
-                    <dt>Servers</dt>
-                    <dd data-pi="botGuilds">-</dd>
-                </div>
-                <div class="host-spec is-bot-host">
-                    <dt>Clusters</dt>
-                    <dd data-pi="botClusters">-</dd>
-                </div>
-                <div class="host-spec is-bot-host">
-                    <dt>Music queues</dt>
-                    <dd data-pi="botPlayers">-</dd>
-                </div>
-            </dl>
-            <p class="host-machine-services">Runs <b>8</b> services: Relaxy! bot, this website, Matrix server, CDN, Minecraft server, TOR IRC chat, ADSR and the Dashboard.</p>
-        </div>
-
-        <div class="node-grid">
-            <a class="node-card" data-health="website" draggable="false" href="/subpages/technical"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none"
-                                                                                                                                                                           stroke="currentColor"
-                                                                                                                                                                           stroke-linecap="round"
-                                                                                                                                                                           stroke-linejoin="round"
-                                                                                                                                                                           stroke-width="2"
-                                                                                                                                                                           viewBox="0 0 24 24"><rect
-                    height="14" rx="2" width="20" x="2" y="3"/><path d="M8 21h8M12 17v4"/></svg></span>
-                <h3 class="node-name">The website</h3>
-                <p class="node-domain">relaxy.xyz</p>
-                <p class="node-desc">This page you're on right now. Built to load as fast as possible, still won't beat the original one hahaha. (I hate modern bloated frameworks)</p>
-                <span class="node-go">How it's built</span> </a>
-
-            <a class="node-card" data-health="matrix" draggable="false" href="/subpages/matrix"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none" stroke="currentColor"
-                                                                                                                                                                       stroke-linecap="round"
-                                                                                                                                                                       stroke-linejoin="round"
-                                                                                                                                                                       stroke-width="2"
-                                                                                                                                                                       viewBox="0 0 24 24"><path
-                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-                <h3 class="node-name">Matrix chat</h3>
-                <p class="node-domain">matrix.relaxy.xyz</p>
-                <p class="node-desc">My own private, encrypted Matrix homeserver. Make an account and hang out. Made especially to circumvent EU chat control.</p>
-                <span class="node-go">Join the server</span> </a>
-
-            <a class="node-card" data-health="cdn" draggable="false" href="/subpages/cdn"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none" stroke="currentColor"
-                                                                                                                                                                 stroke-linecap="round"
-                                                                                                                                                                 stroke-linejoin="round"
-                                                                                                                                                                 stroke-width="2" viewBox="0 0 24 24"><circle
-                    cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
-                <h3 class="node-name">The CDN</h3>
-                <p class="node-domain">cdn.relaxy.xyz</p>
-                <p class="node-desc">A self-run content delivery network. Every image, asset and file the bot and site use is served from here.</p>
-                <span class="node-go">Browse the CDN</span> </a>
-
-            <a class="node-card" data-health="minecraft" draggable="false" href="/subpages/minecraft"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none"
-                                                                                                                                                                             stroke="currentColor"
-                                                                                                                                                                             stroke-linecap="round"
-                                                                                                                                                                             stroke-linejoin="round"
-                                                                                                                                                                             stroke-width="2"
-                                                                                                                                                                             viewBox="0 0 24 24"><path
-                    d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 12 21 7M12 12v10M12 12 3 7"/><path d="M3 10 12 15 21 10"/></svg></span>
-                <h3 class="node-name">Minecraft</h3>
-                <p class="node-domain">minecraft.relaxy.xyz</p>
-                <p class="node-desc">A Minecraft Beta 1.7.3 server running the Beta Unleashed 2.0 modpack. Old-school simple survival and building :)</p>
-                <span class="node-go">How to join</span> </a>
-
-            <a class="node-card" data-health="dashboard" draggable="false" href="/subpages/dashboard"> <span class="node-online">online!</span> <span class="node-icon"><svg fill="none"
-                                                                                                                                                                             stroke="currentColor"
-                                                                                                                                                                             stroke-linecap="round"
-                                                                                                                                                                             stroke-linejoin="round"
-                                                                                                                                                                             stroke-width="2"
-                                                                                                                                                                             viewBox="0 0 24 24"><rect
-                    height="9" rx="1" width="7" x="3" y="3"/><rect height="5" rx="1" width="7" x="14" y="3"/><rect height="9" rx="1" width="7" x="14" y="12"/><rect height="5" rx="1" width="7" x="3"
-                                                                                                                                                                    y="16"/></svg></span>
-                <h3 class="node-name">The dashboard</h3>
-                <p class="node-domain">dashboard.relaxy.xyz</p>
-                <p class="node-desc">A web control panel to configure Relaxy! for your server without touching a single command.</p>
-                <span class="node-go">Take a peek</span> </a>
-        </div>
-    </section>
-
-    <section class="section" id="commands">
-        <div class="section-head reveal">
-            <p class="eyebrow">Commands</p>
-            <h2>What Relaxy! can do</h2>
-            <p><span id="cmd-total">...not loaded</span> commands across five categories. Most work as both the = prefix and / slash commands. You can also set your own prefixes if you like.</p>
-        </div>
-        <div class="card reveal" id="cmd-grid"></div>
-    </section>
-
-    <section class="section" id="lifeline">
-        <div class="card patreon-section reveal">
-            <img draggable="false" alt="Relaxy! Mommy" class="patreon-image left-image" decoding="async" height="150" loading="lazy"
-                 src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute2.webp" width="150">
-            <div class="patreon-content">
-                <p class="eyebrow">Support</p>
-                <h2>Relaxy!'s LifeLine</h2>
-                <p>Support the continued development of Relaxy! Get custom commands, suggestion priority and more.</p>
-                <a class="kofi-button" draggable="false" href="https://ko-fi.com/mattfor" rel="noopener" target="_blank"><span>Support on Ko-fi</span> <span aria-hidden="true"
-                                                                                                                                                            class="kofi-heart">❤️</span></a>
-            </div>
-            <img draggable="false" alt="Relaxy! Femboy" class="patreon-image right-image" decoding="async" height="150" loading="lazy"
-                 src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp" width="150">
-        </div>
-    </section>
-
-    <section class="section" id="support">
-        <div class="section-head reveal">
-            <p class="eyebrow">Community Stuff</p>
-            <h2>Have questions, need help, or just want to talk 'n' hang out?</h2>
-            <p class="lead-wide">Hop into the Discord or my own Matrix server for real-time help, or check Relaxy! out on top.gg / DBL.</p>
-        </div>
-        <div class="support-topgg-container reveal">
-            <section class="card support-section">
-                <h2>Join the support server</h2>
-                <a class="invite-button" href="https://www.discord.gg/xRAGVePxk6" rel="noopener" style="font-size:1.1rem" target="_blank">Join Relaxy!'s Requests!</a>
-                <iframe class="widget-frame" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                        src="https://discord.com/widget?id=1034514185922564106&theme=dark" title="Relaxy! Discord support server"></iframe>
-            </section>
-            <section class="card support-section">
-                <svg class="matrix-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
-                    <g class="ma-links">
-                        <line data-a="h" data-b="0" x1="110" y1="62" x2="34" y2="30"/>
-                        <line data-a="h" data-b="1" x1="110" y1="62" x2="186" y2="34"/>
-                        <line data-a="h" data-b="2" x1="110" y1="62" x2="26" y2="96"/>
-                        <line data-a="h" data-b="3" x1="110" y1="62" x2="194" y2="98"/>
-                        <line data-a="h" data-b="4" x1="110" y1="62" x2="108" y2="16"/>
-                        <line data-a="h" data-b="5" x1="110" y1="62" x2="150" y2="112"/>
-                        <line data-a="h" data-b="6" x1="110" y1="62" x2="70" y2="112"/>
-                        <line class="b" data-a="0" data-b="4" x1="34" y1="30" x2="108" y2="16"/>
-                        <line class="b" data-a="1" data-b="3" x1="186" y1="34" x2="194" y2="98"/>
-                        <line class="b" data-a="2" data-b="6" x1="26" y1="96" x2="70" y2="112"/>
-                    </g>
-                    <g class="ma-nodes">
-                        <circle data-node="0" cx="34" cy="30" r="5.5" class="ma-pulse"/>
-                        <circle data-node="1" cx="186" cy="34" r="5.5" class="b"/>
-                        <circle data-node="2" cx="26" cy="96" r="5" class="b ma-pulse d"/>
-                        <circle data-node="3" cx="194" cy="98" r="5.5"/>
-                        <circle data-node="4" cx="108" cy="16" r="5" class="ma-pulse d"/>
-                        <circle data-node="5" cx="150" cy="112" r="5.5" class="b"/>
-                        <circle data-node="6" cx="70" cy="112" r="5" class="ma-pulse"/>
-                    </g>
-                    <circle class="ma-hub" cx="110" cy="62" r="14"/>
-                    <g class="ma-lock">
-                        <path class="ma-shackle" d="M104 59 v-3 a6 6 0 0 1 12 0 v3"/>
-                        <rect x="102" y="59" width="16" height="13" rx="2.5"/>
-                        <circle class="ma-keyhole" cx="110" cy="65" r="1.9"/>
-                    </g>
-                    <circle class="ma-lock-hit" cx="110" cy="62" r="15"/>
-                    <g class="ma-grabs">
-                        <circle class="ma-grab" data-grab="0" cx="34" cy="30" r="13"/>
-                        <circle class="ma-grab" data-grab="1" cx="186" cy="34" r="13"/>
-                        <circle class="ma-grab" data-grab="2" cx="26" cy="96" r="13"/>
-                        <circle class="ma-grab" data-grab="3" cx="194" cy="98" r="13"/>
-                        <circle class="ma-grab" data-grab="4" cx="108" cy="16" r="13"/>
-                        <circle class="ma-grab" data-grab="5" cx="150" cy="112" r="13"/>
-                        <circle class="ma-grab" data-grab="6" cx="70" cy="112" r="13"/>
-                    </g>
-                </svg>
-                <h2>Chat on my Matrix server</h2>
-                <p>A self-hosted, end-to-end encrypted homeserver. No big tech in the middle, no ads, no tracking. (unlike Discord...)</p>
-                <a class="invite-button" href="https://matrix.relaxy.xyz/login" rel="noopener" style="font-size:1.1rem" target="_blank">Join Relaxy!'s Matrix</a> <a href="/subpages/matrix"
-                                                                                                                                                                     style="font-weight:600">Learn more
-                about it</a>
-            </section>
-        </div>
-        <div class="support-topgg-container reveal" style="margin-top:var(--space-5)">
-            <section class="card topgg-section">
-                <a class="topgg-link" href="https://top.gg/bot/775358898088968202" rel="noopener" target="_blank">
-                    <h2>Find Relaxy! on top.gg</h2>
-                </a>
-                <p>And better yet - vote for Relaxy!</p>
-                <svg class="topgg-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
-                    <defs>
-                        <path id="tg-star-shape" d="M0,-6.5 L1.9,-2 L6.5,-1.8 L3,1.4 L4.2,6 L0,3.3 L-4.2,6 L-3,1.4 L-6.5,-1.8 L-1.9,-2 Z"/>
-                    </defs>
-                    <line class="tg-base" x1="14" y1="112" x2="206" y2="112"/>
-                    <g class="tg-bar is-top" data-bar="0" transform="translate(22 0)">
-                        <rect class="tg-bar-plate" x="0" y="30" width="26" height="82" rx="6"/>
-                        <g class="tg-star">
-                            <use href="#tg-star-shape" x="13" y="19"/>
-                        </g>
-                    </g>
-                    <g class="tg-bar" data-bar="1" transform="translate(58 0)">
-                        <rect class="tg-bar-plate" x="0" y="44" width="26" height="68" rx="6"/>
-                        <g class="tg-star">
-                            <use href="#tg-star-shape" x="13" y="33"/>
-                        </g>
-                    </g>
-                    <g class="tg-bar" data-bar="2" transform="translate(94 0)">
-                        <rect class="tg-bar-plate" x="0" y="54" width="26" height="58" rx="6"/>
-                        <g class="tg-star">
-                            <use href="#tg-star-shape" x="13" y="43"/>
-                        </g>
-                    </g>
-                    <g class="tg-bar" data-bar="3" transform="translate(130 0)">
-                        <rect class="tg-bar-plate" x="0" y="62" width="26" height="50" rx="6"/>
-                        <g class="tg-star">
-                            <use href="#tg-star-shape" x="13" y="51"/>
-                        </g>
-                    </g>
-                    <g class="tg-bar" data-bar="4" transform="translate(166 0)">
-                        <rect class="tg-bar-plate" x="0" y="68" width="26" height="44" rx="6"/>
-                        <g class="tg-star">
-                            <use href="#tg-star-shape" x="13" y="57"/>
-                        </g>
-                    </g>
-                </svg>
-                <a class="invite-button" href="https://top.gg/bot/775358898088968202/vote" rel="noopener" style="font-size:1.1rem" target="_blank">Vote for Relaxy!</a>
-            </section>
-            <section class="card botlist-section">
-                <a class="botlist-link" href="https://discordbotlist.com/bots/relaxy" rel="noopener" target="_blank">
-                    <h2>Find Relaxy! on Discord Bot List</h2>
-                </a>
-                <p>Another place to vote. Every upvote helps people find Relaxy!</p>
-                <svg class="botlist-art" viewBox="0 0 220 130" fill="none" aria-hidden="true">
-                    <g class="bl-row is-top" data-row="0" transform="translate(0 14)">
-                        <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>
-                        <circle class="bl-avatar" cx="44" cy="15" r="8"/>
-                        <rect class="bl-line" x="60" y="9" width="72" height="4" rx="2"/>
-                        <rect class="bl-line dim" x="60" y="18" width="46" height="4" rx="2"/>
-                        <g class="bl-vote">
-                            <circle cx="172" cy="15" r="11"/>
-                            <path class="bl-chevron" d="M167 18 l5 -6 l5 6"/>
-                        </g>
-                    </g>
-                    <g class="bl-row" data-row="1" transform="translate(0 50)">
-                        <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>
-                        <circle class="bl-avatar b" cx="44" cy="15" r="8"/>
-                        <rect class="bl-line" x="60" y="9" width="62" height="4" rx="2"/>
-                        <rect class="bl-line dim" x="60" y="18" width="40" height="4" rx="2"/>
-                        <g class="bl-vote">
-                            <circle cx="172" cy="15" r="11"/>
-                            <path class="bl-chevron" d="M167 18 l5 -6 l5 6"/>
-                        </g>
-                    </g>
-                    <g class="bl-row" data-row="2" transform="translate(0 86)">
-                        <rect class="bl-plate" x="26" y="0" width="168" height="30" rx="8"/>
-                        <circle class="bl-avatar b" cx="44" cy="15" r="8"/>
-                        <rect class="bl-line" x="60" y="9" width="66" height="4" rx="2"/>
-                        <rect class="bl-line dim" x="60" y="18" width="36" height="4" rx="2"/>
-                        <g class="bl-vote">
-                            <circle cx="172" cy="15" r="11"/>
-                            <path class="bl-chevron" d="M167 18 l5 -6 l5 6"/>
-                        </g>
-                    </g>
-                </svg>
-                <a class="invite-button" href="https://discordbotlist.com/bots/relaxy/upvote" rel="noopener" style="font-size:1.1rem" target="_blank">Upvote Relaxy!</a>
-            </section>
-        </div>
-    </section>
-</main>
-
-<div id="subpages-bar"></div>
-
-<aside class="relaxy-coach" id="relaxyCoach" hidden>
-    <div class="relaxy-coach-panel">
-        <span class="relaxy-coach-resize" aria-hidden="true"></span>
-        <p class="relaxy-coach-hint">
-            Psst! <strong>Hover</strong> over any command to peek at what it does, click on it to make sure it doesn't disappear. Or <strong>click me</strong> to quickly search for a specific command!
-            <br> <strong>Double-click me</strong> to tuck me away. </p>
-        <div class="relaxy-coach-search">
-            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
-            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
-        </div>
-    </div>
-    <img draggable="false" class="relaxy-coach-avatar" alt="Relaxy!" title="Click to search Relaxy!'s commands - double-click to hide or show me" decoding="async" height="480" width="480"
-         src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
-</aside>
-
-<footer class="footer">
-    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" decoding="async" height="3072" loading="lazy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
-         width="2304">
-    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
-    <p class="footer-links">
-        <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot; <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot; <a
-            href="https://uptime.relaxy.xyz">Service uptime status</a>
-    </p>
-</footer>
-
-<script defer src="/dist/js/main/subpagebar.js"></script>
-<script defer src="/dist/main.js"></script>
-<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
-<script defer src="/dist/js/main/enhance.js"></script>
-<script defer src="/dist/js/main/mobilenav.js"></script>
-<script defer src="/dist/js/main/art.js"></script>
-<script defer src="/dist/js/main/hero-stats.js"></script>
-<script defer src="/dist/js/main/feature-pager.js"></script>
-</body>
-
+        <script defer src="/dist/js/main/subpagebar.js"></script>
+        <script defer src="/dist/main.js"></script>
+        <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
+        <script defer src="/dist/js/main/enhance.js"></script>
+        <script defer src="/dist/js/main/mobilenav.js"></script>
+        <script defer src="/dist/js/main/art.js"></script>
+        <script defer src="/dist/js/main/hero-stats.js"></script>
+        <script defer src="/dist/js/main/feature-pager.js"></script>
+    </body>
 </html>

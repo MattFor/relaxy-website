@@ -3,12 +3,10 @@
  * @link https://codeberg.org/MattFor/relaxy-website
  */
 
-(() =>
-{
+(() => {
     const pager = document.getElementById('featurePager');
 
-    if (!pager)
-    {
+    if (!pager) {
         return;
     }
 
@@ -17,99 +15,72 @@
     const dots = Array.from(pager.querySelectorAll('.feature-dot'));
     const hint = pager.querySelector('[data-feature-next]');
 
-    if (!stage || pages.length < 2)
-    {
+    if (!stage || pages.length < 2) {
         return;
     }
 
     let current = 0;
 
-    const show = (index) =>
-    {
+    const show = (index) => {
         const next = (index + pages.length) % pages.length;
 
-        if (next === current)
-        {
+        if (next === current) {
             return;
         }
 
         current = next;
 
-        pages.forEach((page, i) =>
-        {
+        pages.forEach((page, i) => {
             const active = i === current;
 
             page.classList.toggle('is-active', active);
-            page.setAttribute('aria-hidden',
-                active
-                    ? 'false'
-                    : 'true');
+            page.setAttribute('aria-hidden', active ? 'false' : 'true');
         });
 
-        dots.forEach((dot, i) =>
-        {
+        dots.forEach((dot, i) => {
             const active = i === current;
 
             dot.classList.toggle('is-active', active);
-            dot.setAttribute('aria-current',
-                active
-                    ? 'true'
-                    : 'false');
+            dot.setAttribute('aria-current', active ? 'true' : 'false');
         });
     };
 
-    stage.addEventListener('click', () =>
-    {
+    stage.addEventListener('click', () => {
         const selection = window.getSelection();
 
-        if (selection && selection.toString().trim())
-        {
+        if (selection && selection.toString().trim()) {
             return;
         }
 
         show(current + 1);
     });
 
-    dots.forEach((dot, i) =>
-    {
-        dot.addEventListener('click', (event) =>
-        {
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', (event) => {
             event.stopPropagation();
             show(i);
         });
     });
 
-    if (hint)
-    {
-        hint.addEventListener('click', (event) =>
-        {
+    if (hint) {
+        hint.addEventListener('click', (event) => {
             event.stopPropagation();
             show(current + 1);
         });
     }
 
-    pager.addEventListener('keydown', (event) =>
-    {
-        if (event.key === 'ArrowRight')
-        {
+    pager.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
             event.preventDefault();
             show(current + 1);
-        }
-        else if (event.key === 'ArrowLeft')
-        {
+        } else if (event.key === 'ArrowLeft') {
             event.preventDefault();
             show(current - 1);
         }
     });
 
-    pages.forEach((page, i) => page.setAttribute('aria-hidden',
-        i === 0
-            ? 'false'
-            : 'true'));
-    dots.forEach((dot, i) => dot.setAttribute('aria-current',
-        i === 0
-            ? 'true'
-            : 'false'));
+    pages.forEach((page, i) => page.setAttribute('aria-hidden', i === 0 ? 'false' : 'true'));
+    dots.forEach((dot, i) => dot.setAttribute('aria-current', i === 0 ? 'true' : 'false'));
 
     pager.classList.add('is-ready');
 })();

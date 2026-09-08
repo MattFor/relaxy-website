@@ -1,120 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
 
-    <title>Service status</title>
+        <title>Service status</title>
 
-    <meta content="Live and historical uptime for all relaxy.xyz related services." name="description">
-    <meta content="#ff69b4" name="theme-color">
-    <link href="https://uptime.relaxy.xyz/" rel="canonical">
+        <meta content="Live and historical uptime for all relaxy.xyz related services." name="description" />
+        <meta content="#ff69b4" name="theme-color" />
+        <link href="https://uptime.relaxy.xyz/" rel="canonical" />
 
-    <meta content="Service status" property="og:title">
-    <meta content="Live and historical uptime for all relaxy.xyz related services." property="og:description">
-    <meta content="website" property="og:type">
-    <meta content="https://uptime.relaxy.xyz/" property="og:url">
+        <meta content="Service status" property="og:title" />
+        <meta content="Live and historical uptime for all relaxy.xyz related services." property="og:description" />
+        <meta content="website" property="og:type" />
+        <meta content="https://uptime.relaxy.xyz/" property="og:url" />
 
-    <script>
-        try
-        {
-            const stored = localStorage.getItem('theme');
+        <script>
+            try {
+                const stored = localStorage.getItem('theme');
 
-            if (stored === 'light' || (!stored && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches))
-            {
-                document.documentElement.classList.add('light-mode');
+                if (
+                    stored === 'light' ||
+                    (!stored && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+                ) {
+                    document.documentElement.classList.add('light-mode');
+                }
+            } catch (e) {
+                // Storage unavailable
             }
-        }
-        catch (e)
-        {
-            // Storage unavailable
-        }
-    </script>
+        </script>
 
-    <link href="dist/uptime.css" rel="stylesheet">
-</head>
-<body>
-<header class="topbar">
-    <div class="shell topbar-inner">
-        <a class="back-button" href="https://relaxy.xyz">
-            <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M19 12H5"/>
-                <path d="m12 19-7-7 7-7"/>
-            </svg>
-            Back to relaxy.xyz </a>
+        <link href="dist/uptime.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="topbar">
+            <div class="shell topbar-inner">
+                <a class="back-button" href="https://relaxy.xyz">
+                    <svg
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M19 12H5" />
+                        <path d="m12 19-7-7 7-7" />
+                    </svg>
+                    Back to relaxy.xyz
+                </a>
 
-        <nav class="topbar-actions">
-            <button aria-pressed="false" class="theme-button" id="themeButton" type="button">Light Mode</button>
-        </nav>
-    </div>
-</header>
+                <nav class="topbar-actions">
+                    <button aria-pressed="false" class="theme-button" id="themeButton" type="button">Light Mode</button>
+                </nav>
+            </div>
+        </header>
 
-<main class="shell">
-    <section aria-live="polite" class="banner is-loading" id="banner">
-        <div class="banner-icon" aria-hidden="true"></div>
-        <div class="banner-copy">
-            <h1 class="banner-title" id="bannerTitle">Checking current status…</h1>
-            <p class="banner-sub" id="bannerSub">Fetching the latest report from the host.</p>
-        </div>
-    </section>
+        <main class="shell">
+            <section aria-live="polite" class="banner is-loading" id="banner">
+                <div class="banner-icon" aria-hidden="true"></div>
+                <div class="banner-copy">
+                    <h1 class="banner-title" id="bannerTitle">Checking current status…</h1>
+                    <p class="banner-sub" id="bannerSub">Fetching the latest report from the host.</p>
+                </div>
+            </section>
 
-    <section class="stats" id="stats">
-        <div class="stat">
-            <p class="stat-label">Average uptime &middot; <span class="stat-window">90</span> days</p>
-            <p class="stat-value is-wide" id="statUptime">&mdash;</p>
-            <p class="stat-note" id="statUptimeNote">&nbsp;</p>
-        </div>
-        <div class="stat">
-            <p class="stat-label">Average response</p>
-            <p class="stat-value" id="statResponse">&mdash;</p>
-            <p class="stat-note" id="statResponseNote">&nbsp;</p>
-        </div>
-        <div class="stat">
-            <p class="stat-label">Services responding</p>
-            <p class="stat-value" id="statServices">&mdash;</p>
-            <p class="stat-note" id="statServicesNote">&nbsp;</p>
-        </div>
-    </section>
+            <section class="stats" id="stats">
+                <div class="stat">
+                    <p class="stat-label">Average uptime &middot; <span class="stat-window">90</span> days</p>
+                    <p class="stat-value is-wide" id="statUptime">&mdash;</p>
+                    <p class="stat-note" id="statUptimeNote">&nbsp;</p>
+                </div>
+                <div class="stat">
+                    <p class="stat-label">Average response</p>
+                    <p class="stat-value" id="statResponse">&mdash;</p>
+                    <p class="stat-note" id="statResponseNote">&nbsp;</p>
+                </div>
+                <div class="stat">
+                    <p class="stat-label">Services responding</p>
+                    <p class="stat-value" id="statServices">&mdash;</p>
+                    <p class="stat-note" id="statServicesNote">&nbsp;</p>
+                </div>
+            </section>
 
-    <section class="active-incidents" hidden id="activeIncidents"></section>
+            <section class="active-incidents" hidden id="activeIncidents"></section>
 
-    <section class="active-incidents" hidden id="recentlyResolved"></section>
+            <section class="active-incidents" hidden id="recentlyResolved"></section>
 
-    <section class="panel">
-        <div class="panel-head">
-            <h2 class="panel-title">Services</h2>
-            <p class="panel-note"><span id="windowLabel">90</span> days &middot; each bar equals to a single day, UTC</p>
-        </div>
+            <section class="panel">
+                <div class="panel-head">
+                    <h2 class="panel-title">Services</h2>
+                    <p class="panel-note">
+                        <span id="windowLabel">90</span> days &middot; each bar equals to a single day, UTC
+                    </p>
+                </div>
 
-        <div id="services">
-            <p class="empty">Loading service history…</p>
-        </div>
+                <div id="services">
+                    <p class="empty">Loading service history…</p>
+                </div>
 
-        <div class="legend">
-            <span class="legend-item"><i class="swatch is-up"></i>No downtime</span> <span class="legend-item"><i class="swatch is-partial"></i>Brief outage</span> <span class="legend-item"><i
-                class="swatch is-down"></i>Significant outage</span> <span class="legend-item"><i class="swatch is-restart"></i>Host restart</span> <span class="legend-item"><i
-                class="swatch is-nodata"></i>Not monitored</span>
-        </div>
-    </section>
+                <div class="legend">
+                    <span class="legend-item"><i class="swatch is-up"></i>No downtime</span>
+                    <span class="legend-item"><i class="swatch is-partial"></i>Brief outage</span>
+                    <span class="legend-item"><i class="swatch is-down"></i>Significant outage</span>
+                    <span class="legend-item"><i class="swatch is-restart"></i>Host restart</span>
+                    <span class="legend-item"><i class="swatch is-nodata"></i>Not monitored</span>
+                </div>
+            </section>
 
-    <section class="panel">
-        <div class="panel-head">
-            <h2 class="panel-title">Incident history</h2>
-            <p class="panel-note" id="incidentCount"></p>
-        </div>
+            <section class="panel">
+                <div class="panel-head">
+                    <h2 class="panel-title">Incident history</h2>
+                    <p class="panel-note" id="incidentCount"></p>
+                </div>
 
-        <div id="incidents">
-            <p class="empty">Loading incidents…</p>
-        </div>
-    </section>
-</main>
+                <div id="incidents">
+                    <p class="empty">Loading incidents…</p>
+                </div>
+            </section>
+        </main>
 
-<footer class="footer shell">
-    <p id="stamp">&nbsp;</p>
-    <p class="footer-note">
-        Uptime and response times are measured by probing each service every 10 seconds. Periods where the monitor was down are shown as "not monitored".</p>
-</footer>
+        <footer class="footer shell">
+            <p id="stamp">&nbsp;</p>
+            <p class="footer-note">
+                Uptime and response times are measured by probing each service every 10 seconds. Periods where the
+                monitor was down are shown as "not monitored".
+            </p>
+        </footer>
 
-<script src="dist/uptime.js"></script>
-</body>
+        <script src="dist/uptime.js"></script>
+    </body>
 </html>

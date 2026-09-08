@@ -1,110 +1,86 @@
-(() =>
-{
+(() => {
     const grid = document.getElementById('system-stats');
     const stamp = document.getElementById('system-stats-stamp');
-    if (!grid || !('fetch' in window))
-    {
+    if (!grid || !('fetch' in window)) {
         return;
     }
 
     const ENDPOINT = '/status.json';
     const REFRESH_MS = 15000;
 
-    const pad = (n) => (n < 10
-        ? '0' + n
-        : '' + n);
+    const pad = (n) => (n < 10 ? '0' + n : '' + n);
 
-    const fmtUptime = (s) =>
-    {
+    const fmtUptime = (s) => {
         s = Math.max(0, Math.floor(s));
         const d = Math.floor(s / 86400);
         const h = Math.floor((s % 86400) / 3600);
         const m = Math.floor((s % 3600) / 60);
-        return (d > 0
-            ? d + 'd '
-            : '') + pad(h) + 'h ' + pad(m) + 'm';
+        return (d > 0 ? d + 'd ' : '') + pad(h) + 'h ' + pad(m) + 'm';
     };
 
-    const num = (v, digits) => (typeof v === 'number'
-        ? v.toFixed(digits == null
-            ? 0
-            : digits)
-        : null);
+    const num = (v, digits) => (typeof v === 'number' ? v.toFixed(digits == null ? 0 : digits) : null);
 
     const tileDefs = [
         {
             label: 'Uptime',
-            get:   (d) => (typeof d.uptimeSeconds === 'number'
-                ? fmtUptime(d.uptimeSeconds)
-                : null)
+            get: (d) => (typeof d.uptimeSeconds === 'number' ? fmtUptime(d.uptimeSeconds) : null)
         },
         {
             label: 'CPU load',
-            get:   (d) => (d.cpu && num(d.cpu.load) != null
-                ? num(d.cpu.load) + '%'
-                : null)
+            get: (d) => (d.cpu && num(d.cpu.load) != null ? num(d.cpu.load) + '%' : null)
         },
         {
             label: 'CPU temp',
-            get:   (d) => (num(d.temperatureC) != null
-                ? num(d.temperatureC) + '°C'
-                : null)
+            get: (d) => (num(d.temperatureC) != null ? num(d.temperatureC) + '°C' : null)
         },
         {
             label: 'Memory',
-            get:   (d) => (d.memory && num(d.memory.percent) != null
-                ? num(d.memory.percent) + '%'
-                : null)
+            get: (d) => (d.memory && num(d.memory.percent) != null ? num(d.memory.percent) + '%' : null)
         },
         {
             label: 'RAM used',
-            get:   (d) => (d.memory && num(d.memory.usedGb, 1) != null
-                ? num(d.memory.usedGb, 1) + ' / ' + num(d.memory.totalGb, 1) + ' GB'
-                : null)
+            get: (d) =>
+                d.memory && num(d.memory.usedGb, 1) != null
+                    ? num(d.memory.usedGb, 1) + ' / ' + num(d.memory.totalGb, 1) + ' GB'
+                    : null
         },
         {
             label: 'Cores',
-            get:   (d) => (d.cpu && d.cpu.cores != null
-                ? String(d.cpu.cores)
-                : null)
+            get: (d) => (d.cpu && d.cpu.cores != null ? String(d.cpu.cores) : null)
         },
         {
             label: 'Architecture',
-            get:   (d) => (d.arch || null)
+            get: (d) => d.arch || null
         },
         {
             label: 'Kernel',
-            get:   (d) => (d.kernel || null)
+            get: (d) => d.kernel || null
         },
         {
             label: 'Host',
-            get:   (d) => (d.host || d.hostname || null)
+            get: (d) => d.host || d.hostname || null
         },
         {
             label: 'OS',
-            get:   (d) => (d.os || null)
+            get: (d) => d.os || null
         }
     ];
 
-    const esc = (s) => String(s)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-    const setStamp = (text) =>
-    {
-        if (stamp)
-        {
+    const setStamp = (text) => {
+        if (stamp) {
             stamp.textContent = text;
         }
     };
 
-    const renderOffline = () =>
-    {
-        grid.innerHTML = '<div class="tech-stat"><span class="num">-</span><span class="label">status feed offline</span></div>';
+    const renderOffline = () => {
+        grid.innerHTML =
+            '<div class="tech-stat"><span class="num">-</span><span class="label">status feed offline</span></div>';
         setStamp('Live feed unavailable right now. The Pi is not publishing /status.json yet.');
 
         const section = document.getElementById('fleet-block') || document.getElementById('fleet');
-        if (section)
-        {
+        if (section) {
             section.hidden = true;
         }
     };
@@ -113,72 +89,72 @@
     const fleetGrid = document.getElementById('fleet-hosts');
     const fleetStamp = document.getElementById('fleet-stamp');
 
-    const plural = (n, one, many) => n + ' ' + (n === 1
-        ? one
-        : many);
+    const plural = (n, one, many) => n + ' ' + (n === 1 ? one : many);
 
-    const hostTile = (host, isPrimary) =>
-    {
+    const hostTile = (host, isPrimary) => {
         const facts = [];
 
-        if (host.shards && host.shards.length)
-        {
+        if (host.shards && host.shards.length) {
             facts.push(plural(host.shards.length, 'shard', 'shards') + ' (' + host.shards.join(', ') + ')');
         }
-        if (host.clusters)
-        {
+        if (host.clusters) {
             facts.push(plural(host.clusters, 'cluster', 'clusters'));
         }
-        if (host.guilds)
-        {
+        if (host.guilds) {
             facts.push(host.guilds.toLocaleString() + ' servers');
         }
-        if (host.players)
-        {
+        if (host.players) {
             facts.push(plural(host.players, 'voice player', 'voice players'));
         }
-        if (host.cpuCount)
-        {
+        if (host.cpuCount) {
             facts.push(host.cpuLoad + '% of ' + host.cpuCount + ' cores');
         }
-        if (host.memTotalGb)
-        {
+        if (host.memTotalGb) {
             facts.push(host.memUsedGb + ' / ' + host.memTotalGb + ' GB');
         }
-        if (typeof host.uptimeSeconds === 'number' && host.uptimeSeconds > 0)
-        {
+        if (typeof host.uptimeSeconds === 'number' && host.uptimeSeconds > 0) {
             facts.push('up ' + fmtUptime(host.uptimeSeconds));
         }
 
-        return '<div class="host-live' + (isPrimary
-            ? ' is-primary'
-            : '') + '">' + '<div class="host-live-head">' + '<span class="host-live-name">' + esc(host.id) + '</span>' + (isPrimary
-            ? '<span class="host-live-badge">primary</span>'
-            : '') + '</div>' + '<ul class="host-live-facts"><li>' + facts.map(esc).join('</li><li>') + '</li></ul>' + '<p class="host-live-foot">reported ' + host.lastSeenAgoSeconds + 's ago' + (host.version
-            ? ' · ' + esc(host.version)
-            : '') + '</p>' + '</div>';
+        return (
+            '<div class="host-live' +
+            (isPrimary ? ' is-primary' : '') +
+            '">' +
+            '<div class="host-live-head">' +
+            '<span class="host-live-name">' +
+            esc(host.id) +
+            '</span>' +
+            (isPrimary ? '<span class="host-live-badge">primary</span>' : '') +
+            '</div>' +
+            '<ul class="host-live-facts"><li>' +
+            facts.map(esc).join('</li><li>') +
+            '</li></ul>' +
+            '<p class="host-live-foot">reported ' +
+            host.lastSeenAgoSeconds +
+            's ago' +
+            (host.version ? ' · ' + esc(host.version) : '') +
+            '</p>' +
+            '</div>'
+        );
     };
 
-    const renderFleet = (bot) =>
-    {
-        if (!fleetSection || !fleetGrid)
-        {
+    const renderFleet = (bot) => {
+        if (!fleetSection || !fleetGrid) {
             return;
         }
 
-        if (!bot)
-        {
+        if (!bot) {
             fleetSection.hidden = true;
             return;
         }
 
-        if (!bot.online || !bot.hosts || !bot.hosts.length)
-        {
+        if (!bot.online || !bot.hosts || !bot.hosts.length) {
             fleetSection.hidden = false;
-            fleetGrid.innerHTML = '<div class="host-live is-down"><div class="host-live-head"><span class="host-live-name">Nothing reporting</span></div>' + '<p class="host-live-foot">No machine has checked in for over 90 seconds. Relaxy! is offline.</p></div>';
+            fleetGrid.innerHTML =
+                '<div class="host-live is-down"><div class="host-live-head"><span class="host-live-name">Nothing reporting</span></div>' +
+                '<p class="host-live-foot">No machine has checked in for over 90 seconds. Relaxy! is offline.</p></div>';
 
-            if (fleetStamp)
-            {
+            if (fleetStamp) {
                 fleetStamp.textContent = 'The database is reachable, but no machine is currently running the bot.';
             }
             return;
@@ -186,49 +162,67 @@
 
         fleetSection.hidden = false;
         fleetGrid.innerHTML = bot.hosts
-                                 .slice()
-                                 .sort((a, b) => (b.shards || []).length - (a.shards || []).length || b.clusters - a.clusters)
-                                 .map((h) => hostTile(h, h.id === bot.primary))
-                                 .join('');
+            .slice()
+            .sort((a, b) => (b.shards || []).length - (a.shards || []).length || b.clusters - a.clusters)
+            .map((h) => hostTile(h, h.id === bot.primary))
+            .join('');
 
-        if (fleetStamp)
-        {
-            fleetStamp.textContent = bot.hostCount > 1
-                ? 'Spread across ' + plural(bot.hostCount, 'machine', 'machines') + ' · ' + bot.totalClusters + ' clusters · ' + bot.totalGuilds.toLocaleString() + ' servers'
-                : 'Running entirely on ' + bot.primary + ' · ' + plural(bot.totalClusters, 'cluster', 'clusters') + ' · ' + bot.totalGuilds.toLocaleString() + ' servers';
+        if (fleetStamp) {
+            fleetStamp.textContent =
+                bot.hostCount > 1
+                    ? 'Spread across ' +
+                      plural(bot.hostCount, 'machine', 'machines') +
+                      ' · ' +
+                      bot.totalClusters +
+                      ' clusters · ' +
+                      bot.totalGuilds.toLocaleString() +
+                      ' servers'
+                    : 'Running entirely on ' +
+                      bot.primary +
+                      ' · ' +
+                      plural(bot.totalClusters, 'cluster', 'clusters') +
+                      ' · ' +
+                      bot.totalGuilds.toLocaleString() +
+                      ' servers';
         }
     };
 
-    const render = (data) =>
-    {
+    const render = (data) => {
         const tiles = [];
-        tileDefs.forEach((t) =>
-        {
+        tileDefs.forEach((t) => {
             const v = t.get(data);
-            if (v != null && v !== '')
-            {
-                tiles.push('<div class="tech-stat"><span class="num">' + esc(v) + '</span><span class="label">' + esc(t.label) + '</span></div>');
+            if (v != null && v !== '') {
+                tiles.push(
+                    '<div class="tech-stat"><span class="num">' +
+                        esc(v) +
+                        '</span><span class="label">' +
+                        esc(t.label) +
+                        '</span></div>'
+                );
             }
         });
 
         renderFleet(data.bot);
 
-        if (!tiles.length)
-        {
+        if (!tiles.length) {
             renderOffline();
             return;
         }
         grid.innerHTML = tiles.join('');
         const now = new Date();
-        setStamp('Live from the Pi · updated ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()));
+        setStamp(
+            'Live from the Pi · updated ' +
+                pad(now.getHours()) +
+                ':' +
+                pad(now.getMinutes()) +
+                ':' +
+                pad(now.getSeconds())
+        );
     };
 
-    const tick = () =>
-    {
+    const tick = () => {
         fetch(ENDPOINT, { cache: 'no-store' })
-            .then((res) => (res.ok
-                ? res.json()
-                : Promise.reject(res.status)))
+            .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
             .then(render)
             .catch(renderOffline);
     };

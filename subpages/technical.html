@@ -1,192 +1,250 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Relaxy! Technical Breakdown - Architecture, Database Engine &amp; Stack</title>
-    <script>document.documentElement.classList.add('js');
-    try
-    {
-        if (localStorage.getItem('theme') === 'light')
-        {
-            document.documentElement.classList.add('light-mode');
-        }
-    }
-    catch (e)
-    {
-    }</script>
-    <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect">
-    <link href="https://cdn.relaxy.xyz" rel="dns-prefetch">
-    <link href="/dist/main.css" rel="stylesheet">
-    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
-    <meta content="#ff69b4" name="theme-color">
-    <meta content="MattFor" name="author">
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
-    <meta content="How Relaxy! is actually built: the manager and cluster process model, a database engine that stores diffs instead of documents, the contract every command follows, the self-repair systems, and the Raspberry Pi it all runs on."
-          name="description">
-    <meta content="discord bot architecture, discord.js bot, hybrid sharding, mongoose schema engine, broadcasteval, self-hosted discord bot, raspberry pi discord bot, relaxy technical"
-          name="keywords">
-    <link href="https://www.relaxy.xyz/subpages/technical" rel="canonical">
-    <meta content="website" property="og:type">
-    <meta content="https://www.relaxy.xyz/subpages/technical" property="og:url">
-    <meta content="Relaxy! Technical Breakdown - Architecture, Database Engine &amp; Stack" property="og:title">
-    <meta content="The process model, the database engine and its traps, what a command has to look like, and the machine it all runs on." property="og:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image">
-    <meta content="Relaxy!" property="og:site_name">
-    <meta content="en_US" property="og:locale">
-    <meta content="600" property="og:image:width">
-    <meta content="600" property="og:image:height">
-    <meta content="Relaxy! the Discord bot mascot" property="og:image:alt">
-    <meta content="summary" name="twitter:card">
-    <meta content="Relaxy! Technical Breakdown - Architecture, Database Engine &amp; Stack" name="twitter:title">
-    <meta content="How Relaxy! is actually built: the manager and cluster process model, a database engine that stores diffs instead of documents, the contract every command follows, and the Raspberry Pi it all runs on."
-          name="twitter:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image">
-    <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt">
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "TechArticle",
-                    "@id": "https://www.relaxy.xyz/subpages/technical",
-                    "url": "https://www.relaxy.xyz/subpages/technical",
-                    "name": "Relaxy! Technical Breakdown - Architecture, Database Engine & Stack",
-                    "headline": "Relaxy! Technical Breakdown",
-                    "description": "How Relaxy! is actually built: the manager and cluster process model, a database engine that stores diffs instead of documents, the contract every command follows, the self-repair systems, and the Raspberry Pi it all runs on.",
-                    "author": {
-                        "@type": "Person",
-                        "name": "MattFor"
-                    },
-                    "isPartOf": {
-                        "@id": "https://www.relaxy.xyz/#website"
-                    },
-                    "primaryImageOfPage": {
-                        "@type": "ImageObject",
-                        "url": "https://cdn.relaxy.xyz/relaxy.webp",
-                        "width": 600,
-                        "height": 600
-                    },
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": "Relaxy!",
-                            "item": "https://www.relaxy.xyz/"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 2,
-                            "name": "Technical Breakdown",
-                            "item": "https://www.relaxy.xyz/subpages/technical"
-                        }
-                    ]
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Relaxy! Technical Breakdown - Architecture, Database Engine &amp; Stack</title>
+        <script>
+            document.documentElement.classList.add('js');
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('light-mode');
                 }
-            ]
-        }
-    </script>
-</head>
+            } catch (e) {}
+        </script>
+        <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect" />
+        <link href="https://cdn.relaxy.xyz" rel="dns-prefetch" />
+        <link href="/dist/main.css" rel="stylesheet" />
+        <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon" />
+        <meta content="#ff69b4" name="theme-color" />
+        <meta content="MattFor" name="author" />
+        <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots" />
+        <meta
+            content="How Relaxy! is actually built: the manager and cluster process model, a database engine that stores diffs instead of documents, the contract every command follows, the self-repair systems, and the Raspberry Pi it all runs on."
+            name="description"
+        />
+        <meta
+            content="discord bot architecture, discord.js bot, hybrid sharding, mongoose schema engine, broadcasteval, self-hosted discord bot, raspberry pi discord bot, relaxy technical"
+            name="keywords"
+        />
+        <link href="https://www.relaxy.xyz/subpages/technical" rel="canonical" />
+        <meta content="website" property="og:type" />
+        <meta content="https://www.relaxy.xyz/subpages/technical" property="og:url" />
+        <meta content="Relaxy! Technical Breakdown - Architecture, Database Engine &amp; Stack" property="og:title" />
+        <meta
+            content="The process model, the database engine and its traps, what a command has to look like, and the machine it all runs on."
+            property="og:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image" />
+        <meta content="Relaxy!" property="og:site_name" />
+        <meta content="en_US" property="og:locale" />
+        <meta content="600" property="og:image:width" />
+        <meta content="600" property="og:image:height" />
+        <meta content="Relaxy! the Discord bot mascot" property="og:image:alt" />
+        <meta content="summary" name="twitter:card" />
+        <meta content="Relaxy! Technical Breakdown - Architecture, Database Engine &amp; Stack" name="twitter:title" />
+        <meta
+            content="How Relaxy! is actually built: the manager and cluster process model, a database engine that stores diffs instead of documents, the contract every command follows, and the Raspberry Pi it all runs on."
+            name="twitter:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image" />
+        <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt" />
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "TechArticle",
+                        "@id": "https://www.relaxy.xyz/subpages/technical",
+                        "url": "https://www.relaxy.xyz/subpages/technical",
+                        "name": "Relaxy! Technical Breakdown - Architecture, Database Engine & Stack",
+                        "headline": "Relaxy! Technical Breakdown",
+                        "description": "How Relaxy! is actually built: the manager and cluster process model, a database engine that stores diffs instead of documents, the contract every command follows, the self-repair systems, and the Raspberry Pi it all runs on.",
+                        "author": {
+                            "@type": "Person",
+                            "name": "MattFor"
+                        },
+                        "isPartOf": {
+                            "@id": "https://www.relaxy.xyz/#website"
+                        },
+                        "primaryImageOfPage": {
+                            "@type": "ImageObject",
+                            "url": "https://cdn.relaxy.xyz/relaxy.webp",
+                            "width": 600,
+                            "height": 600
+                        },
+                        "inLanguage": "en"
+                    },
+                    {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "name": "Relaxy!",
+                                "item": "https://www.relaxy.xyz/"
+                            },
+                            {
+                                "@type": "ListItem",
+                                "position": 2,
+                                "name": "Technical Breakdown",
+                                "item": "https://www.relaxy.xyz/subpages/technical"
+                            }
+                        ]
+                    }
+                ]
+            }
+        </script>
+    </head>
 
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="topbar">
-    <a class="brand" href="/"> <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56"> <span>Relaxy!</span> </a>
-    <nav aria-label="Sections" class="site-nav" id="topnav">
-        <a href="#overview">Overview</a> <a href="#live">Live</a> <a href="#architecture">Runtime</a> <a href="#boot">Startup</a> <a href="#data">Database</a> <a href="#writing">Commands</a> <a
-            href="#resilience">Resilience</a> <a href="#stack">Stack</a> <a href="#structure">Layout</a> <a href="#hosting">Hosting</a>
-    </nav>
-    <div class="topbar-end">
-        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
-        </button>
-        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</header>
-
-<div aria-hidden="true" class="nav-drawer" id="navDrawer">
-    <div class="nav-drawer-overlay" id="navOverlay"></div>
-    <div class="nav-drawer-panel">
-        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
-        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
-    </div>
-</div>
-
-<section class="hero">
-    <p class="eyebrow">Under the hood</p>
-    <h1>Technical Breakdown</h1>
-    <p class="tagline">The complete breakdown of the bot's codebase. As well as a quick look into what services are running on the server.</p>
-</section>
-
-<main class="wrap techdoc" id="main">
-    <section class="card section" id="overview">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">At a quick glance</p>
-            <h2 style="text-align:left">What Relaxy! is, technically</h2>
-        </div>
-        <p class="prose" style="margin:0 0 var(--space-5)">Relaxy! is a multipurpose Discord bot I first wrote in early 2019 and have rewritten more times than I would like to admit. It is a plain
-            Node.js program in modern JavaScript (ES6 modules), typed with JSDoc and <code>.d.ts</code> files rather than TypeScript syntax, so there is <em>no build step at all</em>: the bot runs
-            directly from source, and reloads most of itself while it is still running. It runs as one supervisor process plus a few worker processes, and it hs the possibility of scaling across
-            machines easily if needed.</p>
-
-        <div class="tech-stat-grid" style="margin-top:var(--space-5)">
-            <div class="tech-stat"><span class="num">~120k</span><span class="label">lines of JS</span></div>
-            <div class="tech-stat"><span class="num">433</span><span class="label">source files</span></div>
-            <div class="tech-stat"><span class="num">186</span><span class="label">command modules</span></div>
-            <div class="tech-stat"><span class="num">27</span><span class="label">prefix only commands</span></div>
-            <div class="tech-stat"><span class="num">58</span><span class="label">event handlers</span></div>
-            <div class="tech-stat"><span class="num">16</span><span class="label">database models</span></div>
-            <div class="tech-stat"><span class="num">47</span><span class="label">npm dependencies</span></div>
-            <div class="tech-stat"><span class="num">16</span><span class="label">toggleable log channels</span></div>
-            <div class="tech-stat"><span class="num">43</span><span class="label">loggable modlog events</span></div>
-            <div class="tech-stat"><span class="num">7</span><span class="label">years of development</span></div>
-            <div class="tech-stat"><span class="num">~3085$</span><span class="label">estimated development cost</span></div>
-            <div class="tech-stat"><span class="num">1</span><span class="label">soul perished during development</span></div>
-        </div>
-    </section>
-
-    <section class="card section" id="live">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Live from the hardware</p>
-            <h2 style="text-align:left">How everything is looking right now</h2>
-            <p style="margin:0" id="system-stats-stamp">Reading live status straight off the Pi…</p>
-        </div>
-        <div class="tech-stat-grid" id="system-stats">
-            <div class="tech-stat"><span class="num">…</span><span class="label">connecting</span></div>
-        </div>
-
-        <div class="live-block" hidden id="services-block">
-            <div class="live-head">
-                <h3>Service health</h3>
-                <a class="live-link" href="https://uptime.relaxy.xyz" rel="noopener">Click to view current/historical uptime</a>
+        <header class="topbar">
+            <a class="brand" href="/">
+                <img
+                    draggable="false"
+                    alt=""
+                    decoding="async"
+                    height="56"
+                    src="https://cdn.relaxy.xyz/relaxy.webp"
+                    width="56"
+                />
+                <span>Relaxy!</span>
+            </a>
+            <nav aria-label="Sections" class="site-nav" id="topnav">
+                <a href="#overview">Overview</a> <a href="#live">Live</a> <a href="#architecture">Runtime</a>
+                <a href="#boot">Startup</a> <a href="#data">Database</a> <a href="#writing">Commands</a>
+                <a href="#resilience">Resilience</a> <a href="#stack">Stack</a> <a href="#structure">Layout</a>
+                <a href="#hosting">Hosting</a>
+            </nav>
+            <div class="topbar-end">
+                <button
+                    aria-pressed="false"
+                    class="theme-button"
+                    id="themeButton"
+                    onclick="toggleTheme()"
+                    type="button"
+                >
+                    Light Mode
+                </button>
+                <button
+                    aria-expanded="false"
+                    aria-label="Open navigation"
+                    class="nav-toggle"
+                    id="navToggle"
+                    type="button"
+                >
+                    <span></span><span></span><span></span>
+                </button>
             </div>
-            <p aria-live="polite" class="live-sub svc-summary" id="service-health-stamp">Checking every service…</p>
-            <div class="svc-board" id="service-health"></div>
+        </header>
+
+        <div aria-hidden="true" class="nav-drawer" id="navDrawer">
+            <div class="nav-drawer-overlay" id="navOverlay"></div>
+            <div class="nav-drawer-panel">
+                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">
+                    ✕
+                </button>
+                <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
+            </div>
         </div>
 
-        <div class="live-block" hidden id="fleet-block">
-            <h3>Machines running the bot</h3>
-            <p class="live-sub" id="fleet-stamp">Asking the fleet…</p>
-            <div class="host-live-grid" id="fleet-hosts"></div>
-        </div>
-    </section>
+        <section class="hero">
+            <p class="eyebrow">Under the hood</p>
+            <h1>Technical Breakdown</h1>
+            <p class="tagline">
+                The complete breakdown of the bot's codebase. As well as a quick look into what services are running on
+                the server.
+            </p>
+        </section>
 
-    <section class="card section" id="architecture">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Architecture</p>
-            <h2 style="text-align:left">The runtime model</h2>
-        </div>
+        <main class="wrap techdoc" id="main">
+            <section class="card section" id="overview">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">At a quick glance</p>
+                    <h2 style="text-align: left">What Relaxy! is, technically</h2>
+                </div>
+                <p class="prose" style="margin: 0 0 var(--space-5)">
+                    Relaxy! is a multipurpose Discord bot I first wrote in early 2019 and have rewritten more times than
+                    I would like to admit. It is a plain Node.js program in modern JavaScript (ES6 modules), typed with
+                    JSDoc and <code>.d.ts</code> files rather than TypeScript syntax, so there is
+                    <em>no build step at all</em>: the bot runs directly from source, and reloads most of itself while
+                    it is still running. It runs as one supervisor process plus a few worker processes, and it hs the
+                    possibility of scaling across machines easily if needed.
+                </p>
 
-        <p>A guild lives on exactly one cluster. Only that cluster may act on it, so anything fleet-wide has to be broadcast, and anything that must happen <em>exactly once</em> needs a designated
-            cluster to happen on. </p>
+                <div class="tech-stat-grid" style="margin-top: var(--space-5)">
+                    <div class="tech-stat"><span class="num">~120k</span><span class="label">lines of JS</span></div>
+                    <div class="tech-stat"><span class="num">433</span><span class="label">source files</span></div>
+                    <div class="tech-stat"><span class="num">186</span><span class="label">command modules</span></div>
+                    <div class="tech-stat">
+                        <span class="num">27</span><span class="label">prefix only commands</span>
+                    </div>
+                    <div class="tech-stat"><span class="num">58</span><span class="label">event handlers</span></div>
+                    <div class="tech-stat"><span class="num">16</span><span class="label">database models</span></div>
+                    <div class="tech-stat"><span class="num">47</span><span class="label">npm dependencies</span></div>
+                    <div class="tech-stat">
+                        <span class="num">16</span><span class="label">toggleable log channels</span>
+                    </div>
+                    <div class="tech-stat">
+                        <span class="num">43</span><span class="label">loggable modlog events</span>
+                    </div>
+                    <div class="tech-stat">
+                        <span class="num">7</span><span class="label">years of development</span>
+                    </div>
+                    <div class="tech-stat">
+                        <span class="num">~3085$</span><span class="label">estimated development cost</span>
+                    </div>
+                    <div class="tech-stat">
+                        <span class="num">1</span><span class="label">soul perished during development</span>
+                    </div>
+                </div>
+            </section>
 
-        <pre class="tech-tree">./start
+            <section class="card section" id="live">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Live from the hardware</p>
+                    <h2 style="text-align: left">How everything is looking right now</h2>
+                    <p style="margin: 0" id="system-stats-stamp">Reading live status straight off the Pi…</p>
+                </div>
+                <div class="tech-stat-grid" id="system-stats">
+                    <div class="tech-stat"><span class="num">…</span><span class="label">connecting</span></div>
+                </div>
+
+                <div class="live-block" hidden id="services-block">
+                    <div class="live-head">
+                        <h3>Service health</h3>
+                        <a class="live-link" href="https://uptime.relaxy.xyz" rel="noopener"
+                            >Click to view current/historical uptime</a
+                        >
+                    </div>
+                    <p aria-live="polite" class="live-sub svc-summary" id="service-health-stamp">
+                        Checking every service…
+                    </p>
+                    <div class="svc-board" id="service-health"></div>
+                </div>
+
+                <div class="live-block" hidden id="fleet-block">
+                    <h3>Machines running the bot</h3>
+                    <p class="live-sub" id="fleet-stamp">Asking the fleet…</p>
+                    <div class="host-live-grid" id="fleet-hosts"></div>
+                </div>
+            </section>
+
+            <section class="card section" id="architecture">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Architecture</p>
+                    <h2 style="text-align: left">The runtime model</h2>
+                </div>
+
+                <p>
+                    A guild lives on exactly one cluster. Only that cluster may act on it, so anything fleet-wide has to
+                    be broadcast, and anything that must happen <em>exactly once</em> needs a designated cluster to
+                    happen on.
+                </p>
+
+                <pre class="tech-tree">./start
   │
   ├─ bot/Manager.js  ──► src/Manager/Manager.js        <span class="cmt">ONE per host</span>
   │     <span class="cmt">owns the console, SelfRepair, the dashboard API, host reporting</span>
@@ -195,130 +253,199 @@
   └─ forks N × bot/Client.js ──► src/Client/Relaxy.js  <span class="cmt">ONE per cluster</span>
         <span class="cmt">owns guilds, commands, events, the database cache, the music player</span></pre>
 
-        <div class="eng-grid eng-grid-center" style="margin-top:var(--space-5)">
-            <div class="host-card">
-                <h3>Manager</h3>
-                <p>The supervisor. It spawns clusters, watches their heartbeats, reclusters, and respawns the dead ones. Anything it needs from the gateway it asks a cluster for. Anything it needs
-                    from Mongo it reads through its own small dedicated connection, because by design it doesn't have its own database module.</p>
-            </div>
-            <div class="host-card">
-                <h3>Cluster / Client</h3>
-                <p>One OS process running one <code>Relaxy class instance</code> (<code>Discord.Client extension</code>) that owns one or more <strong>shards</strong>. Guilds are distributed across
-                    shards by Discord's own formula, which is what makes a guild the property of exactly one process.</p>
-            </div>
-            <div class="host-card">
-                <h3>The designated cluster</h3>
-                <p>Exactly one cluster holds <code>_trueRelaxy</code>. It owns the support server's log channel, the requests manager, and every sweep that writes <em>shared</em> rather than per-guild
-                    state. Logging to it is safe from anywhere; the call relays over IPC to whichever cluster that is.</p>
-            </div>
-            <div class="host-card">
-                <h3>Broadcasting</h3>
-                <p>The function is serialized with <code>toString()</code> and re-evaluated in another process, so it may use only its two parameters and can close over nothing. Context crosses as
-                    JSON, so a builder arrives stripped of its methods and a <code>Map</code> arrives as <code>{}</code>.</p>
-            </div>
-            <div class="host-card">
-                <h3>IPC &amp; heartbeats</h3>
-                <p>Node IPC, with custom message types. Liveness is <strong>push</strong>: each cluster self-reports every 5s and the manager only watches for silence, respawning after 12 missed
-                    beats. Twelve, not five, because a GC pause is indistinguishable from a hang and the respawn makes it worse.</p>
-            </div>
-            <div class="host-card">
-                <h3>Hot reload</h3>
-                <p>A <code>SelfRepair</code> module watches the source tree. A module is re-imported and swapped at its path, a command is re-imported into the collection, and an event is re-imported
-                    with the old listeners removed. The client class itself is patched method by method, or triggers a recluster if its constructor changed.</p>
-            </div>
-            <div class="host-card">
-                <h3>Dashboard write API</h3>
-                <p>The dashboard never touches Mongo. It posts mutations to the manager, which runs each one on the cluster that owns the guild. The cache flushes documents whole, so a direct database
-                    write would be silently overwritten minutes later by whichever cluster still held the old copy. (caused headaches)</p>
-            </div>
-            <div class="host-card">
-                <h3>Cross-process rate limiter</h3>
-                <p>discord.js's limiter is per process, which is the wrong scope when several processes share one bot token. Mine lives on the manager and synchronizes across the fleet, and it takes
-                    any limitable action, not just REST calls.</p>
-            </div>
-        </div>
-    </section>
+                <div class="eng-grid eng-grid-center" style="margin-top: var(--space-5)">
+                    <div class="host-card">
+                        <h3>Manager</h3>
+                        <p>
+                            The supervisor. It spawns clusters, watches their heartbeats, reclusters, and respawns the
+                            dead ones. Anything it needs from the gateway it asks a cluster for. Anything it needs from
+                            Mongo it reads through its own small dedicated connection, because by design it doesn't have
+                            its own database module.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Cluster / Client</h3>
+                        <p>
+                            One OS process running one <code>Relaxy class instance</code> (<code
+                                >Discord.Client extension</code
+                            >) that owns one or more <strong>shards</strong>. Guilds are distributed across shards by
+                            Discord's own formula, which is what makes a guild the property of exactly one process.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>The designated cluster</h3>
+                        <p>
+                            Exactly one cluster holds <code>_trueRelaxy</code>. It owns the support server's log
+                            channel, the requests manager, and every sweep that writes <em>shared</em> rather than
+                            per-guild state. Logging to it is safe from anywhere; the call relays over IPC to whichever
+                            cluster that is.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Broadcasting</h3>
+                        <p>
+                            The function is serialized with <code>toString()</code> and re-evaluated in another process,
+                            so it may use only its two parameters and can close over nothing. Context crosses as JSON,
+                            so a builder arrives stripped of its methods and a <code>Map</code> arrives as
+                            <code>{}</code>.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>IPC &amp; heartbeats</h3>
+                        <p>
+                            Node IPC, with custom message types. Liveness is <strong>push</strong>: each cluster
+                            self-reports every 5s and the manager only watches for silence, respawning after 12 missed
+                            beats. Twelve, not five, because a GC pause is indistinguishable from a hang and the respawn
+                            makes it worse.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Hot reload</h3>
+                        <p>
+                            A <code>SelfRepair</code> module watches the source tree. A module is re-imported and
+                            swapped at its path, a command is re-imported into the collection, and an event is
+                            re-imported with the old listeners removed. The client class itself is patched method by
+                            method, or triggers a recluster if its constructor changed.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Dashboard write API</h3>
+                        <p>
+                            The dashboard never touches Mongo. It posts mutations to the manager, which runs each one on
+                            the cluster that owns the guild. The cache flushes documents whole, so a direct database
+                            write would be silently overwritten minutes later by whichever cluster still held the old
+                            copy. (caused headaches)
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Cross-process rate limiter</h3>
+                        <p>
+                            discord.js's limiter is per process, which is the wrong scope when several processes share
+                            one bot token. Mine lives on the manager and synchronizes across the fleet, and it takes any
+                            limitable action, not just REST calls.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-    <section class="card section" id="boot">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Lifecycle</p>
-            <h2 style="text-align:left">From <code>_main</code> to a ready shard</h2>
-            <p style="margin:0">Three hand-offs and one watchdog.</p>
-        </div>
-        <ul class="feature-list">
-            <li><code>_main</code> execs <strong>bwrap</strong>. System paths come in read-only, the bot's own directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the
-                PID, IPC and UTS namespaces are unshared. <code>$HOME</code> is deliberately <em>not</em> bound, so the cache directory is pointed at the sandbox's own tmpfs instead.
-            </li>
-            <li><code>./start</code> sources nvm if Node is not already on <code>PATH</code>, exports <code>UV_THREADPOOL_SIZE=64</code> for libuv's fs and crypto work, and execs Node under <code>nice
-                -n -20</code> with the highest scheduling priority along with <code>--stack_size=1000</code>, <code>--trace-uncaught</code> and <code>--max-old-space-size=6144</code>. It also picks
-                the entry point. The manager normally, a single client under <code>--client</code>, the cross-hosting bridge under <code>--bridge</code>.
-            </li>
-            <li>The manager creates every directory the fleet writes to, then does two things before a single cluster is forked. It overlays the operator-mutable settings (version, owners, status
-                lines) from MongoDB onto the <code>.env</code> seeds. Then it warms the CDN text cache, so a shard that boots into a CDN outage still finds its word lists on disk.
-            </li>
-            <li>Clusters are rolled out ~7s apart. Each one loads its modules in parallel, starts loading commands and connecting to Mongo <em>at the same time</em> (command loading is file-only and
-                does not need the database), then logs into the gateway. Music extractors load <em>afterwards</em>, deliberately off the critical path, so commands work before the music engine is
-                finished.
-            </li>
-            <li>Only once every shard it owns is actually properly connected does a cluster report ready. Readiness is counted off each cluster's own <code>clientReady</code> event.
-            </li>
-            <li>Once the last cluster lands, the feature intervals start: mutes, reminders, ticket systems, forums, clearing channels. A stalled startup is caught by a watchdog whose budget scales
-                with the fleet (<code>clusters × 7s + 60s</code>, floor of 5 minutes); past that it keeps naming the clusters that are still not ready, every 60s, until they recover automatically or I
-                step in.
-            </li>
-        </ul>
-    </section>
+            <section class="card section" id="boot">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Lifecycle</p>
+                    <h2 style="text-align: left">From <code>_main</code> to a ready shard</h2>
+                    <p style="margin: 0">Three hand-offs and one watchdog.</p>
+                </div>
+                <ul class="feature-list">
+                    <li>
+                        <code>_main</code> execs <strong>bwrap</strong>. System paths come in read-only, the bot's own
+                        directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC
+                        and UTS namespaces are unshared. <code>$HOME</code> is deliberately <em>not</em> bound, so the
+                        cache directory is pointed at the sandbox's own tmpfs instead.
+                    </li>
+                    <li>
+                        <code>./start</code> sources nvm if Node is not already on <code>PATH</code>, exports
+                        <code>UV_THREADPOOL_SIZE=64</code> for libuv's fs and crypto work, and execs Node under
+                        <code>nice -n -20</code> with the highest scheduling priority along with
+                        <code>--stack_size=1000</code>, <code>--trace-uncaught</code> and
+                        <code>--max-old-space-size=6144</code>. It also picks the entry point. The manager normally, a
+                        single client under <code>--client</code>, the cross-hosting bridge under <code>--bridge</code>.
+                    </li>
+                    <li>
+                        The manager creates every directory the fleet writes to, then does two things before a single
+                        cluster is forked. It overlays the operator-mutable settings (version, owners, status lines)
+                        from MongoDB onto the <code>.env</code> seeds. Then it warms the CDN text cache, so a shard that
+                        boots into a CDN outage still finds its word lists on disk.
+                    </li>
+                    <li>
+                        Clusters are rolled out ~7s apart. Each one loads its modules in parallel, starts loading
+                        commands and connecting to Mongo <em>at the same time</em> (command loading is file-only and
+                        does not need the database), then logs into the gateway. Music extractors load
+                        <em>afterwards</em>, deliberately off the critical path, so commands work before the music
+                        engine is finished.
+                    </li>
+                    <li>
+                        Only once every shard it owns is actually properly connected does a cluster report ready.
+                        Readiness is counted off each cluster's own <code>clientReady</code> event.
+                    </li>
+                    <li>
+                        Once the last cluster lands, the feature intervals start: mutes, reminders, ticket systems,
+                        forums, clearing channels. A stalled startup is caught by a watchdog whose budget scales with
+                        the fleet (<code>clusters × 7s + 60s</code>, floor of 5 minutes); past that it keeps naming the
+                        clusters that are still not ready, every 60s, until they recover automatically or I step in.
+                    </li>
+                </ul>
+            </section>
 
-    <section class="card section" id="data">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Persistence</p>
-            <h2 style="text-align:left">The database layer</h2>
-            <p style="margin:0">MongoDB behind a schema engine that stores diffs only, not documents. Here are some decisions I've had to make.</p>
-        </div>
+            <section class="card section" id="data">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Persistence</p>
+                    <h2 style="text-align: left">The database layer</h2>
+                    <p style="margin: 0">
+                        MongoDB behind a schema engine that stores diffs only, not documents. Here are some decisions
+                        I've had to make.
+                    </p>
+                </div>
 
-        <div class="eng-grid">
-            <div class="host-card">
-                <h3>Defaults are never stored</h3>
-                <p>A write keeps only the leaves whose value <em>differs</em> from the default. A read merges the defaults back on. Adding a field therefore costs nothing, give it a default and every
-                    existing document gains it on the next read, with no migration. The price is that a field sitting at its default <strong>does not exist in the database</strong>, so a query
-                    matching on a default misses every document, and an aggregation has to normalize before it compares. </p>
-            </div>
-            <div class="host-card">
-                <h3>A guild is two documents</h3>
-                <p>The hot half holds what is touched on essentially every message: prefixes, counters, command gating, restrictions, censoring, levels. The cold half holds what only a config command
-                    changes: welcome cards, tickets, forums, heartboards, appeals, role sync, modlogs. Reads hand back the two merged so callers see one object; writes route each path back to
-                    whichever half owns it, and a path belonging to neither is rejected rather than guessed at.</p>
-            </div>
-        </div>
+                <div class="eng-grid">
+                    <div class="host-card">
+                        <h3>Defaults are never stored</h3>
+                        <p>
+                            A write keeps only the leaves whose value <em>differs</em> from the default. A read merges
+                            the defaults back on. Adding a field therefore costs nothing, give it a default and every
+                            existing document gains it on the next read, with no migration. The price is that a field
+                            sitting at its default <strong>does not exist in the database</strong>, so a query matching
+                            on a default misses every document, and an aggregation has to normalize before it compares.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>A guild is two documents</h3>
+                        <p>
+                            The hot half holds what is touched on essentially every message: prefixes, counters, command
+                            gating, restrictions, censoring, levels. The cold half holds what only a config command
+                            changes: welcome cards, tickets, forums, heartboards, appeals, role sync, modlogs. Reads
+                            hand back the two merged so callers see one object; writes route each path back to whichever
+                            half owns it, and a path belonging to neither is rejected rather than guessed at.
+                        </p>
+                    </div>
+                </div>
 
-        <h3 style="color:var(--accent);margin-top:var(--space-5)">What a write actually does</h3>
-        <pre class="tech-tree">client.save(guildId, { alter: 'ch.t.cl', value: entries })
+                <h3 style="color: var(--accent); margin-top: var(--space-5)">What a write actually does</h3>
+                <pre class="tech-tree">client.save(guildId, { alter: 'ch.t.cl', value: entries })
   └─ load()     <span class="cmt">make sure the document is cached</span>
   └─ queue()    <span class="cmt">mutate the cached object SYNCHRONOUSLY, mark it dirty</span>
        └─ 200 ms debounce, per document
             └─ flush -> strip defaults -> mongoose.updateOne</pre>
-        <ul class="feature-list">
-            <li>The actual Mongo I/O is offloaded to a <strong>worker thread</strong>, so nothing on the command path ever waits on the database.</li>
-            <li>A read immediately after a write sees the new value <em>on this cluster</em>, because the queue mutates the cached object before the flush ever happens.</li>
-            <li>Caches never expire, but they do have a <strong>ceiling</strong>. A sweep every minute drops the oldest entries past a per-cache limit, and drops much harder when the process is near
-                its memory budget. Anything with a write still pending is never evicted. Evicting a dirty document makes the change silently revert minutes later, which is a big headache waiting to
-                happen.
-            </li>
-            <li>Repeated strings: moderator ids, mute reasons, role ids are <strong>interned once per guild</strong> and referenced by integer index. The registry is append-only by construction and
-                unwritable from outside, because setting it wholesale would detach every warning and mute in the guild at once. (BAD)
-            </li>
-        </ul>
+                <ul class="feature-list">
+                    <li>
+                        The actual Mongo I/O is offloaded to a <strong>worker thread</strong>, so nothing on the command
+                        path ever waits on the database.
+                    </li>
+                    <li>
+                        A read immediately after a write sees the new value <em>on this cluster</em>, because the queue
+                        mutates the cached object before the flush ever happens.
+                    </li>
+                    <li>
+                        Caches never expire, but they do have a <strong>ceiling</strong>. A sweep every minute drops the
+                        oldest entries past a per-cache limit, and drops much harder when the process is near its memory
+                        budget. Anything with a write still pending is never evicted. Evicting a dirty document makes
+                        the change silently revert minutes later, which is a big headache waiting to happen.
+                    </li>
+                    <li>
+                        Repeated strings: moderator ids, mute reasons, role ids are
+                        <strong>interned once per guild</strong> and referenced by integer index. The registry is
+                        append-only by construction and unwritable from outside, because setting it wholesale would
+                        detach every warning and mute in the guild at once. (BAD)
+                    </li>
+                </ul>
+            </section>
 
-    </section>
+            <section class="card section" id="writing">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Common command architecture</p>
+                    <h2 style="text-align: left">Writing a command, or an event</h2>
+                    <p style="margin: 0">Only one file per, hot-readable.</p>
+                </div>
 
-    <section class="card section" id="writing">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Common command architecture</p>
-            <h2 style="text-align:left">Writing a command, or an event</h2>
-            <p style="margin:0">Only one file per, hot-readable.</p>
-        </div>
-
-        <pre class="tech-tree">export default {
+                <pre class="tech-tree">export default {
     name:        'commandname',           <span class="cmt">// The key it is stored under.</span>
     aliases:     ['alias'],
     usage:       '=commandname &lt;args&gt;',
@@ -341,196 +468,265 @@
     async run(client, message, args, guild, interaction) { … }
 };</pre>
 
-        <h3 style="color:var(--accent);margin-top:var(--space-5)">Three ways to run a command</h3>
-        <div class="doc-table-wrap">
-            <table class="doc-table">
-                <thead>
-                <tr>
-                    <th>Reached by</th>
-                    <th><code>message</code></th>
-                    <th><code>args</code></th>
-                    <th><code>interaction</code></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Prefix, <code>=cmd a b</code></td>
-                    <td>the real message</td>
-                    <td><code>['a', 'b']</code></td>
-                    <td>absent</td>
-                </tr>
-                <tr>
-                    <td>Slash, <code>/cmd</code></td>
-                    <td>a synthetic stand-in</td>
-                    <td>one entry <strong>per option</strong>, not per word</td>
-                    <td>the interaction</td>
-                </tr>
-                <tr>
-                    <td>Button, menu or modal</td>
-                    <td>a synthetic stand-in</td>
-                    <td>empty</td>
-                    <td>the interaction</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                <h3 style="color: var(--accent); margin-top: var(--space-5)">Three ways to run a command</h3>
+                <div class="doc-table-wrap">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Reached by</th>
+                                <th><code>message</code></th>
+                                <th><code>args</code></th>
+                                <th><code>interaction</code></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Prefix, <code>=cmd a b</code></td>
+                                <td>the real message</td>
+                                <td><code>['a', 'b']</code></td>
+                                <td>absent</td>
+                            </tr>
+                            <tr>
+                                <td>Slash, <code>/cmd</code></td>
+                                <td>a synthetic stand-in</td>
+                                <td>one entry <strong>per option</strong>, not per word</td>
+                                <td>the interaction</td>
+                            </tr>
+                            <tr>
+                                <td>Button, menu or modal</td>
+                                <td>a synthetic stand-in</td>
+                                <td>empty</td>
+                                <td>the interaction</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <ul class="feature-list" style="margin-top:var(--space-4)">
-            <li><strong>Slash arguments arrive per option.</strong> <code>/appealchannel target:"thread Moderators"</code> is one argument where the prefix path gives two, so anything that reads its
-                line word by word has to normalize first.
-            </li>
-            <li><strong>Components route by the <code>customId</code> prefix</strong>, straight back into the command of that name. They are not re-checked against <code>permissionsUser</code> on the
-                way in. That is right for a component that only affects whoever pressed it and wrong for one that reads moderation data, which has to check the presser itself.
-            </li>
-            <li><strong>Discord caps a slash description at 100 characters</strong>. So a long description on a complicated command usually made registration fail, so I created slashDescription which
-                always fits parameters and is checked for correctness upon being loaded in.
-            </li>
-            <li><strong>Three seconds.</strong> Discord kills an interaction that has not been acknowledged in that time, so anything doing several reads, a member fetch, a broadcast or an image
-                render sets <code>defer</code>. A deferred command must never call <code>interaction.reply()</code> afterwards, it kinda just breaks the interaction flow.
-            </li>
-        </ul>
-    </section>
+                <ul class="feature-list" style="margin-top: var(--space-4)">
+                    <li>
+                        <strong>Slash arguments arrive per option.</strong>
+                        <code>/appealchannel target:"thread Moderators"</code> is one argument where the prefix path
+                        gives two, so anything that reads its line word by word has to normalize first.
+                    </li>
+                    <li>
+                        <strong>Components route by the <code>customId</code> prefix</strong>, straight back into the
+                        command of that name. They are not re-checked against <code>permissionsUser</code> on the way
+                        in. That is right for a component that only affects whoever pressed it and wrong for one that
+                        reads moderation data, which has to check the presser itself.
+                    </li>
+                    <li>
+                        <strong>Discord caps a slash description at 100 characters</strong>. So a long description on a
+                        complicated command usually made registration fail, so I created slashDescription which always
+                        fits parameters and is checked for correctness upon being loaded in.
+                    </li>
+                    <li>
+                        <strong>Three seconds.</strong> Discord kills an interaction that has not been acknowledged in
+                        that time, so anything doing several reads, a member fetch, a broadcast or an image render sets
+                        <code>defer</code>. A deferred command must never call
+                        <code>interaction.reply()</code> afterwards, it kinda just breaks the interaction flow.
+                    </li>
+                </ul>
+            </section>
 
-    <section class="card section" id="resilience">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Resilience</p>
-            <h2 style="text-align:left">What keeps it alive</h2>
-            <p style="margin:0">Layered watchdogs, a garbage collector and external system health services.</p>
-        </div>
-        <div class="eng-grid eng-grid-center">
-            <div class="host-card">
-                <h3>Heartbeats</h3>
-                <p>Every cluster pushes one beat every 5s and the manager only watches for silence. Twelve missed beats (1 minute) and it is respawned. Push halves the message count of a ping-and-wait
-                    model and removes the manager's outbound timer fan-out entirely, with identical detection latency.</p>
-            </div>
-            <div class="host-card">
-                <h3>Error-rate watchdog</h3>
-                <p>Each client counts its own errors and warnings and checks them every 10s against randomized thresholds. Sustained misbehaviour respawns that shard through the manager, before it
-                    becomes everybody's problem. Randomized so the whole fleet cannot decide to restart at the same time and cause a wide outage.</p>
-            </div>
-            <div class="host-card">
-                <h3>Internet watchdog</h3>
-                <p>The one that matters most. It recognizes a network outage across the <em>whole fleet</em> and holds off respawning until it is over. Without it, shards could respawn during a
-                    network outage, creating wrongly formed writes and corrupting the database (VERY VERY BAD)</p>
-            </div>
-            <div class="host-card">
-                <h3>Marks, not deletes</h3>
-                <p>Nothing is deleted when it stops existing, it is <em>marked</em>. A departed member's mark has to stand untouched for 30 days, a departed guild's for 180. Rejoining clears it.</p>
-            </div>
-            <div class="host-card">
-                <h3>Sweeps, because sometimes Relaxy! fucking dies</h3>
-                <p>Events are only as reliable as the process receiving them. A channel deleted while the bot is down raises its event to nobody, and the stale reference survives forever. So the
-                    collector assumes it missed things and goes looking, handing anything absent to <strong>the same handler the real event would have reached</strong>. </p>
-            </div>
-            <div class="host-card">
-                <h3>Every purge gate must pass</h3>
-                <p>Before one document goes: the designated sweeper is ready, the mark is older than 180 days, a circuit breaker has not tripped on an implausible number of eligible guilds at once,
-                    and <strong>no cluster in the fleet can currently see the guild</strong>. A guild-removal event also fires during a Discord outage, so the mark is never written when the guild is
-                    merely unavailable.</p>
-            </div>
-            <div class="host-card">
-                <h3>Memory pressure watch</h3>
-                <p>Usually Relaxy! gives the V8 engine ~6GB of usable memory, but on a RaspberryPi with 8GB that runs so many services it can fill up quickly. The system might kill the bot right as it
-                    senses it's getting near that threshold. So the cache watch keeps removing older unused entries and keeps the bot stable.</p>
-            </div>
-            <div class="host-card">
-                <h3>Floors, not empty caches</h3>
-                <p>Under pressure every cache goes to a floor rather than to zero. Emptying them means the next seconds of traffic re-read everything they held, which turns a memory problem into a
-                    database problem at the worst possible moment. I want everything to always run asap, dropping caches to 0 also introduced some other side effect consequences :/</p>
-            </div>
-        </div>
-    </section>
+            <section class="card section" id="resilience">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Resilience</p>
+                    <h2 style="text-align: left">What keeps it alive</h2>
+                    <p style="margin: 0">Layered watchdogs, a garbage collector and external system health services.</p>
+                </div>
+                <div class="eng-grid eng-grid-center">
+                    <div class="host-card">
+                        <h3>Heartbeats</h3>
+                        <p>
+                            Every cluster pushes one beat every 5s and the manager only watches for silence. Twelve
+                            missed beats (1 minute) and it is respawned. Push halves the message count of a
+                            ping-and-wait model and removes the manager's outbound timer fan-out entirely, with
+                            identical detection latency.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Error-rate watchdog</h3>
+                        <p>
+                            Each client counts its own errors and warnings and checks them every 10s against randomized
+                            thresholds. Sustained misbehaviour respawns that shard through the manager, before it
+                            becomes everybody's problem. Randomized so the whole fleet cannot decide to restart at the
+                            same time and cause a wide outage.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Internet watchdog</h3>
+                        <p>
+                            The one that matters most. It recognizes a network outage across the
+                            <em>whole fleet</em> and holds off respawning until it is over. Without it, shards could
+                            respawn during a network outage, creating wrongly formed writes and corrupting the database
+                            (VERY VERY BAD)
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Marks, not deletes</h3>
+                        <p>
+                            Nothing is deleted when it stops existing, it is <em>marked</em>. A departed member's mark
+                            has to stand untouched for 30 days, a departed guild's for 180. Rejoining clears it.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Sweeps, because sometimes Relaxy! fucking dies</h3>
+                        <p>
+                            Events are only as reliable as the process receiving them. A channel deleted while the bot
+                            is down raises its event to nobody, and the stale reference survives forever. So the
+                            collector assumes it missed things and goes looking, handing anything absent to
+                            <strong>the same handler the real event would have reached</strong>.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Every purge gate must pass</h3>
+                        <p>
+                            Before one document goes: the designated sweeper is ready, the mark is older than 180 days,
+                            a circuit breaker has not tripped on an implausible number of eligible guilds at once, and
+                            <strong>no cluster in the fleet can currently see the guild</strong>. A guild-removal event
+                            also fires during a Discord outage, so the mark is never written when the guild is merely
+                            unavailable.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Memory pressure watch</h3>
+                        <p>
+                            Usually Relaxy! gives the V8 engine ~6GB of usable memory, but on a RaspberryPi with 8GB
+                            that runs so many services it can fill up quickly. The system might kill the bot right as it
+                            senses it's getting near that threshold. So the cache watch keeps removing older unused
+                            entries and keeps the bot stable.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Floors, not empty caches</h3>
+                        <p>
+                            Under pressure every cache goes to a floor rather than to zero. Emptying them means the next
+                            seconds of traffic re-read everything they held, which turns a memory problem into a
+                            database problem at the worst possible moment. I want everything to always run asap,
+                            dropping caches to 0 also introduced some other side effect consequences :/
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-    <section class="card section" id="stack">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Technology stack</p>
-            <h2 style="text-align:left">What's inside?</h2>
-            <p style="margin:0">Grouped by what each set of libraries actually does.</p>
-        </div>
+            <section class="card section" id="stack">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Technology stack</p>
+                    <h2 style="text-align: left">What's inside?</h2>
+                    <p style="margin: 0">Grouped by what each set of libraries actually does.</p>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Runtime &amp; language</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">Node.js 24</span> <span class="tech-tag">JavaScript (ESM)</span> <span class="tech-tag">JSDoc</span> <span class="tech-tag">TypeScript (.d.ts, checkJs)</span>
-                <span class="tech-tag">dotenvx</span> <span class="tech-tag">worker_threads</span>
-            </div>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Runtime &amp; language</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">Node.js 24</span> <span class="tech-tag">JavaScript (ESM)</span>
+                        <span class="tech-tag">JSDoc</span> <span class="tech-tag">TypeScript (.d.ts, checkJs)</span>
+                        <span class="tech-tag">dotenvx</span> <span class="tech-tag">worker_threads</span>
+                    </div>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Discord core &amp; sharding</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">discord.js 14</span> <span class="tech-tag">discord-api-types</span> <span class="tech-tag">discord-hybrid-sharding</span> <span class="tech-tag">discord-cross-hosting</span>
-                <span class="tech-tag">discord-voip</span>
-            </div>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Discord core &amp; sharding</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">discord.js 14</span> <span class="tech-tag">discord-api-types</span>
+                        <span class="tech-tag">discord-hybrid-sharding</span>
+                        <span class="tech-tag">discord-cross-hosting</span>
+                        <span class="tech-tag">discord-voip</span>
+                    </div>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Database</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">MongoDB</span> <span class="tech-tag">Mongoose 9</span>
-            </div>
-            <p class="prose" style="margin:var(--space-3) 0 0">16 schema blueprints: Server, GuildConfig, Member, Profile, Warning, Mute, Case, Reminder, TicketSystem, ForumChannel, ReactionRole,
-                HeartBoard, HeartBoardPost, Stat, Settings and Host. The models themselves are thin by design; the shape, the defaults, the identifiers, the indexes and the upgrade steps all live in
-                one file, so adding a field is a one-line change in one place.</p>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Database</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">MongoDB</span> <span class="tech-tag">Mongoose 9</span>
+                    </div>
+                    <p class="prose" style="margin: var(--space-3) 0 0">
+                        16 schema blueprints: Server, GuildConfig, Member, Profile, Warning, Mute, Case, Reminder,
+                        TicketSystem, ForumChannel, ReactionRole, HeartBoard, HeartBoardPost, Stat, Settings and Host.
+                        The models themselves are thin by design; the shape, the defaults, the identifiers, the indexes
+                        and the upgrade steps all live in one file, so adding a field is a one-line change in one place.
+                    </p>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Music &amp; voice</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">yt-dlp</span> <span class="tech-tag">discord-player 7 (my own fork)</span> <span class="tech-tag">@discord-player/equalizer</span> <span class="tech-tag">discord-player-soundcloud</span>
-                <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span> <span class="tech-tag">sodium-native</span> <span class="tech-tag">ffmpeg-static</span>
-                <span class="tech-tag">fluent-ffmpeg</span> <span class="tech-tag">youtube-sr</span> <span class="tech-tag">metadata-filter</span> <span class="tech-tag">LrcLib (synced lyrics)</span>
-            </div>
-            <p class="prose" style="margin:var(--space-3) 0 0">The player is a <strong>custom fork</strong> of discord-player. It was TypeScript; it is rewritten into plain JavaScript in this
-                codebase's style with local fixes on top, and it carries its own stream interceptor and a biquad DSP equalizer. A small pipeline diffs it against upstream and builds merge bundles, so
-                the fork can still follow the original. Two of the more notable changes I've introduced: a track that resolves but produces no stream is <em>retried</em> before anything is said in the
-                channel (a throttled config request looks exactly like an unplayable video in the og module), and the volume stage always stays in the pipeline so the volume command remains settable.
-            </p>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Music &amp; voice</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">yt-dlp</span>
+                        <span class="tech-tag">discord-player 7 (my own fork)</span>
+                        <span class="tech-tag">@discord-player/equalizer</span>
+                        <span class="tech-tag">discord-player-soundcloud</span>
+                        <span class="tech-tag">@discordjs/voice</span> <span class="tech-tag">@discordjs/opus</span>
+                        <span class="tech-tag">sodium-native</span> <span class="tech-tag">ffmpeg-static</span>
+                        <span class="tech-tag">fluent-ffmpeg</span> <span class="tech-tag">youtube-sr</span>
+                        <span class="tech-tag">metadata-filter</span>
+                        <span class="tech-tag">LrcLib (synced lyrics)</span>
+                    </div>
+                    <p class="prose" style="margin: var(--space-3) 0 0">
+                        The player is a <strong>custom fork</strong> of discord-player. It was TypeScript; it is
+                        rewritten into plain JavaScript in this codebase's style with local fixes on top, and it carries
+                        its own stream interceptor and a biquad DSP equalizer. A small pipeline diffs it against
+                        upstream and builds merge bundles, so the fork can still follow the original. Two of the more
+                        notable changes I've introduced: a track that resolves but produces no stream is
+                        <em>retried</em> before anything is said in the channel (a throttled config request looks
+                        exactly like an unplayable video in the og module), and the volume stage always stays in the
+                        pipeline so the volume command remains settable.
+                    </p>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Images &amp; canvas</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">canvas</span> <span class="tech-tag">canvacord</span> <span class="tech-tag">sharp</span> <span class="tech-tag">discord-image-generation</span> <span
-                    class="tech-tag">gifencoder</span> <span class="tech-tag">emoji-mixer</span>
-            </div>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Images &amp; canvas</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">canvas</span> <span class="tech-tag">canvacord</span>
+                        <span class="tech-tag">sharp</span> <span class="tech-tag">discord-image-generation</span>
+                        <span class="tech-tag">gifencoder</span> <span class="tech-tag">emoji-mixer</span>
+                    </div>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Text, search &amp; OCR</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">natural (NLP)</span> <span class="tech-tag">fuse.js (fuzzy search)</span> <span class="tech-tag">stopword</span> <span class="tech-tag">normalize-text</span>
-                <span class="tech-tag">weird-to-normal-chars</span> <span class="tech-tag">replace-special-characters</span> <span class="tech-tag">word-list</span> <span class="tech-tag">@iamtraction/google-translate</span>
-                <span class="tech-tag">tesseract-ocr (native)</span>
-            </div>
-            <p class="prose" style="margin:var(--space-3) 0 0">OCR is the native <code>tesseract-ocr</code> binary driven as a child process. Keeps it out of the event loop.</p>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Text, search &amp; OCR</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">natural (NLP)</span> <span class="tech-tag">fuse.js (fuzzy search)</span>
+                        <span class="tech-tag">stopword</span> <span class="tech-tag">normalize-text</span>
+                        <span class="tech-tag">weird-to-normal-chars</span>
+                        <span class="tech-tag">replace-special-characters</span> <span class="tech-tag">word-list</span>
+                        <span class="tech-tag">@iamtraction/google-translate</span>
+                        <span class="tech-tag">tesseract-ocr (native)</span>
+                    </div>
+                    <p class="prose" style="margin: var(--space-3) 0 0">
+                        OCR is the native <code>tesseract-ocr</code> binary driven as a child process. Keeps it out of
+                        the event loop.
+                    </p>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>Networking &amp; utilities</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">axios</span> <span class="tech-tag">undici</span> <span class="tech-tag">lodash</span> <span class="tech-tag">fs-extra</span> <span
-                    class="tech-tag">archiver</span> <span class="tech-tag">queue</span> <span class="tech-tag">pretty-ms</span> <span class="tech-tag">dirty-json</span> <span
-                    class="tech-tag">chalk</span> <span class="tech-tag">figlet</span> <span class="tech-tag">systeminformation</span>
-            </div>
-        </div>
+                <div class="tech-stack-group">
+                    <h3>Networking &amp; utilities</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">axios</span> <span class="tech-tag">undici</span>
+                        <span class="tech-tag">lodash</span> <span class="tech-tag">fs-extra</span>
+                        <span class="tech-tag">archiver</span> <span class="tech-tag">queue</span>
+                        <span class="tech-tag">pretty-ms</span> <span class="tech-tag">dirty-json</span>
+                        <span class="tech-tag">chalk</span> <span class="tech-tag">figlet</span>
+                        <span class="tech-tag">systeminformation</span>
+                    </div>
+                </div>
 
-        <div class="tech-stack-group">
-            <h3>The box itself</h3>
-            <div class="chip-grid">
-                <span class="tech-tag">Void Linux</span> <span class="tech-tag">aarch64</span> <span class="tech-tag">bubblewrap</span> <span class="tech-tag">nvm</span> <span
-                    class="tech-tag">rsync</span>
-            </div>
-        </div>
-    </section>
+                <div class="tech-stack-group">
+                    <h3>The box itself</h3>
+                    <div class="chip-grid">
+                        <span class="tech-tag">Void Linux</span> <span class="tech-tag">aarch64</span>
+                        <span class="tech-tag">bubblewrap</span> <span class="tech-tag">nvm</span>
+                        <span class="tech-tag">rsync</span>
+                    </div>
+                </div>
+            </section>
 
-    <section class="card section" id="structure">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Source layout</p>
-            <h2 style="text-align:left">How the code is organised</h2>
-            <p style="margin:0"><code>bot/</code> is what you write. <code>src/</code> is what it runs on.</p>
-        </div>
-        <pre class="tech-tree"><span class="dir">relaxy-private/</span>
+            <section class="card section" id="structure">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Source layout</p>
+                    <h2 style="text-align: left">How the code is organised</h2>
+                    <p style="margin: 0"><code>bot/</code> is what you write. <code>src/</code> is what it runs on.</p>
+                </div>
+                <pre class="tech-tree"><span class="dir">relaxy-private/</span>
 ├── _main                     <span class="cmt"># bwrap sandbox, then execs ./start inside it</span>
 ├── start                     <span class="cmt"># launcher: ./start [--client|--bridge], Node flags</span>
 ├── detect_os.js              <span class="cmt"># host detection (distro and hardware, separately)</span>
@@ -571,69 +767,111 @@
 ├── <span class="dir">scripts/</span>                  <span class="cmt"># music/ upgrade pipeline, maintenance/ checks</span>
 ├── <span class="dir">logs/</span>                     <span class="cmt"># per-cluster log output</span>
 └── <span class="dir">storage/</span>                  <span class="cmt"># runtime caches (users, guilds, cdn-cache)</span></pre>
-    </section>
+            </section>
 
-    <section class="card section" id="hosting">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Deployment</p>
-            <h2 style="text-align:left">The sandbox and where it runs</h2>
-            <p style="margin:0">Nothing starts Node directly, and Relaxy! works out what it is running on at boot.</p>
-        </div>
-        <p class="prose" style="margin:0 0 var(--space-5)">The launcher wraps the whole program in a <strong>bubblewrap</strong> sandbox before anything else happens. System directories come in
-            read-only, the bot's own directory is the single writable mount, <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC and UTS namespaces are unshared. Then it execs the real launcher
-            from the inside.</p>
-        <div class="host-grid">
-            <div class="host-card">
-                <h3>Raspberry Pi <span class="host-tag">IS_VOID + IS_RASPBERRY_PI</span></h3>
-                <p>The primary host. An always-on board running Void, hosting every service in the Relaxy! ecosystem and keeping a slice of the fleet alive around the clock on low-performance
-                    tuning.</p>
+            <section class="card section" id="hosting">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Deployment</p>
+                    <h2 style="text-align: left">The sandbox and where it runs</h2>
+                    <p style="margin: 0">
+                        Nothing starts Node directly, and Relaxy! works out what it is running on at boot.
+                    </p>
+                </div>
+                <p class="prose" style="margin: 0 0 var(--space-5)">
+                    The launcher wraps the whole program in a <strong>bubblewrap</strong> sandbox before anything else
+                    happens. System directories come in read-only, the bot's own directory is the single writable mount,
+                    <code>/tmp</code> is a throwaway tmpfs, and the PID, IPC and UTS namespaces are unshared. Then it
+                    execs the real launcher from the inside.
+                </p>
+                <div class="host-grid">
+                    <div class="host-card">
+                        <h3>Raspberry Pi <span class="host-tag">IS_VOID + IS_RASPBERRY_PI</span></h3>
+                        <p>
+                            The primary host. An always-on board running Void, hosting every service in the Relaxy!
+                            ecosystem and keeping a slice of the fleet alive around the clock on low-performance tuning.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Void PC <span class="host-tag">IS_VOID</span></h3>
+                        <p>
+                            My personal Void Linux desktop. Only used occasionally, it is pretty expensive to run 24/7.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Laptop <span class="host-tag">IS_LINUX</span></h3>
+                        <p>
+                            A Linux secondary and development host. Used mainly for debugging when I have no access to
+                            my PC.
+                        </p>
+                    </div>
+                </div>
+                <p class="prose" style="margin: var(--space-4) 0 0">
+                    Every read in the host detection is best-effort. Under bwrap parts of <code>/proc</code> and
+                    <code>/sys</code> may not be mounted at all, and a sandboxed host has to degrade gracefully to
+                    "plain Linux" rather than throw at import time and take the whole process down with it. That one
+                    caused some headaches.
+                </p>
+            </section>
+        </main>
+
+        <div id="subpages-bar"></div>
+
+        <aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
+            <div class="relaxy-coach-panel">
+                <span class="relaxy-coach-resize" aria-hidden="true"></span>
+                <p class="relaxy-coach-hint">
+                    Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or
+                    <strong>double-click me</strong> to tuck me away.
+                </p>
+                <div class="relaxy-coach-search">
+                    <input
+                        class="relaxy-coach-input"
+                        type="text"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Search commands"
+                        placeholder="Type a command name to learn more about it..."
+                    />
+                    <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
+                </div>
             </div>
-            <div class="host-card">
-                <h3>Void PC <span class="host-tag">IS_VOID</span></h3>
-                <p>My personal Void Linux desktop. Only used occasionally, it is pretty expensive to run 24/7.</p>
-            </div>
-            <div class="host-card">
-                <h3>Laptop <span class="host-tag">IS_LINUX</span></h3>
-                <p>A Linux secondary and development host. Used mainly for debugging when I have no access to my PC.</p>
-            </div>
-        </div>
-        <p class="prose" style="margin:var(--space-4) 0 0">Every read in the host detection is best-effort. Under bwrap parts of <code>/proc</code> and <code>/sys</code> may not be mounted at all, and
-            a sandboxed host has to degrade gracefully to "plain Linux" rather than throw at import time and take the whole process down with it. That one caused some headaches.</p>
-    </section>
+            <img
+                draggable="false"
+                class="relaxy-coach-avatar"
+                alt="Relaxy!"
+                title="Click to search Relaxy!'s commands - double-click to hide or show me"
+                decoding="async"
+                height="480"
+                width="480"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp"
+            />
+        </aside>
 
-</main>
+        <footer class="footer">
+            <img
+                draggable="false"
+                alt=""
+                aria-hidden="true"
+                class="footer-relaxy"
+                decoding="async"
+                height="3072"
+                loading="lazy"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
+                width="2304"
+            />
+            <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+            <p class="footer-links">
+                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot;
+                <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
+                <a href="https://uptime.relaxy.xyz">Service uptime status</a>
+            </p>
+        </footer>
 
-<div id="subpages-bar"></div>
-
-<aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
-    <div class="relaxy-coach-panel">
-        <span class="relaxy-coach-resize" aria-hidden="true"></span>
-        <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or <strong>double-click me</strong> to tuck me away.</p>
-        <div class="relaxy-coach-search">
-            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
-            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
-        </div>
-    </div>
-    <img draggable="false" class="relaxy-coach-avatar" alt="Relaxy!" title="Click to search Relaxy!'s commands - double-click to hide or show me" decoding="async" height="480" width="480"
-         src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
-</aside>
-
-<footer class="footer">
-    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" decoding="async" height="3072" loading="lazy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
-         width="2304">
-    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
-    <p class="footer-links">
-        <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot; <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot; <a
-            href="https://uptime.relaxy.xyz">Service uptime status</a>
-    </p>
-</footer>
-
-<script defer src="/dist/js/main/subpagebar.js"></script>
-<script defer src="/dist/main.js"></script>
-<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
-<script defer src="/dist/js/main/enhance.js"></script>
-<script defer src="/dist/js/main/mobilenav.js"></script>
-<script defer src="/dist/js/main/system-stats.js"></script>
-</body>
-
+        <script defer src="/dist/js/main/subpagebar.js"></script>
+        <script defer src="/dist/main.js"></script>
+        <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
+        <script defer src="/dist/js/main/enhance.js"></script>
+        <script defer src="/dist/js/main/mobilenav.js"></script>
+        <script defer src="/dist/js/main/system-stats.js"></script>
+    </body>
 </html>

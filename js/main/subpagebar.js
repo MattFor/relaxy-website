@@ -3,105 +3,100 @@
  * @link https://codeberg.org/MattFor/relaxy-website
  */
 
-(() =>
-{
+(() => {
     const pages = [
         {
-            name:  'Home',
+            name: 'Home',
             short: 'Home',
-            link:  '/'
+            link: '/'
         },
         {
-            name:  'Matrix',
+            name: 'Matrix',
             short: 'Matrix',
-            link:  '/subpages/matrix',
-            nav:   true
+            link: '/subpages/matrix',
+            nav: true
         },
         {
-            name:  'CDN',
+            name: 'CDN',
             short: 'CDN',
-            link:  '/subpages/cdn',
-            nav:   true
+            link: '/subpages/cdn',
+            nav: true
         },
         {
-            name:  'Minecraft',
+            name: 'Minecraft',
             short: 'Minecraft',
-            link:  '/subpages/minecraft',
-            nav:   true
+            link: '/subpages/minecraft',
+            nav: true
         },
         {
-            name:  'Dashboard',
+            name: 'Dashboard',
             short: 'Dashboard',
-            link:  '/subpages/dashboard',
-            nav:   true
+            link: '/subpages/dashboard',
+            nav: true
         },
         {
-            name:  'Terms of Service',
+            name: 'Terms of Service',
             short: 'Terms',
-            link:  '/subpages/terms-of-service'
+            link: '/subpages/terms-of-service'
         },
         {
-            name:  'Privacy Policy',
+            name: 'Privacy Policy',
             short: 'Privacy',
-            link:  '/subpages/privacy-policy'
+            link: '/subpages/privacy-policy'
         },
         {
-            name:  'Changelog',
+            name: 'Changelog',
             short: 'Changelog',
-            link:  '/subpages/changelog'
+            link: '/subpages/changelog'
         },
         {
-            name:  'Devlog',
+            name: 'Devlog',
             short: 'Devlog',
-            link:  '/subpages/devlog'
+            link: '/subpages/devlog'
         },
         {
-            name:  'Credits',
+            name: 'Credits',
             short: 'Credits',
-            link:  '/subpages/credits'
+            link: '/subpages/credits'
         },
         {
-            name:  'Technical Breakdown',
+            name: 'Technical Breakdown',
             short: 'Technical',
-            link:  '/subpages/technical'
+            link: '/subpages/technical'
         }
     ];
 
     const path = window.location.pathname;
-    const isCurrent = (link) => link === '/'
-        ? (path === '/' || path.endsWith('/index.html'))
-        : path.endsWith(link.replace(/^\//, '')) || path.includes(link);
+    const isCurrent = (link) =>
+        link === '/'
+            ? path === '/' || path.endsWith('/index.html')
+            : path.endsWith(link.replace(/^\//, '')) || path.includes(link);
 
     const ordered = pages.filter((p) => !p.nav).concat(pages.filter((p) => p.nav));
     const others = ordered.filter((p) => !isCurrent(p.link));
 
     const bottom = document.getElementById('subpages-bar');
-    if (bottom)
-    {
+    if (bottom) {
         bottom.innerHTML = others
             .map((p) => `<a href="${p.link}">${p.name}</a>`)
             .join(' <span aria-hidden="true">|</span> ');
     }
 
     const top = document.getElementById('topnav');
-    if (top)
-    {
-        const makePill = (p) =>
-        {
+    if (top) {
+        const makePill = (p) => {
             const a = document.createElement('a');
             a.href = p.link;
             a.textContent = p.short;
             a.className = 'nav-page';
-            if (isCurrent(p.link))
-            {
+            if (isCurrent(p.link)) {
                 a.classList.add('is-active');
                 a.setAttribute('aria-current', 'page');
             }
             return a;
         };
 
-        const buildMore = (items, trailing) =>
-        {
+        const buildMore = (items, trailing) => {
             const details = document.createElement('details');
             details.className = 'nav-more';
 
@@ -112,11 +107,9 @@
             const menu = document.createElement('div');
             menu.className = 'nav-more-menu';
 
-            const add = (p) =>
-            {
+            const add = (p) => {
                 const a = makePill(p);
-                if (a.classList.contains('is-active'))
-                {
+                if (a.classList.contains('is-active')) {
                     details.classList.add('is-active');
                 }
                 menu.appendChild(a);
@@ -124,8 +117,7 @@
 
             items.forEach(add);
 
-            if (trailing && trailing.length)
-            {
+            if (trailing && trailing.length) {
                 const divider = document.createElement('div');
                 divider.className = 'nav-more-sep';
                 divider.setAttribute('aria-hidden', 'true');
@@ -141,8 +133,7 @@
         const rest = pages.filter((p) => !p.nav && p.link !== '/');
         const home = pages.find((p) => p.link === '/');
 
-        const makeSep = () =>
-        {
+        const makeSep = () => {
             const sep = document.createElement('span');
             sep.className = 'nav-sep';
             sep.setAttribute('aria-hidden', 'true');
@@ -152,8 +143,7 @@
         const sectionLinks = Array.from(top.querySelectorAll('a[href^="#"]'));
         const hasSections = sectionLinks.length > 0;
 
-        const buildSections = () =>
-        {
+        const buildSections = () => {
             const details = document.createElement('details');
             details.className = 'nav-more nav-sections';
 
@@ -169,20 +159,15 @@
             return details;
         };
 
-        const renderNav = (level) =>
-        {
+        const renderNav = (level) => {
             sectionLinks.forEach((a) => a.remove());
             top.textContent = '';
             top.classList.toggle('is-dense', level === 2);
 
-            if (hasSections)
-            {
-                if (level < 3)
-                {
+            if (hasSections) {
+                if (level < 3) {
                     sectionLinks.forEach((a) => top.appendChild(a));
-                }
-                else
-                {
+                } else {
                     top.appendChild(buildSections());
                 }
 
@@ -191,44 +176,26 @@
 
             top.appendChild(makePill(home));
 
-            if (level === 0)
-            {
+            if (level === 0) {
                 rest.forEach((p) => top.appendChild(makePill(p)));
             }
 
-            top.appendChild(level === 0
-                ? buildMore(services)
-                : buildMore(rest, services));
+            top.appendChild(level === 0 ? buildMore(services) : buildMore(rest, services));
         };
 
-        const spillsOntoTwoLines = () =>
-        {
-            const tallest = Array.from(top.children)
-                                 .reduce((max, el) => Math.max(max, el.offsetHeight), 0);
+        const spillsOntoTwoLines = () => {
+            const tallest = Array.from(top.children).reduce((max, el) => Math.max(max, el.offsetHeight), 0);
 
             return tallest > 0 && top.offsetHeight > tallest * 1.5;
         };
 
-        const fitNav = () =>
-        {
-            const levels = hasSections
-                ? [
-                    0,
-                    1,
-                    2,
-                    3
-                ]
-                : [
-                    0,
-                    1
-                ];
+        const fitNav = () => {
+            const levels = hasSections ? [0, 1, 2, 3] : [0, 1];
 
-            for (let i = 0; i < levels.length; i++)
-            {
+            for (let i = 0; i < levels.length; i++) {
                 renderNav(levels[i]);
 
-                if (!spillsOntoTwoLines())
-                {
+                if (!spillsOntoTwoLines()) {
                     return;
                 }
             }
@@ -238,10 +205,8 @@
 
         let fitTimer;
         let fitWidth = window.innerWidth;
-        window.addEventListener('resize', () =>
-        {
-            if (window.innerWidth === fitWidth)
-            {
+        window.addEventListener('resize', () => {
+            if (window.innerWidth === fitWidth) {
                 return;
             }
 
@@ -250,22 +215,17 @@
             fitTimer = window.setTimeout(fitNav, 150);
         });
 
-        top.addEventListener('click', (e) =>
-        {
-            if (e.target.tagName !== 'A')
-            {
+        top.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'A') {
                 return;
             }
 
             top.querySelectorAll('.nav-more').forEach((details) => details.removeAttribute('open'));
         });
 
-        document.addEventListener('click', (e) =>
-        {
-            top.querySelectorAll('.nav-more').forEach((details) =>
-            {
-                if (!details.contains(e.target))
-                {
+        document.addEventListener('click', (e) => {
+            top.querySelectorAll('.nav-more').forEach((details) => {
+                if (!details.contains(e.target)) {
                     details.removeAttribute('open');
                 }
             });

@@ -1,189 +1,276 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Relaxy! Matrix Server - Self-Hosted Encrypted Chat</title>
-    <script>document.documentElement.classList.add('js');
-    try
-    {
-        if (localStorage.getItem('theme') === 'light')
-        {
-            document.documentElement.classList.add('light-mode');
-        }
-    }
-    catch (e)
-    {
-    }</script>
-    <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect">
-    <link href="https://cdn.relaxy.xyz" rel="dns-prefetch">
-    <link href="/dist/main.css" rel="stylesheet">
-    <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon">
-    <meta content="#ff69b4" name="theme-color">
-    <meta content="MattFor" name="author">
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
-    <meta content="A self-hosted Matrix chat server run on a Raspberry Pi by MattFor. Private, encrypted and federated - make an account and log in at matrix.relaxy.xyz." name="description">
-    <meta content="self-hosted matrix server, matrix homeserver, encrypted chat server, federated chat, matrix.relaxy.xyz" name="keywords">
-    <link href="https://www.relaxy.xyz/subpages/matrix" rel="canonical">
-    <meta content="website" property="og:type">
-    <meta content="https://www.relaxy.xyz/subpages/matrix" property="og:url">
-    <meta content="Relaxy! Matrix Server - Self-Hosted Encrypted Chat" property="og:title">
-    <meta content="A self-hosted, private and encrypted Matrix homeserver - chat on infrastructure I own." property="og:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image">
-    <meta content="Relaxy!" property="og:site_name">
-    <meta content="en_US" property="og:locale">
-    <meta content="600" property="og:image:width">
-    <meta content="600" property="og:image:height">
-    <meta content="Relaxy! the Discord bot mascot" property="og:image:alt">
-    <meta content="summary" name="twitter:card">
-    <meta content="Relaxy! Matrix Server - Self-Hosted Encrypted Chat" name="twitter:title">
-    <meta content="A self-hosted Matrix chat server run on a Raspberry Pi by MattFor. Private, encrypted and federated - make an account and log in at matrix.relaxy.xyz." name="twitter:description">
-    <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image">
-    <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt">
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "WebPage",
-                    "@id": "https://www.relaxy.xyz/subpages/matrix",
-                    "url": "https://www.relaxy.xyz/subpages/matrix",
-                    "name": "Relaxy! Matrix Server - Self-Hosted Encrypted Chat",
-                    "description": "A self-hosted Matrix chat server run on a Raspberry Pi by MattFor. Private, encrypted and federated - make an account and log in at matrix.relaxy.xyz.",
-                    "isPartOf": {
-                        "@id": "https://www.relaxy.xyz/#website"
-                    },
-                    "primaryImageOfPage": {
-                        "@type": "ImageObject",
-                        "url": "https://cdn.relaxy.xyz/relaxy.webp",
-                        "width": 600,
-                        "height": 600
-                    },
-                    "inLanguage": "en"
-                },
-                {
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": "Relaxy!",
-                            "item": "https://www.relaxy.xyz/"
-                        },
-                        {
-                            "@type": "ListItem",
-                            "position": 2,
-                            "name": "Matrix Chat Server",
-                            "item": "https://www.relaxy.xyz/subpages/matrix"
-                        }
-                    ]
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Relaxy! Matrix Server - Self-Hosted Encrypted Chat</title>
+        <script>
+            document.documentElement.classList.add('js');
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('light-mode');
                 }
-            ]
-        }
-    </script>
-</head>
+            } catch (e) {}
+        </script>
+        <link crossorigin href="https://cdn.relaxy.xyz" rel="preconnect" />
+        <link href="https://cdn.relaxy.xyz" rel="dns-prefetch" />
+        <link href="/dist/main.css" rel="stylesheet" />
+        <link href="https://cdn.relaxy.xyz/relaxy/website/icons/relaxy.ico" rel="icon" type="image/x-icon" />
+        <meta content="#ff69b4" name="theme-color" />
+        <meta content="MattFor" name="author" />
+        <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots" />
+        <meta
+            content="A self-hosted Matrix chat server run on a Raspberry Pi by MattFor. Private, encrypted and federated - make an account and log in at matrix.relaxy.xyz."
+            name="description"
+        />
+        <meta
+            content="self-hosted matrix server, matrix homeserver, encrypted chat server, federated chat, matrix.relaxy.xyz"
+            name="keywords"
+        />
+        <link href="https://www.relaxy.xyz/subpages/matrix" rel="canonical" />
+        <meta content="website" property="og:type" />
+        <meta content="https://www.relaxy.xyz/subpages/matrix" property="og:url" />
+        <meta content="Relaxy! Matrix Server - Self-Hosted Encrypted Chat" property="og:title" />
+        <meta
+            content="A self-hosted, private and encrypted Matrix homeserver - chat on infrastructure I own."
+            property="og:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" property="og:image" />
+        <meta content="Relaxy!" property="og:site_name" />
+        <meta content="en_US" property="og:locale" />
+        <meta content="600" property="og:image:width" />
+        <meta content="600" property="og:image:height" />
+        <meta content="Relaxy! the Discord bot mascot" property="og:image:alt" />
+        <meta content="summary" name="twitter:card" />
+        <meta content="Relaxy! Matrix Server - Self-Hosted Encrypted Chat" name="twitter:title" />
+        <meta
+            content="A self-hosted Matrix chat server run on a Raspberry Pi by MattFor. Private, encrypted and federated - make an account and log in at matrix.relaxy.xyz."
+            name="twitter:description"
+        />
+        <meta content="https://cdn.relaxy.xyz/relaxy.webp" name="twitter:image" />
+        <meta content="Relaxy! the Discord bot mascot" name="twitter:image:alt" />
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "WebPage",
+                        "@id": "https://www.relaxy.xyz/subpages/matrix",
+                        "url": "https://www.relaxy.xyz/subpages/matrix",
+                        "name": "Relaxy! Matrix Server - Self-Hosted Encrypted Chat",
+                        "description": "A self-hosted Matrix chat server run on a Raspberry Pi by MattFor. Private, encrypted and federated - make an account and log in at matrix.relaxy.xyz.",
+                        "isPartOf": {
+                            "@id": "https://www.relaxy.xyz/#website"
+                        },
+                        "primaryImageOfPage": {
+                            "@type": "ImageObject",
+                            "url": "https://cdn.relaxy.xyz/relaxy.webp",
+                            "width": 600,
+                            "height": 600
+                        },
+                        "inLanguage": "en"
+                    },
+                    {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "name": "Relaxy!",
+                                "item": "https://www.relaxy.xyz/"
+                            },
+                            {
+                                "@type": "ListItem",
+                                "position": 2,
+                                "name": "Matrix Chat Server",
+                                "item": "https://www.relaxy.xyz/subpages/matrix"
+                            }
+                        ]
+                    }
+                ]
+            }
+        </script>
+    </head>
 
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="topbar">
-    <a class="brand" href="/"> <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56"> <span>Relaxy!</span> </a>
-    <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
-    <div class="topbar-end">
-        <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode
-        </button>
-        <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</header>
-
-<div aria-hidden="true" class="nav-drawer" id="navDrawer">
-    <div class="nav-drawer-overlay" id="navOverlay"></div>
-    <div class="nav-drawer-panel">
-        <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
-        <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
-    </div>
-</div>
-
-<section class="hero">
-    <p class="eyebrow">Self-hosted chat</p>
-    <h1>Matrix, on my own</h1>
-    <p class="tagline">An open, private, end-to-end encrypted chat server. Running on the same Raspberry Pi as Relaxy! No big tech in the middle, no ads, no one eyeing your messages. Not as flexible
-        as Discord, but has NO AI, tracking, and privacy concerns.</p>
-    <a class="invite-button" href="https://matrix.relaxy.xyz/login" rel="noopener" target="_blank">Create an account & log in</a>
-    <p class="byline">Homeserver: <code>https://matrix.relaxy.xyz</code></p>
-</section>
-
-<main class="wrap" id="main">
-    <section class="card section">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">Why even run it?</p>
-            <h2 style="text-align:left">Total privacy and information security</h2>
-            <p style="margin:0;max-width:72ch">Matrix is an open standard for real-time chat. With the way things are looking around the world, people need a quiet private place to talk in.</p>
-        </div>
-        <div class="eng-grid">
-            <div class="host-card">
-                <h3>Yours by default</h3>
-                <p>Every message lives on the server, not on someone's ad platform. No tracking, no data resale, no algorithm deciding what you see.</p>
+        <header class="topbar">
+            <a class="brand" href="/">
+                <img
+                    draggable="false"
+                    alt=""
+                    decoding="async"
+                    height="56"
+                    src="https://cdn.relaxy.xyz/relaxy.webp"
+                    width="56"
+                />
+                <span>Relaxy!</span>
+            </a>
+            <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
+            <div class="topbar-end">
+                <button
+                    aria-pressed="false"
+                    class="theme-button"
+                    id="themeButton"
+                    onclick="toggleTheme()"
+                    type="button"
+                >
+                    Light Mode
+                </button>
+                <button
+                    aria-expanded="false"
+                    aria-label="Open navigation"
+                    class="nav-toggle"
+                    id="navToggle"
+                    type="button"
+                >
+                    <span></span><span></span><span></span>
+                </button>
             </div>
-            <div class="host-card">
-                <h3>End-to-end encrypted</h3>
-                <p>Private rooms are encrypted (E2EE) so that not even I can read them. Your keys stay on your devices, unlike Discord which only has voice chat encryption.</p>
+        </header>
+
+        <div aria-hidden="true" class="nav-drawer" id="navDrawer">
+            <div class="nav-drawer-overlay" id="navOverlay"></div>
+            <div class="nav-drawer-panel">
+                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">
+                    ✕
+                </button>
+                <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
             </div>
-            <div class="host-card">
-                <h3>Invite anyone you want!</h3>
-                <p>There aren't any limits, if you want to have a completely private chat with a friend invite him here!.</p>
+        </div>
+
+        <section class="hero">
+            <p class="eyebrow">Self-hosted chat</p>
+            <h1>Matrix, on my own</h1>
+            <p class="tagline">
+                An open, private, end-to-end encrypted chat server. Running on the same Raspberry Pi as Relaxy! No big
+                tech in the middle, no ads, no one eyeing your messages. Not as flexible as Discord, but has NO AI,
+                tracking, and privacy concerns.
+            </p>
+            <a class="invite-button" href="https://matrix.relaxy.xyz/login" rel="noopener" target="_blank"
+                >Create an account & log in</a
+            >
+            <p class="byline">Homeserver: <code>https://matrix.relaxy.xyz</code></p>
+        </section>
+
+        <main class="wrap" id="main">
+            <section class="card section">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">Why even run it?</p>
+                    <h2 style="text-align: left">Total privacy and information security</h2>
+                    <p style="margin: 0; max-width: 72ch">
+                        Matrix is an open standard for real-time chat. With the way things are looking around the world,
+                        people need a quiet private place to talk in.
+                    </p>
+                </div>
+                <div class="eng-grid">
+                    <div class="host-card">
+                        <h3>Yours by default</h3>
+                        <p>
+                            Every message lives on the server, not on someone's ad platform. No tracking, no data
+                            resale, no algorithm deciding what you see.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>End-to-end encrypted</h3>
+                        <p>
+                            Private rooms are encrypted (E2EE) so that not even I can read them. Your keys stay on your
+                            devices, unlike Discord which only has voice chat encryption.
+                        </p>
+                    </div>
+                    <div class="host-card">
+                        <h3>Invite anyone you want!</h3>
+                        <p>
+                            There aren't any limits, if you want to have a completely private chat with a friend invite
+                            him here!.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card section">
+                <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
+                    <p class="eyebrow">How to get started</p>
+                    <h2 style="text-align: left">Three steps to say hi</h2>
+                </div>
+                <ul class="feature-list">
+                    <li>
+                        Open
+                        <a href="https://matrix.relaxy.xyz/login" rel="noopener" target="_blank"
+                            >matrix.relaxy.xyz/login</a
+                        >
+                        and register a new account.
+                    </li>
+                    <li>
+                        Log in there in the browser, or point any Matrix client (like FluffyChat, Element) at the
+                        homeserver <code>https://matrix.relaxy.xyz</code>.
+                    </li>
+                    <li>
+                        Find me, join a room in Relaxy!'s Fanclub and start chatting! Ask in the Discord support server
+                        if you'd like an invitation.
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+        <div id="subpages-bar"></div>
+
+        <aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
+            <div class="relaxy-coach-panel">
+                <span class="relaxy-coach-resize" aria-hidden="true"></span>
+                <p class="relaxy-coach-hint">
+                    Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or
+                    <strong>double-click me</strong> to tuck me away.
+                </p>
+                <div class="relaxy-coach-search">
+                    <input
+                        class="relaxy-coach-input"
+                        type="text"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Search commands"
+                        placeholder="Type a command name to learn more about it..."
+                    />
+                    <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
+                </div>
             </div>
-        </div>
-    </section>
+            <img
+                draggable="false"
+                class="relaxy-coach-avatar"
+                alt="Relaxy!"
+                title="Click to search Relaxy!'s commands - double-click to hide or show me"
+                decoding="async"
+                height="480"
+                width="480"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp"
+            />
+        </aside>
 
-    <section class="card section">
-        <div class="section-head" style="text-align:left;margin-bottom:var(--space-4)">
-            <p class="eyebrow">How to get started</p>
-            <h2 style="text-align:left">Three steps to say hi</h2>
-        </div>
-        <ul class="feature-list">
-            <li>Open <a href="https://matrix.relaxy.xyz/login" rel="noopener" target="_blank">matrix.relaxy.xyz/login</a> and register a new account.
-            </li>
-            <li>Log in there in the browser, or point any Matrix client (like FluffyChat, Element) at the homeserver <code>https://matrix.relaxy.xyz</code>.
-            </li>
-            <li>Find me, join a room in Relaxy!'s Fanclub and start chatting! Ask in the Discord support server if you'd like an invitation.</li>
-        </ul>
-    </section>
-</main>
+        <footer class="footer">
+            <img
+                draggable="false"
+                alt=""
+                aria-hidden="true"
+                class="footer-relaxy"
+                decoding="async"
+                height="3072"
+                loading="lazy"
+                src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
+                width="2304"
+            />
+            <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
+            <p class="footer-links">
+                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot;
+                <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
+                <a href="https://uptime.relaxy.xyz">Service uptime status</a>
+            </p>
+        </footer>
 
-<div id="subpages-bar"></div>
-
-<aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
-    <div class="relaxy-coach-panel">
-        <span class="relaxy-coach-resize" aria-hidden="true"></span>
-        <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or <strong>double-click me</strong> to tuck me away.</p>
-        <div class="relaxy-coach-search">
-            <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it...">
-            <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
-        </div>
-    </div>
-    <img draggable="false" class="relaxy-coach-avatar" alt="Relaxy!" title="Click to search Relaxy!'s commands - double-click to hide or show me" decoding="async" height="480" width="480"
-         src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy-cute.webp">
-</aside>
-
-<footer class="footer">
-    <img draggable="false" alt="" aria-hidden="true" class="footer-relaxy" decoding="async" height="3072" loading="lazy" src="https://cdn.relaxy.xyz/relaxy/website/img/mascot/relaxy_sit.webp"
-         width="2304">
-    <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
-    <p class="footer-links">
-        <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot; <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot; <a
-            href="https://uptime.relaxy.xyz">Service uptime status</a>
-    </p>
-</footer>
-
-<script defer src="/dist/js/main/subpagebar.js"></script>
-<script defer src="/dist/main.js"></script>
-<script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
-<script defer src="/dist/js/main/enhance.js"></script>
-<script defer src="/dist/js/main/mobilenav.js"></script>
-</body>
-
+        <script defer src="/dist/js/main/subpagebar.js"></script>
+        <script defer src="/dist/main.js"></script>
+        <script defer src="https://cdn.relaxy.xyz/relaxy/website/scripts/commands.min.js"></script>
+        <script defer src="/dist/js/main/enhance.js"></script>
+        <script defer src="/dist/js/main/mobilenav.js"></script>
+    </body>
 </html>

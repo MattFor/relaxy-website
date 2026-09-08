@@ -10,108 +10,97 @@ const FEED = 'uptime.json';
 const REFRESH_MS = 15000;
 const BACKOFF_MAX_MS = 120000;
 
-const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
-    '&':  '&amp;',
-    '<':  '&lt;',
-    '>':  '&gt;',
-    '"':  '&quot;',
-    '\'': '&#39;'
-}[character]));
+const escapeHtml = (value) =>
+    String(value ?? '').replace(
+        /[&<>"']/g,
+        (character) =>
+            ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]
+    );
 
 const el = (id) => document.getElementById(id);
 
 const formatDate = (iso, options) => new Date(iso).toLocaleString(undefined, options);
 
-const dayLabel = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString(undefined, {
-    month: 'short',
-    day:   'numeric',
-    year:  'numeric'
-});
+const dayLabel = (date) =>
+    new Date(`${date}T12:00:00Z`).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
 
 const STAMP = {
-    month:  'short',
-    day:    'numeric',
-    hour:   '2-digit',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
     minute: '2-digit'
 };
 
-const relative = (iso) =>
-{
+const relative = (iso) => {
     const seconds = Math.max(0, (Date.now() - Date.parse(iso)) / 1000);
 
-    if (seconds < 90)
-    {
+    if (seconds < 90) {
         return 'just now';
     }
 
     const minutes = Math.round(seconds / 60);
 
-    if (minutes < 60)
-    {
+    if (minutes < 60) {
         return `${minutes} min ago`;
     }
 
     const hours = Math.round(minutes / 60);
 
-    if (hours < 24)
-    {
+    if (hours < 24) {
         return `${hours}h ago`;
     }
 
     return `${Math.round(hours / 24)}d ago`;
 };
 
-const duration = (seconds) =>
-{
-    if (seconds == null)
-    {
+const duration = (seconds) => {
+    if (seconds == null) {
         return '';
     }
 
-    if (seconds < 60)
-    {
+    if (seconds < 60) {
         return `${Math.max(1, Math.round(seconds))}s`;
     }
 
     const minutes = Math.floor(seconds / 60);
 
-    if (minutes < 60)
-    {
+    if (minutes < 60) {
         return `${minutes} min`;
     }
 
     const hours = Math.floor(minutes / 60);
 
-    if (hours < 24)
-    {
-        return minutes % 60
-            ? `${hours}h ${minutes % 60}m`
-            : `${hours}h`;
+    if (hours < 24) {
+        return minutes % 60 ? `${hours}h ${minutes % 60}m` : `${hours}h`;
     }
 
     const days = Math.floor(hours / 24);
 
-    return hours % 24
-        ? `${days}d ${hours % 24}h`
-        : `${days}d`;
+    return hours % 24 ? `${days}d ${hours % 24}h` : `${days}d`;
 };
 
-const formatUptime = (value) =>
-{
-    if (value == null)
-    {
+const formatUptime = (value) => {
+    if (value == null) {
         return '—';
     }
 
-    if (value >= 100)
-    {
+    if (value >= 100) {
         return '100%';
     }
 
     let text = value.toFixed(10);
 
-    if (Number(text) >= 100)
-    {
+    if (Number(text) >= 100) {
         text = (Math.floor(value * 1e10) / 1e10).toFixed(10);
     }
 
@@ -122,49 +111,38 @@ const formatUptime = (value) =>
     return `${whole}.${decimals.padEnd(2, '0')}%`;
 };
 
-const formatUptimeShort = (value) =>
-{
-    if (value == null)
-    {
+const formatUptimeShort = (value) => {
+    if (value == null) {
         return '—';
     }
 
-    if (value >= 100)
-    {
+    if (value >= 100) {
         return '100%';
     }
 
     return `${(Math.floor(value * 100) / 100).toFixed(2)}%`;
 };
 
-const formatMs = (value) =>
-{
-    if (value == null)
-    {
+const formatMs = (value) => {
+    if (value == null) {
         return '—';
     }
 
-    if (value >= 1000)
-    {
+    if (value >= 1000) {
         return `${(value / 1000).toFixed(2)}s`;
     }
 
-    return value >= 100
-        ? `${Math.round(value)}ms`
-        : `${Math.round(value * 10) / 10}ms`;
+    return value >= 100 ? `${Math.round(value)}ms` : `${Math.round(value * 10) / 10}ms`;
 };
 
-const visibleDays = (available) =>
-{
+const visibleDays = (available) => {
     const width = window.innerWidth;
 
-    if (width <= 480)
-    {
+    if (width <= 480) {
         return Math.min(available, 30);
     }
 
-    if (width <= 760)
-    {
+    if (width <= 760) {
         return Math.min(available, 60);
     }
 
@@ -173,10 +151,8 @@ const visibleDays = (available) =>
 
 const SPARK_FLOOR = 23;
 
-const sparkline = (samples) =>
-{
-    if (!Array.isArray(samples) || samples.length < 2)
-    {
+const sparkline = (samples) => {
+    if (!Array.isArray(samples) || samples.length < 2) {
         return '';
     }
 
@@ -191,58 +167,44 @@ const sparkline = (samples) =>
     let drawing = false;
     let gapFrom = null;
 
-    const closeGap = (until) =>
-    {
-        gaps += `M${at(gapFrom === 0
-            ? 0
-            : gapFrom - 0.5)} ${SPARK_FLOOR}L${at(until)} ${SPARK_FLOOR}`;
+    const closeGap = (until) => {
+        gaps += `M${at(gapFrom === 0 ? 0 : gapFrom - 0.5)} ${SPARK_FLOOR}L${at(until)} ${SPARK_FLOOR}`;
         gapFrom = null;
     };
 
-    samples.forEach((sample, index) =>
-    {
-        if (typeof sample !== 'number')
-        {
+    samples.forEach((sample, index) => {
+        if (typeof sample !== 'number') {
             drawing = false;
 
-            if (gapFrom === null)
-            {
+            if (gapFrom === null) {
                 gapFrom = index;
             }
 
             return;
         }
 
-        if (gapFrom !== null)
-        {
+        if (gapFrom !== null) {
             closeGap(index - 0.5);
         }
 
-        live += `${drawing
-            ? 'L'
-            : 'M'}${at(index)} ${(23 - (sample / peak) * 22).toFixed(2)}`;
+        live += `${drawing ? 'L' : 'M'}${at(index)} ${(23 - (sample / peak) * 22).toFixed(2)}`;
         drawing = true;
     });
 
-    if (gapFrom !== null)
-    {
+    if (gapFrom !== null) {
         closeGap(samples.length - 1);
     }
 
-    if (!live && !gaps)
-    {
+    if (!live && !gaps) {
         return '';
     }
 
-    return `<svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">${gaps
-        ? `<path class="spark-gap" d="${gaps}"/>`
-        : ''}${live
-        ? `<path d="${live}"/>`
-        : ''}</svg>`;
+    return `<svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">${
+        gaps ? `<path class="spark-gap" d="${gaps}"/>` : ''
+    }${live ? `<path d="${live}"/>` : ''}</svg>`;
 };
 
-const respondingText = (data) =>
-{
+const respondingText = (data) => {
     const unknown = data.overall.servicesUnknown ?? 0;
     const total = data.overall.servicesTotal;
 
@@ -253,33 +215,34 @@ const respondingText = (data) =>
 
 const BANNER = {
     operational: {
-        css:   'is-ok',
-        title: 'Everything\'s fine!',
-        sub:   respondingText
+        css: 'is-ok',
+        title: "Everything's fine!",
+        sub: respondingText
     },
     maintenance: {
-        css:   'is-maintenance',
+        css: 'is-maintenance',
         title: 'Under Maintenance',
-        sub:   (data) => `${respondingText(data)} Planned work is in progress.`
+        sub: (data) => `${respondingText(data)} Planned work is in progress.`
     },
-    partial:     {
-        css:   'is-partial',
+    partial: {
+        css: 'is-partial',
         title: 'Partial Outage',
-        sub:   (data) => (data.overall.servicesDown
-            ? `${data.overall.servicesDown} of ${data.overall.servicesTotal} services are not responding.`
-            : `${respondingText(data)} An incident is open.`)
+        sub: (data) =>
+            data.overall.servicesDown
+                ? `${data.overall.servicesDown} of ${data.overall.servicesTotal} services are not responding.`
+                : `${respondingText(data)} An incident is open.`
     },
-    major:       {
-        css:   'is-major',
+    major: {
+        css: 'is-major',
         title: 'Major Outage',
-        sub:   (data) => (data.overall.servicesDown
-            ? `${data.overall.servicesDown} of ${data.overall.servicesTotal} services are not responding.`
-            : `An incident affecting several services is open.`)
+        sub: (data) =>
+            data.overall.servicesDown
+                ? `${data.overall.servicesDown} of ${data.overall.servicesTotal} services are not responding.`
+                : `An incident affecting several services is open.`
     }
 };
 
-const renderBanner = (data) =>
-{
+const renderBanner = (data) => {
     const state = BANNER[data.overall.status] ?? BANNER.partial;
     const banner = el('banner');
 
@@ -288,12 +251,10 @@ const renderBanner = (data) =>
     el('bannerSub').textContent = state.sub(data);
 };
 
-const renderStats = (data) =>
-{
+const renderStats = (data) => {
     const window = data.windowDays;
 
-    document.querySelectorAll('.stat-window').forEach((node) =>
-    {
+    document.querySelectorAll('.stat-window').forEach((node) => {
         node.textContent = String(window);
     });
 
@@ -303,35 +264,32 @@ const renderStats = (data) =>
 
     const shortSpans = spans
         ? [
-            spans.today != null
-                ? `Today ${formatUptimeShort(spans.today)}`
-                : null,
-            spans.days7 != null
-                ? `7 days ${formatUptimeShort(spans.days7)}`
-                : null
-        ].filter(Boolean).join(' · ')
+              spans.today != null ? `Today ${formatUptimeShort(spans.today)}` : null,
+              spans.days7 != null ? `7 days ${formatUptimeShort(spans.days7)}` : null
+          ]
+              .filter(Boolean)
+              .join(' · ')
         : '';
 
-    if (shortSpans)
-    {
+    if (shortSpans) {
         el('statUptimeNote').textContent = shortSpans;
-    }
-    else
-    {
+    } else {
         const measured = data.services.filter((service) => service.uptimePercent != null);
 
-        const downSeconds = measured.map((service) => service.days
-                                                             .reduce((sum, day) => sum + (day.downSeconds ?? 0), 0));
+        const downSeconds = measured.map((service) =>
+            service.days.reduce((sum, day) => sum + (day.downSeconds ?? 0), 0)
+        );
 
         const averageDown = downSeconds.length
             ? downSeconds.reduce((sum, value) => sum + value, 0) / downSeconds.length
             : null;
 
-        el('statUptimeNote').textContent = averageDown == null
-            ? 'No history yet'
-            : averageDown < 1
-                ? 'No downtime recorded'
-                : `${duration(averageDown)} down per service`;
+        el('statUptimeNote').textContent =
+            averageDown == null
+                ? 'No history yet'
+                : averageDown < 1
+                  ? 'No downtime recorded'
+                  : `${duration(averageDown)} down per service`;
     }
 
     const timed = data.services.filter((service) => service.latency?.avgWindowMs != null);
@@ -339,9 +297,7 @@ const renderStats = (data) =>
     el('statResponse').textContent = formatMs(data.overall.avgLatencyMs);
 
     const fastest = timed.length
-        ? timed.reduce((best, service) => (service.latency.avgWindowMs < best.latency.avgWindowMs
-            ? service
-            : best))
+        ? timed.reduce((best, service) => (service.latency.avgWindowMs < best.latency.avgWindowMs ? service : best))
         : null;
 
     el('statResponseNote').textContent = fastest
@@ -353,42 +309,35 @@ const renderStats = (data) =>
 
     el('statServices').textContent = `${up} / ${data.overall.servicesTotal}`;
     el('statServicesNote').textContent = data.overall.servicesDown
-        ? `${data.overall.servicesDown} not responding${unknown
-            ? `, ${unknown} unknown`
-            : ''}`
+        ? `${data.overall.servicesDown} not responding${unknown ? `, ${unknown} unknown` : ''}`
         : unknown
-            ? `${unknown} could not be checked`
-            : 'Everything is answering';
+          ? `${unknown} could not be checked`
+          : 'Everything is answering';
 };
 
-const renderStrip = (service, windowDays) =>
-{
+const renderStrip = (service, windowDays) => {
     const days = service.days.slice(-windowDays);
 
-    const bars = days.map((day) =>
-    {
-        const cssState = day.state === 'nodata'
-            ? ''
-            : ` is-${day.state}`;
+    const bars = days
+        .map((day) => {
+            const cssState = day.state === 'nodata' ? '' : ` is-${day.state}`;
 
-        const timing = day.avgLatencyMs != null
-            ? `\n${formatMs(day.avgLatencyMs)} average response`
-            : '';
+            const timing = day.avgLatencyMs != null ? `\n${formatMs(day.avgLatencyMs)} average response` : '';
 
-        const tip = day.state === 'nodata'
-            ? `${dayLabel(day.date)}\nNot monitored`
-            : day.downSeconds === 0
-                ? `${dayLabel(day.date)}\nNo downtime${timing}`
-                : day.state === 'restart'
-                    ? `${dayLabel(day.date)}\n${duration(day.downSeconds)} restarting\n${formatUptime(day.uptimePercent)} up${timing}`
-                    : `${dayLabel(day.date)}\n${duration(day.downSeconds)} of downtime\n${formatUptime(day.uptimePercent)} up${timing}`;
+            const tip =
+                day.state === 'nodata'
+                    ? `${dayLabel(day.date)}\nNot monitored`
+                    : day.downSeconds === 0
+                      ? `${dayLabel(day.date)}\nNo downtime${timing}`
+                      : day.state === 'restart'
+                        ? `${dayLabel(day.date)}\n${duration(day.downSeconds)} restarting\n${formatUptime(day.uptimePercent)} up${timing}`
+                        : `${dayLabel(day.date)}\n${duration(day.downSeconds)} of downtime\n${formatUptime(day.uptimePercent)} up${timing}`;
 
-        return `<div class="bar${cssState}" data-tip="${escapeHtml(tip)}" tabindex="0" role="img" aria-label="${escapeHtml(tip.replace(/\n/g, ', '))}"></div>`;
-    }).join('');
+            return `<div class="bar${cssState}" data-tip="${escapeHtml(tip)}" tabindex="0" role="img" aria-label="${escapeHtml(tip.replace(/\n/g, ', '))}"></div>`;
+        })
+        .join('');
 
-    const uptime = service.uptimePercent != null
-        ? `${formatUptime(service.uptimePercent)} uptime`
-        : 'No data yet';
+    const uptime = service.uptimePercent != null ? `${formatUptime(service.uptimePercent)} uptime` : 'No data yet';
 
     return `
         <div class="strip">${bars}</div>
@@ -399,12 +348,10 @@ const renderStrip = (service, windowDays) =>
         </div>`;
 };
 
-const renderTiming = (service) =>
-{
+const renderTiming = (service) => {
     const latency = service.latency;
 
-    if (!latency)
-    {
+    if (!latency) {
         return '<p class="timing is-absent">Response time not measured for this service.</p>';
     }
 
@@ -412,98 +359,66 @@ const renderTiming = (service) =>
 
     return `
         <div class="timing">
-            <span class="timing-now">${current != null
-        ? formatMs(current)
-        : '—'}</span>
+            <span class="timing-now">${current != null ? formatMs(current) : '—'}</span>
             ${sparkline(latency.samples)}
         </div>`;
 };
 
-const renderSpans = (service) =>
-{
+const renderSpans = (service) => {
     const SPANS = [
-        [
-            'today',
-            'Today'
-        ],
-        [
-            'days7',
-            '7 days'
-        ],
-        [
-            'days30',
-            '30 days'
-        ],
-        [
-            'window',
-            '90 days'
-        ]
+        ['today', 'Today'],
+        ['days7', '7 days'],
+        ['days30', '30 days'],
+        ['window', '90 days']
     ];
 
     const uptime = service.uptime
-        ? SPANS.map(([key, label]) =>
-        {
-            const value = service.uptime[key]?.uptimePercent;
+        ? SPANS.map(([key, label]) => {
+              const value = service.uptime[key]?.uptimePercent;
 
-            const css = value == null
-                ? ' is-empty'
-                : value >= 99.9
-                    ? ' is-up'
-                    : value >= 99
-                        ? ' is-partial'
-                        : ' is-down';
+              const css =
+                  value == null ? ' is-empty' : value >= 99.9 ? ' is-up' : value >= 99 ? ' is-partial' : ' is-down';
 
-            return `
+              return `
                 <span class="span${css}">
                     <span class="span-key">${label}</span>
                     <span class="span-value">${formatUptimeShort(value)}</span>
                 </span>`;
-        }).join('')
+          }).join('')
         : '';
 
     const latency = service.latency;
 
-    const fact = (key, value) => (value == null
-        ? ''
-        : `<span class="span is-timing"><span class="span-key">${key}</span><span class="span-value">${value}</span></span>`);
+    const fact = (key, value) =>
+        value == null
+            ? ''
+            : `<span class="span is-timing"><span class="span-key">${key}</span><span class="span-value">${value}</span></span>`;
 
     const timing = latency
         ? [
-            fact('p50',
-                latency.p50RecentMs != null
-                    ? formatMs(latency.p50RecentMs)
-                    : null),
-            fact('p95',
-                latency.p95RecentMs != null
-                    ? formatMs(latency.p95RecentMs)
-                    : null),
-            fact('p99',
-                latency.p99RecentMs != null
-                    ? formatMs(latency.p99RecentMs)
-                    : null),
-            fact('jitter',
-                latency.jitterRecentMs != null
-                    ? `±${formatMs(latency.jitterRecentMs)}`
-                    : null),
-            fact('range',
-                latency.minWindowMs != null && latency.maxWindowMs != null
-                    ? `${formatMs(latency.minWindowMs)}–${formatMs(latency.maxWindowMs)}`
-                    : null)
-        ].join('')
+              fact('p50', latency.p50RecentMs != null ? formatMs(latency.p50RecentMs) : null),
+              fact('p95', latency.p95RecentMs != null ? formatMs(latency.p95RecentMs) : null),
+              fact('p99', latency.p99RecentMs != null ? formatMs(latency.p99RecentMs) : null),
+              fact('jitter', latency.jitterRecentMs != null ? `±${formatMs(latency.jitterRecentMs)}` : null),
+              fact(
+                  'range',
+                  latency.minWindowMs != null && latency.maxWindowMs != null
+                      ? `${formatMs(latency.minWindowMs)}–${formatMs(latency.maxWindowMs)}`
+                      : null
+              )
+          ].join('')
         : '';
 
-    if (!uptime && !timing)
-    {
+    if (!uptime && !timing) {
         return '';
     }
 
-    const age = latency?.measuredAt
-        ? (Date.now() - Date.parse(latency.measuredAt)) / 1000
-        : null;
+    const age = latency?.measuredAt ? (Date.now() - Date.parse(latency.measuredAt)) / 1000 : null;
 
-    const stamp = age != null && age >= 5
-        ? `<span class="span-age" title="This service reports its own latency rather than being probed from here.">${duration(age)} ago</span>`
-        : '';
+    const stamp =
+        age != null && age >= 5
+            ? `<span class="span-age" title="This service reports its own latency rather than being probed from here.">${duration(age)} ago</span>`
+            : '';
 
     return `
         <div class="spans">
@@ -513,172 +428,120 @@ const renderSpans = (service) =>
         </div>`;
 };
 
-const renderAvailability = (service) =>
-{
+const renderAvailability = (service) => {
     const stats = service.availability;
 
-    if (!stats)
-    {
+    if (!stats) {
         return '';
     }
 
     const parts = [];
 
-    if (service.online === false)
-    {
+    if (service.online === false) {
         parts.push('<strong>Down right now</strong>');
-    }
-    else if (stats.streakSeconds != null)
-    {
+    } else if (stats.streakSeconds != null) {
         parts.push(`${duration(stats.streakSeconds)} without downtime`);
-    }
-    else if (!stats.downtimeSeconds && !stats.outages)
-    {
+    } else if (!stats.downtimeSeconds && !stats.outages) {
         parts.push('No downtime ever recorded');
     }
 
-    if (stats.downtimeSeconds > 0)
-    {
+    if (stats.downtimeSeconds > 0) {
         parts.push(`${duration(stats.downtimeSeconds)} down in 90 days`);
     }
 
-    if (stats.outages > 0)
-    {
-        parts.push(`${stats.outages} ${stats.outages === 1
-            ? 'outage'
-            : 'outages'}`);
+    if (stats.outages > 0) {
+        parts.push(`${stats.outages} ${stats.outages === 1 ? 'outage' : 'outages'}`);
         parts.push(`longest ${duration(stats.longestOutageSeconds)}`);
 
-        if (stats.meanRecoverySeconds != null)
-        {
+        if (stats.meanRecoverySeconds != null) {
             parts.push(`usually back in ${duration(stats.meanRecoverySeconds)}`);
         }
     }
 
-    if (stats.observedPercent != null && stats.observedPercent < 99.5)
-    {
+    if (stats.observedPercent != null && stats.observedPercent < 99.5) {
         parts.push(`monitored ${Math.round(stats.observedPercent)}% of the window`);
     }
 
     return `<p class="facts">${parts.join(' &middot; ')}</p>`;
 };
 
-const renderMeta = (service) =>
-{
+const renderMeta = (service) => {
     const meta = service.meta;
 
-    if (!meta)
-    {
+    if (!meta) {
         return '';
     }
 
     const parts = [];
 
-    if (meta.machines != null)
-    {
-        parts.push(`${meta.machines} ${meta.machines === 1
-            ? 'machine'
-            : 'machines'}`);
+    if (meta.machines != null) {
+        parts.push(`${meta.machines} ${meta.machines === 1 ? 'machine' : 'machines'}`);
     }
 
-    if (meta.shards != null)
-    {
-        parts.push(`${meta.shards} ${meta.shards === 1
-            ? 'shard'
-            : 'shards'}`);
+    if (meta.shards != null) {
+        parts.push(`${meta.shards} ${meta.shards === 1 ? 'shard' : 'shards'}`);
     }
 
-    if (meta.clusters != null)
-    {
-        parts.push(meta.clustersReady != null && meta.clustersReady !== meta.clusters
-            ? `${meta.clustersReady}/${meta.clusters} clusters ready`
-            : `${meta.clusters} ${meta.clusters === 1
-                ? 'cluster'
-                : 'clusters'}`);
+    if (meta.clusters != null) {
+        parts.push(
+            meta.clustersReady != null && meta.clustersReady !== meta.clusters
+                ? `${meta.clustersReady}/${meta.clusters} clusters ready`
+                : `${meta.clusters} ${meta.clusters === 1 ? 'cluster' : 'clusters'}`
+        );
     }
 
-    if (meta.guilds != null)
-    {
+    if (meta.guilds != null) {
         parts.push(`${meta.guilds.toLocaleString()} servers`);
     }
 
-    if (meta.worstShardMs != null)
-    {
+    if (meta.worstShardMs != null) {
         parts.push(`worst shard ${formatMs(meta.worstShardMs)}`);
     }
 
-    if (meta.databaseMs != null)
-    {
+    if (meta.databaseMs != null) {
         parts.push(`database ${formatMs(meta.databaseMs)}`);
     }
 
-    if (meta.heartbeatMs != null)
-    {
+    if (meta.heartbeatMs != null) {
         parts.push(`clusters ${formatMs(meta.heartbeatMs)}`);
     }
 
-    if (meta.startedAt)
-    {
+    if (meta.startedAt) {
         const seconds = (Date.now() - Date.parse(meta.startedAt)) / 1000;
 
-        if (Number.isFinite(seconds) && seconds > 0)
-        {
-            parts.push(`${service.online === false
-                ? 'ran'
-                : 'running'} for ${duration(seconds)}`);
+        if (Number.isFinite(seconds) && seconds > 0) {
+            parts.push(`${service.online === false ? 'ran' : 'running'} for ${duration(seconds)}`);
         }
     }
 
-    if (meta.version)
-    {
+    if (meta.version) {
         parts.push(escapeHtml(meta.version));
     }
 
-    return parts.length
-        ? `<p class="facts is-meta">${parts.join(' &middot; ')}</p>`
-        : '';
+    return parts.length ? `<p class="facts is-meta">${parts.join(' &middot; ')}</p>` : '';
 };
 
-const CATEGORY_ORDER = [
-    'Bot',
-    'Web',
-    'Chat',
-    'Apps',
-    'Games'
-];
+const CATEGORY_ORDER = ['Bot', 'Web', 'Chat', 'Apps', 'Games'];
 
 const SERVICE_ORDER = {
-    'Relaxy! bot':             0,
-    'Relaxy! Dashboard':       1,
-    'Database':                2,
-    'Website':                 3,
-    'The CDN':                 4,
-    'Matrix (Continuwuity)':   5,
+    'Relaxy! bot': 0,
+    'Relaxy! Dashboard': 1,
+    Database: 2,
+    Website: 3,
+    'The CDN': 4,
+    'Matrix (Continuwuity)': 5,
     'Matrix registration API': 6,
-    'IRC (ngIRCd)':            7,
-    'Minecraft server':        8
+    'IRC (ngIRCd)': 7,
+    'Minecraft server': 8
 };
 
-const serviceCard = (service, windowDays) =>
-{
+const serviceCard = (service, windowDays) => {
     const isUp = service.online === true;
     const isRestarting = service.restarting === true && !isUp;
     const isDown = service.online === false && !isRestarting;
 
-    const stateCss = isUp
-        ? 'is-up'
-        : isRestarting
-            ? 'is-restart'
-            : isDown
-                ? 'is-down'
-                : '';
-    const stateText = isUp
-        ? 'Operational'
-        : isRestarting
-            ? 'Restarting'
-            : isDown
-                ? 'Down'
-                : 'Unknown';
+    const stateCss = isUp ? 'is-up' : isRestarting ? 'is-restart' : isDown ? 'is-down' : '';
+    const stateText = isUp ? 'Operational' : isRestarting ? 'Restarting' : isDown ? 'Down' : 'Unknown';
 
     return `
         <article class="service">
@@ -698,89 +561,93 @@ const serviceCard = (service, windowDays) =>
         </article>`;
 };
 
-const renderServices = (data) =>
-{
+const renderServices = (data) => {
     const windowDays = visibleDays(data.windowDays);
 
     el('windowLabel').textContent = String(windowDays);
 
     const groups = new Map();
 
-    for (const service of data.services)
-    {
+    for (const service of data.services) {
         const category = service.category ?? 'Other';
 
-        if (!groups.has(category))
-        {
+        if (!groups.has(category)) {
             groups.set(category, []);
         }
 
         groups.get(category).push(service);
     }
 
-    const categories = [...groups.keys()].sort((a, b) =>
-    {
+    const categories = [...groups.keys()].sort((a, b) => {
         const orderA = CATEGORY_ORDER.indexOf(a);
         const orderB = CATEGORY_ORDER.indexOf(b);
 
-        return (orderA < 0
-            ? CATEGORY_ORDER.length
-            : orderA) - (orderB < 0
-            ? CATEGORY_ORDER.length
-            : orderB) || a.localeCompare(b);
+        return (
+            (orderA < 0 ? CATEGORY_ORDER.length : orderA) - (orderB < 0 ? CATEGORY_ORDER.length : orderB) ||
+            a.localeCompare(b)
+        );
     });
 
-    el('services').innerHTML = categories.map((category) =>
-    {
-        const services = groups.get(category).sort((a, b) => (SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER) - (SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER));
+    el('services').innerHTML = categories
+        .map((category) => {
+            const services = groups
+                .get(category)
+                .sort(
+                    (a, b) =>
+                        (SERVICE_ORDER[a.name] ?? Number.MAX_SAFE_INTEGER) -
+                        (SERVICE_ORDER[b.name] ?? Number.MAX_SAFE_INTEGER)
+                );
 
-        return `
+            return `
             <section class="group">
                 <div class="group-head">
                     <h3 class="group-name">${escapeHtml(category)}</h3>
                 </div>
                 ${services.map((service) => serviceCard(service, windowDays)).join('')}
             </section>`;
-    }).join('');
+        })
+        .join('');
 };
 
-const updateTimeline = (updates, ongoing) =>
-{
-    if (!Array.isArray(updates) || !updates.length)
-    {
+const updateTimeline = (updates, ongoing) => {
+    if (!Array.isArray(updates) || !updates.length) {
         return '';
     }
 
-    const ordered = [...updates].sort((a, b) => (ongoing
-        ? Date.parse(b.at) - Date.parse(a.at)
-        : Date.parse(a.at) - Date.parse(b.at)));
+    const ordered = [...updates].sort((a, b) =>
+        ongoing ? Date.parse(b.at) - Date.parse(a.at) : Date.parse(a.at) - Date.parse(b.at)
+    );
 
-    const items = ordered.map((update) => `
+    const items = ordered
+        .map(
+            (update) => `
         <li class="update is-${escapeHtml(update.status)}">
             <div class="update-head">
                 <span class="update-status">${escapeHtml(update.status)}</span>
                 <time class="update-time" datetime="${escapeHtml(update.at)}">${escapeHtml(formatDate(update.at, STAMP))}</time>
             </div>
             <p class="update-body">${escapeHtml(update.body)}</p>
-        </li>`).join('');
+        </li>`
+        )
+        .join('');
 
     return `<ol class="updates">${items}</ol>`;
 };
 
-const incidentChildren = (children) =>
-{
-    if (!Array.isArray(children) || !children.length)
-    {
+const incidentChildren = (children) => {
+    if (!Array.isArray(children) || !children.length) {
         return '';
     }
 
-    const rows = children.map((child) => `
+    const rows = children
+        .map(
+            (child) => `
         <li class="child">
             <span class="child-name">${escapeHtml(child.name)}</span>
-            <span class="child-time">${child.ongoing
-        ? 'still down'
-        : escapeHtml(child.durationText)}</span>
-        </li>`).join('');
+            <span class="child-time">${child.ongoing ? 'still down' : escapeHtml(child.durationText)}</span>
+        </li>`
+        )
+        .join('');
 
     return `
         <div class="incident-group" tabindex="0" role="group" aria-label="${children.length} affected services">
@@ -790,39 +657,36 @@ const incidentChildren = (children) =>
 };
 
 const CLOCK = {
-    hour:   '2-digit',
+    hour: '2-digit',
     minute: '2-digit'
 };
 
-const periodWindow = (period) =>
-{
+const periodWindow = (period) => {
     const opened = formatDate(period.startedAt, STAMP);
 
-    if (period.ongoing || !period.endedAt)
-    {
+    if (period.ongoing || !period.endedAt) {
         return `${opened} &rarr; now`;
     }
 
-    const sameDay = new Date(period.startedAt).toDateString()
-        === new Date(period.endedAt).toDateString();
+    const sameDay = new Date(period.startedAt).toDateString() === new Date(period.endedAt).toDateString();
 
     return `${opened} &rarr; ${formatDate(period.endedAt, sameDay ? CLOCK : STAMP)}`;
 };
 
-const incidentPeriods = (periods) =>
-{
-    if (!Array.isArray(periods) || periods.length < 2)
-    {
+const incidentPeriods = (periods) => {
+    if (!Array.isArray(periods) || periods.length < 2) {
         return '';
     }
 
-    const rows = periods.map((period) => `
+    const rows = periods
+        .map(
+            (period) => `
         <li class="child">
             <span class="child-name">${periodWindow(period)}</span>
-            <span class="child-time">${period.ongoing
-        ? 'still down'
-        : escapeHtml(period.durationText)}</span>
-        </li>`).join('');
+            <span class="child-time">${period.ongoing ? 'still down' : escapeHtml(period.durationText)}</span>
+        </li>`
+        )
+        .join('');
 
     return `
         <div class="incident-group is-periods" tabindex="0" role="group" aria-label="${periods.length} separate outages">
@@ -835,86 +699,74 @@ const RESOLVED_LINGER = 1.75;
 
 const RESOLVED_LINGER_MIN_MS = 3600000;
 
-const recentlyResolved = (incident) =>
-{
-    if (incident.ongoing || !incident.endedAt)
-    {
+const recentlyResolved = (incident) => {
+    if (incident.ongoing || !incident.endedAt) {
         return false;
     }
 
     const endedAt = Date.parse(incident.endedAt);
     const lasted = endedAt - Date.parse(incident.startedAt);
 
-    if (!Number.isFinite(endedAt) || !Number.isFinite(lasted))
-    {
+    if (!Number.isFinite(endedAt) || !Number.isFinite(lasted)) {
         return false;
     }
 
     return Date.now() - endedAt < Math.max(RESOLVED_LINGER_MIN_MS, lasted * RESOLVED_LINGER);
 };
 
-const incidentCard = (incident) =>
-{
+const incidentCard = (incident) => {
     const chips = [];
 
-    if (incident.ongoing)
-    {
+    if (incident.ongoing) {
         chips.push('<span class="chip is-ongoing">Ongoing</span>');
-    }
-    else if (recentlyResolved(incident))
-    {
+    } else if (recentlyResolved(incident)) {
         chips.push('<span class="chip is-resolved">Resolved</span>');
     }
 
     chips.push(`<span class="chip is-${escapeHtml(incident.impact)}">${escapeHtml(incident.impact)}</span>`);
 
-    if (incident.degraded)
-    {
+    if (incident.degraded) {
         chips.push('<span class="chip is-degraded">Degraded</span>');
     }
 
-    if (incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog')
-    {
+    if (incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog') {
         chips.push('<span class="chip is-restart">Restart</span>');
     }
 
-    if (incident.manual)
-    {
+    if (incident.manual) {
         chips.push('<span class="chip is-declared">Declared</span>');
     }
 
     const started = formatDate(incident.startedAt, STAMP);
     const running = duration((Date.now() - Date.parse(incident.startedAt)) / 1000);
 
-    const ended = recentlyResolved(incident)
-        ? ` &middot; resolved ${escapeHtml(relative(incident.endedAt))}`
-        : '';
+    const ended = recentlyResolved(incident) ? ` &middot; resolved ${escapeHtml(relative(incident.endedAt))}` : '';
 
-    const spread = incident.degraded
-        ? ` across ${incident.outages} outages over ${escapeHtml(incident.spanText)}`
-        : '';
+    const spread = incident.degraded ? ` across ${incident.outages} outages over ${escapeHtml(incident.spanText)}` : '';
 
     const meta = incident.ongoing
-        ? `${escapeHtml(incident.serviceName)} &middot; started ${started} &middot; ${incident.degraded
-            ? `${escapeHtml(incident.durationText)} down${spread}`
-            : `ongoing for ${escapeHtml(running)}`}`
-        : `${escapeHtml(incident.serviceName)} &middot; ${started} &middot; ${incident.degraded
-            ? `${escapeHtml(incident.durationText)} down${spread}`
-            : `lasted ${escapeHtml(incident.durationText)}`}${ended}`;
+        ? `${escapeHtml(incident.serviceName)} &middot; started ${started} &middot; ${
+              incident.degraded
+                  ? `${escapeHtml(incident.durationText)} down${spread}`
+                  : `ongoing for ${escapeHtml(running)}`
+          }`
+        : `${escapeHtml(incident.serviceName)} &middot; ${started} &middot; ${
+              incident.degraded
+                  ? `${escapeHtml(incident.durationText)} down${spread}`
+                  : `lasted ${escapeHtml(incident.durationText)}`
+          }${ended}`;
 
     const lines = [];
 
-    if (incident.cause)
-    {
+    if (incident.cause) {
         lines.push(`<p class="incident-line">
-            <span class="incident-label">${incident.manual
-            ? 'What is going on'
-            : 'Detected'}</span>${escapeHtml(incident.cause)}
+            <span class="incident-label">${
+                incident.manual ? 'What is going on' : 'Detected'
+            }</span>${escapeHtml(incident.cause)}
         </p>`);
     }
 
-    if (incident.note)
-    {
+    if (incident.note) {
         lines.push(`<p class="incident-line is-manual">
             <span class="incident-label">What happened</span>${escapeHtml(incident.note)}
         </p>`);
@@ -922,9 +774,7 @@ const incidentCard = (incident) =>
 
     const restart = incident.causeCode === 'host-reboot' || incident.causeCode === 'watchdog';
 
-    const body = lines.length
-        ? `<div class="incident-body">${lines.join('')}</div>`
-        : '';
+    const body = lines.length ? `<div class="incident-body">${lines.join('')}</div>` : '';
 
     const updates = updateTimeline(incident.updates, incident.ongoing);
 
@@ -934,18 +784,12 @@ const incidentCard = (incident) =>
         </p>`
         : '';
 
-    const detail = body || updates || closing
-        ? `<div class="incident-detail">${body}${updates}${closing}</div>`
-        : '';
+    const detail = body || updates || closing ? `<div class="incident-detail">${body}${updates}${closing}</div>` : '';
 
     return `
-        <article class="incident${incident.ongoing
-        ? ' is-live'
-        : ''}${restart
-        ? ' is-restart'
-        : ''}${incident.degraded
-        ? ' is-degraded'
-        : ''}">
+        <article class="incident${incident.ongoing ? ' is-live' : ''}${restart ? ' is-restart' : ''}${
+            incident.degraded ? ' is-degraded' : ''
+        }">
             <div class="incident-head">
                 <h3 class="incident-title">${escapeHtml(incident.title)}</h3>
                 ${chips.join('')}
@@ -957,8 +801,7 @@ const incidentCard = (incident) =>
         </article>`;
 };
 
-const renderIncidents = (data) =>
-{
+const renderIncidents = (data) => {
     const active = data.incidents.filter((incident) => incident.ongoing);
     const recent = data.incidents.filter(recentlyResolved);
 
@@ -966,8 +809,7 @@ const renderIncidents = (data) =>
 
     const activeHost = el('activeIncidents');
 
-    if (active.length)
-    {
+    if (active.length) {
         activeHost.innerHTML = `
             <div class="panel is-active">
                 <div class="panel-head">
@@ -977,17 +819,14 @@ const renderIncidents = (data) =>
                 ${active.map(incidentCard).join('')}
             </div>`;
         activeHost.hidden = false;
-    }
-    else
-    {
+    } else {
         activeHost.hidden = true;
         activeHost.innerHTML = '';
     }
 
     const recentHost = el('recentlyResolved');
 
-    if (recent.length)
-    {
+    if (recent.length) {
         recentHost.innerHTML = `
             <div class="panel is-resolved">
                 <div class="panel-head">
@@ -997,9 +836,7 @@ const renderIncidents = (data) =>
                 ${recent.map(incidentCard).join('')}
             </div>`;
         recentHost.hidden = false;
-    }
-    else
-    {
+    } else {
         recentHost.hidden = true;
         recentHost.innerHTML = '';
     }
@@ -1008,11 +845,8 @@ const renderIncidents = (data) =>
         ? `${data.incidents.length} in the last ${data.windowDays} days`
         : '';
 
-    if (!past.length)
-    {
-        const above = active.length || recent.length
-            ? ' beyond the one above'
-            : ` in the last ${data.windowDays} days`;
+    if (!past.length) {
+        const above = active.length || recent.length ? ' beyond the one above' : ` in the last ${data.windowDays} days`;
 
         el('incidents').innerHTML = `<p class="empty">No incidents recorded${above}. </p>`;
 
@@ -1021,43 +855,44 @@ const renderIncidents = (data) =>
 
     const groups = new Map();
 
-    for (const incident of past)
-    {
+    for (const incident of past) {
         const key = incident.startedAt.slice(0, 10);
 
-        if (!groups.has(key))
-        {
+        if (!groups.has(key)) {
             groups.set(key, []);
         }
 
         groups.get(key).push(incident);
     }
 
-    el('incidents').innerHTML = [...groups.entries()].map(([date, list]) => `
+    el('incidents').innerHTML = [...groups.entries()]
+        .map(
+            ([date, list]) => `
         <h3 class="incident-day">${escapeHtml(dayLabel(date))}</h3>
-        ${list.map(incidentCard).join('')}`).join('');
+        ${list.map(incidentCard).join('')}`
+        )
+        .join('');
 };
 
-const render = (data) =>
-{
+const render = (data) => {
     renderBanner(data);
     renderStats(data);
     renderServices(data);
     renderIncidents(data);
 
     el('stamp').textContent = `Last checked ${relative(data.generatedAt)} · ${formatDate(data.generatedAt, {
-        hour:   '2-digit',
+        hour: '2-digit',
         minute: '2-digit'
     })}`;
 };
 
-const showFailure = () =>
-{
+const showFailure = () => {
     const banner = el('banner');
 
     banner.className = 'banner is-partial';
     el('bannerTitle').textContent = 'Status feed unavailable';
-    el('bannerSub').textContent = 'This page could not load its data. That usually means the monitor on the host is not running - which is itself worth knowing.';
+    el('bannerSub').textContent =
+        'This page could not load its data. That usually means the monitor on the host is not running - which is itself worth knowing.';
 
     el('services').innerHTML = '<p class="empty">No service history to show.</p>';
     el('incidents').innerHTML = '<p class="empty">No incidents to show.</p>';
@@ -1066,72 +901,53 @@ const showFailure = () =>
 let latest = null;
 let failures = 0;
 
-const load = () => fetch(FEED, { cache: 'no-cache' })
-    .then((response) => (response.ok
-        ? response.json()
-        : Promise.reject(response.status)))
-    .then((data) =>
-    {
-        failures = 0;
-        latest = data;
-        render(data);
-    })
-    .catch(() =>
-    {
-        failures += 1;
+const load = () =>
+    fetch(FEED, { cache: 'no-cache' })
+        .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+        .then((data) => {
+            failures = 0;
+            latest = data;
+            render(data);
+        })
+        .catch(() => {
+            failures += 1;
 
-        if (!latest)
-        {
-            showFailure();
-        }
-    });
+            if (!latest) {
+                showFailure();
+            }
+        });
 
 let timer = null;
 
-const schedule = (delay) =>
-{
+const schedule = (delay) => {
     clearTimeout(timer);
     timer = setTimeout(poll, delay);
 };
 
-const poll = () =>
-{
-    if (document.hidden)
-    {
+const poll = () => {
+    if (document.hidden) {
         schedule(REFRESH_MS);
 
         return;
     }
 
-    load().then(() => schedule(failures
-        ? Math.min(REFRESH_MS * (2 ** failures), BACKOFF_MAX_MS)
-        : REFRESH_MS));
+    load().then(() => schedule(failures ? Math.min(REFRESH_MS * 2 ** failures, BACKOFF_MAX_MS) : REFRESH_MS));
 };
 
-const syncThemeButton = () =>
-{
+const syncThemeButton = () => {
     const button = el('themeButton');
     const isLight = document.documentElement.classList.contains('light-mode');
 
-    button.textContent = isLight
-        ? 'Dark Mode'
-        : 'Light Mode';
+    button.textContent = isLight ? 'Dark Mode' : 'Light Mode';
     button.setAttribute('aria-pressed', String(isLight));
 };
 
-el('themeButton').addEventListener('click', () =>
-{
+el('themeButton').addEventListener('click', () => {
     const isLight = document.documentElement.classList.toggle('light-mode');
 
-    try
-    {
-        localStorage.setItem('theme',
-            isLight
-                ? 'light'
-                : 'dark');
-    }
-    catch (error)
-    {
+    try {
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    } catch (error) {
         // Storage unavailable
     }
 
@@ -1140,23 +956,18 @@ el('themeButton').addEventListener('click', () =>
 
 let resizeTimer = null;
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
 
-    resizeTimer = setTimeout(() =>
-    {
-        if (latest)
-        {
+    resizeTimer = setTimeout(() => {
+        if (latest) {
             renderServices(latest);
         }
     }, 200);
 });
 
-document.addEventListener('visibilitychange', () =>
-{
-    if (!document.hidden)
-    {
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
         poll();
     }
 });
