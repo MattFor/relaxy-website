@@ -539,8 +539,8 @@ const attachKofi = () => {
 const OWNER_TILT_DEG = 9;
 
 const OWNER_IMG_BASE = 'https://cdn.relaxy.xyz/relaxy/website/img/people/';
-const OWNER_IMG_COUNT = 17;
-const OWNER_CURRENT = 'owner7';
+const OWNER_IMG_COUNT = 18;
+const OWNER_CURRENT = 'owner18';
 
 const attachOwnerCard = () => {
     const photo = document.getElementById('ownerPhoto');
