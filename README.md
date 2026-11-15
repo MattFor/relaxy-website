@@ -1,4 +1,4 @@
-# relaxy-website
+# Relaxy! Website
 
 [![CI](https://github.com/MattFor/relaxy-website/actions/workflows/ci.yml/badge.svg)](https://github.com/MattFor/relaxy-website/actions/workflows/ci.yml)
 [![License: view-only](https://img.shields.io/badge/license-view--only-blue.svg)](LICENSE)
