@@ -23,10 +23,7 @@
             content="The Relaxy! web dashboard at dashboard.relaxy.xyz - configure the Discord bot for your server visually, no commands required. Tickets, forums, heartboards, moderation and music."
             name="description"
         />
-        <meta
-            content="discord bot dashboard, discord bot control panel, configure discord bot, discord moderation dashboard, relaxy dashboard"
-            name="keywords"
-        />
+        <meta content="discord bot dashboard, discord bot control panel, configure discord bot, discord moderation dashboard, relaxy dashboard" name="keywords" />
         <link href="https://www.relaxy.xyz/subpages/dashboard" rel="canonical" />
         <meta content="website" property="og:type" />
         <meta content="https://www.relaxy.xyz/subpages/dashboard" property="og:url" />
@@ -94,45 +91,20 @@
 
         <header class="topbar">
             <a class="brand" href="/">
-                <img
-                    draggable="false"
-                    alt=""
-                    decoding="async"
-                    height="56"
-                    src="https://cdn.relaxy.xyz/relaxy.webp"
-                    width="56"
-                />
+                <img draggable="false" alt="" decoding="async" height="56" src="https://cdn.relaxy.xyz/relaxy.webp" width="56" />
                 <span>Relaxy!</span>
             </a>
             <nav aria-label="Pages" class="site-nav" id="topnav"></nav>
             <div class="topbar-end">
-                <button
-                    aria-pressed="false"
-                    class="theme-button"
-                    id="themeButton"
-                    onclick="toggleTheme()"
-                    type="button"
-                >
-                    Light Mode
-                </button>
-                <button
-                    aria-expanded="false"
-                    aria-label="Open navigation"
-                    class="nav-toggle"
-                    id="navToggle"
-                    type="button"
-                >
-                    <span></span><span></span><span></span>
-                </button>
+                <button aria-pressed="false" class="theme-button" id="themeButton" onclick="toggleTheme()" type="button">Light Mode</button>
+                <button aria-expanded="false" aria-label="Open navigation" class="nav-toggle" id="navToggle" type="button"><span></span><span></span><span></span></button>
             </div>
         </header>
 
         <div aria-hidden="true" class="nav-drawer" id="navDrawer">
             <div class="nav-drawer-overlay" id="navOverlay"></div>
             <div class="nav-drawer-panel">
-                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">
-                    ✕
-                </button>
+                <button aria-label="Close navigation" class="nav-drawer-close" id="navDrawerClose" type="button">✕</button>
                 <nav aria-label="Navigation" class="drawer-nav" id="drawerNav"></nav>
             </div>
         </div>
@@ -140,52 +112,33 @@
         <section class="hero">
             <p class="eyebrow">Web control panel</p>
             <h1>The Relaxy! Dashboard</h1>
-            <p class="tagline">
-                A visual web control panel for Relaxy! Configure everything for your server - tickets, forums,
-                heartboards, moderation, music.
-            </p>
-            <a class="invite-button" href="https://dashboard.relaxy.xyz" rel="noopener" target="_blank"
-                >Open the Dashboard</a
-            >
-            <p class="byline">
-                Found a bug or want something added? Message me @mattfor on Discord or write to me on the Matrix server
-            </p>
+            <p class="tagline">A visual web control panel for Relaxy! Configure everything for your server - tickets, forums, heartboards, moderation, music.</p>
+            <a class="invite-button" href="https://dashboard.relaxy.xyz" rel="noopener" target="_blank">Open the Dashboard</a>
+            <p class="byline">Found a bug or want something added? Message me @mattfor on Discord or write to me on the Matrix server</p>
         </section>
 
         <main class="wrap" id="main">
             <section class="card section">
                 <div class="section-head" style="text-align: left; margin-bottom: var(--space-4)">
                     <p class="eyebrow">The idea behind it</p>
-                    <h2 style="text-align: left">
-                        Relaxy! is all powerful (literally Omnissiah). It shouldn't be hard to use, I've always wanted
-                        to make it easy and accessible.
-                    </h2>
+                    <h2 style="text-align: left">Relaxy! is all powerful (literally Omnissiah). It shouldn't be hard to use, I've always wanted to make it easy and accessible.</h2>
                     <p style="margin: 0">
-                        The bot is "function over form"; deep, flexible, and admittedly a lot to learn. The dashboard is
-                        the solution, change everything you'd want to visually, not with strict commands
+                        The bot is "function over form"; deep, flexible, and admittedly a lot to learn. The dashboard is the solution, change everything you'd want to visually, not with strict
+                        commands
                     </p>
                 </div>
                 <div class="eng-grid">
                     <div class="host-card">
                         <h3>Everything, visually</h3>
-                        <p>
-                            Set up tickets, forums, heartboards, warnings and censoring with forms and toggles instead
-                            of long command chains.
-                        </p>
+                        <p>Set up tickets, forums, heartboards, warnings and censoring with forms and toggles instead of long command chains.</p>
                     </div>
                     <div class="host-card">
                         <h3>Live server insight</h3>
-                        <p>
-                            See what's going on in real time, most used commands, when people joined, how your mod
-                            team's looking like, etc.
-                        </p>
+                        <p>See what's going on in real time, most used commands, when people joined, how your mod team's looking like, etc.</p>
                     </div>
                     <div class="host-card">
                         <h3>Safer changes</h3>
-                        <p>
-                            Previews and sensible defaults mean you can tweak configuration confidently, without fear of
-                            a typo breaking something.
-                        </p>
+                        <p>Previews and sensible defaults mean you can tweak configuration confidently, without fear of a typo breaking something.</p>
                     </div>
                 </div>
             </section>
@@ -196,19 +149,9 @@
         <aside class="relaxy-coach" id="relaxyCoach" data-default-tucked hidden>
             <div class="relaxy-coach-panel">
                 <span class="relaxy-coach-resize" aria-hidden="true"></span>
-                <p class="relaxy-coach-hint">
-                    Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or
-                    <strong>double-click me</strong> to tuck me away.
-                </p>
+                <p class="relaxy-coach-hint">Psst! <strong>Click me</strong> to quickly search any of Relaxy!'s commands, or <strong>double-click me</strong> to tuck me away.</p>
                 <div class="relaxy-coach-search">
-                    <input
-                        class="relaxy-coach-input"
-                        type="text"
-                        autocomplete="off"
-                        spellcheck="false"
-                        aria-label="Search commands"
-                        placeholder="Type a command name to learn more about it..."
-                    />
+                    <input class="relaxy-coach-input" type="text" autocomplete="off" spellcheck="false" aria-label="Search commands" placeholder="Type a command name to learn more about it..." />
                     <div class="relaxy-coach-result cmd-help" aria-live="polite"></div>
                 </div>
             </div>
@@ -238,8 +181,7 @@
             />
             <p>© 2026 Relaxy! Made by MattFor - All Rights Reserved</p>
             <p class="footer-links">
-                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot;
-                <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
+                <a href="https://discord.gg/xRAGVePxk6" target="_blank" rel="noopener">Support server</a> &middot; <a href="mailto:mattfor@relaxy.xyz">mattfor@relaxy.xyz</a> &middot;
                 <a href="https://uptime.relaxy.xyz">Service uptime status</a>
             </p>
         </footer>
