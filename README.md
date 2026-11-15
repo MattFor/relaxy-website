@@ -1,19 +1,24 @@
-# Relaxy! Website
+# relaxy-website
 
-The official website for **Relaxy!**, a free, self-hosted multipurpose Discord bot
-made by [MattFor](https://relaxy.xyz).
+[![CI](https://github.com/MattFor/relaxy-website/actions/workflows/ci.yml/badge.svg)](https://github.com/MattFor/relaxy-website/actions/workflows/ci.yml)
+[![License: view-only](https://img.shields.io/badge/license-view--only-blue.svg)](LICENSE)
 
-Live at **[relaxy.xyz](https://relaxy.xyz)**.
+The official website for Relaxy!, a free, self-hosted multipurpose Discord bot, and its uptime page.
 
-## Tech
+## Usage
+
+Live at **[relaxy.xyz](https://relaxy.xyz)**, with the uptime page at **[uptime.relaxy.xyz](https://uptime.relaxy.xyz)**.
+
+### Tech
 
 A deliberately dependency-free static site with plain HTML, CSS and vanilla
 JavaScript. Made to be served as fast as possible.
 
 ## License
 
+View-only, see [LICENSE](LICENSE). By [MattFor](https://github.com/MattFor).
+
 This repository is published for **reading and reference only**. You may view
-the source, but you may **not** copy, reuse, modify or redistribute it. See
-[`LICENSE`](./LICENSE) for the full terms.
+the source, but you may **not** copy, reuse, modify or redistribute it.
 
 © 2026 MattFor - All Rights Reserved.
