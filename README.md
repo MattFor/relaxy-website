@@ -17,8 +17,3 @@ JavaScript. Made to be served as fast as possible.
 ## License
 
 View-only, see [LICENSE](LICENSE). By [MattFor](https://github.com/MattFor).
-
-This repository is published for **reading and reference only**. You may view
-the source, but you may **not** copy, reuse, modify or redistribute it.
-
-© 2026 MattFor - All Rights Reserved.
